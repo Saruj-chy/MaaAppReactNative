@@ -1,6 +1,10 @@
-import React from 'react';
-import { Button, ScrollView, StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { Button, Modal, ScrollView, StyleSheet, Text, View } from 'react-native';
+import Dialog, { DialogContent } from 'react-native-popup-dialog';
 import OjonSavedScreen from './OjonSavedScreen';
+
+import DialogView from '../dialogView/DialogView';
+
 
 const ojonSavedValue = [
   { week: 'প্রাথমিক ওজন', ojon: 75.0 },
@@ -23,11 +27,15 @@ const ojonSavedValue = [
 ]
 
 const OjonScreen = () => {
+
+  const [state, setState] = useState(false);
+
   return (
     <View style={{ backgroundColor: 'white' }}>
       <View style={styles.appbarView}>
         <Text style={styles.appbarText}> ওজন  </Text>
-        <Button title="click" color="#ad1457" />
+        <Button title="click" color="#ad1457" onPress={() => setState(true)} />
+
       </View>
 
       {/* Weekly Ojon List */}
@@ -66,6 +74,23 @@ const OjonScreen = () => {
         <Text style={styles.weekOjnoTextStyle}> বিস্তারিত দেখতে গ্রাফ চাপুন </Text>
 
       </View>
+
+      <Dialog
+        visible={state}
+        onTouchOutside={() => {
+          setState(true)
+        }}
+      >
+        {/* <DialogContent> */}
+
+        <DialogView />
+
+        {/* </DialogContent> */}
+      </Dialog>
+
+
+
+
 
 
 
@@ -110,7 +135,7 @@ const styles = StyleSheet.create({
     // borderColor: 'red',
     // borderWidth: 2,
     textAlign: 'center'
-  }
+  },
 
 })
 
