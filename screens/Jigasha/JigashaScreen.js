@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import ListItem from '../ListItem/ListItem';
 
 const JigashaScreen = () => {
@@ -19,6 +19,9 @@ const JigashaScreen = () => {
 
   return (
     <View>
+      <View style={styles.appbarView}>
+        <Text style={styles.appbarText}>জিজ্ঞাসা</Text>
+      </View>
       {
         jigashaData.map(pd => <ListItem data={pd} key={pd.id} />)
       }
@@ -26,5 +29,19 @@ const JigashaScreen = () => {
     </View>
   );
 };
+
+
+const styles = StyleSheet.create({
+  appbarView: {
+    backgroundColor: '#ad1457',
+  },
+  appbarText: {
+    color: 'white',
+    fontSize: 18,
+    padding: 10,
+    paddingLeft: 50
+  }
+
+})
 
 export default JigashaScreen;

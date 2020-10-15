@@ -8,30 +8,19 @@ import {
   StatusBar,
 } from 'react-native';
 import JigashaScreen from './screens/Jigasha/JigashaScreen';
+import OjonScreen from './screens/OjonScreen/OjonScreen';
 
 const App = () => {
   return (
     <View>
-      <View style={styles.appbarView}>
-        <Text style={styles.appbarText}>জিজ্ঞাসা</Text>
-      </View>
-      <JigashaScreen />
+
+      {/* <JigashaScreen /> */}
+
+      <OjonScreen />
 
     </View>
   )
 }
 
-const styles = StyleSheet.create({
-  appbarView: {
-    backgroundColor: '#ad1457',
-  },
-  appbarText: {
-    color: 'white',
-    fontSize: 18,
-    padding: 10,
-    paddingLeft: 50
-  }
-
-})
 
 export default App;
