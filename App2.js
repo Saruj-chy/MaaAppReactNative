@@ -11,6 +11,8 @@ import DialogView from './screens/dialogView/DialogView';
 import JigashaScreen from './screens/Jigasha/JigashaScreen';
 import OjonScreen from './screens/OjonScreen/OjonScreen';
 import PickerShow from './screens/dialogView/PickerShow'
+import NoteScreen from './screens/NoteScreen/NoteScreen';
+import Testing from './screens/Test/Testing';
 
 const App = () => {
   return (
@@ -18,11 +20,13 @@ const App = () => {
 
       {/* <JigashaScreen /> */}
 
-      <OjonScreen />
+      {/* <OjonScreen /> */}
 
-      {/* <DialogView /> */}
 
-      {/* <PickerShow /> */}
+      {/* <NoteScreen /> */}
+      <Testing />
+
+
 
     </View>
   )

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Modal, ScrollView, StyleSheet, Text, View, Alert } from 'react-native';
-import Dialog, { DialogContent } from 'react-native-popup-dialog';
+import Dialog from 'react-native-popup-dialog';
 import OjonSavedScreen from './OjonSavedScreen';
 
 import DialogView from '../dialogView/DialogView';
@@ -94,7 +94,6 @@ const OjonScreen = () => {
         visible={state}
         onTouchOutside={() => setState(false)}
       >
-        {/* <DialogContent> */}
         {
           console.log(ojonFirst),
           ojonFirst ? <DialogOjon setState={setState} addWomenOjon={womenAddOjon} /> :
@@ -104,7 +103,6 @@ const OjonScreen = () => {
         {/* <DialogView setState={setState} addWomenOjon={womenAddOjon} setOjonFirst={setOjonFirst} /> */}
         {/* <DialogOjon setState={setState} addWomenOjon={womenAddOjon} /> */}
 
-        {/* </DialogContent> */}
       </Dialog>
 
 
