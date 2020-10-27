@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-const NoteDialog = () => {
+const NoteDialog = (props) => {
   return (
     <View style={styles.dialogContainer}>
       <Text style={styles.dialogText}>আজ কেমন অনুভব করছেন? </Text>
@@ -12,7 +12,7 @@ const NoteDialog = () => {
 
       <View style={{ flexDirection: 'row', paddingVertical: 20, backgroundColor: 'white', borderColor: 'gray', borderTopWidth: 0.2, marginHorizontal: 10 }}>
         <Text style={{ flex: 2 }}></Text>
-        <Text style={{ flex: 1, textAlign: 'center', color: 'green' }}  > বাতিল </Text>
+        <Text style={{ flex: 1, textAlign: 'center', color: 'green' }} onPress={() => props.setState(false)}  > বাতিল </Text>
         <Text style={{ flex: 1, color: 'green' }}> সংরক্ষণ </Text>
       </View>
 

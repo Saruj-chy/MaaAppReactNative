@@ -31,7 +31,7 @@ const NoteScreen = () => {
         onTouchOutside={() => setState(false)}
 
       >
-        <NoteDialog />
+        <NoteDialog setState={setState} />
       </Dialog>
 
 
