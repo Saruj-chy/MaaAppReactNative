@@ -1,16 +1,20 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import NoteTabView from '../NoteTabView/NoteTabView';
 
 const NoteDialog = (props) => {
+
   return (
     <View style={styles.dialogContainer}>
       <Text style={styles.dialogText}>আজ কেমন অনুভব করছেন? </Text>
       <Text style={{ fontSize: 16, color: 'white', marginHorizontal: 15 }}>October 21, 2020 </Text>
-      <View style={{ backgroundColor: 'white', height: 150 }}>
+      <View style={{ backgroundColor: 'white', height: 200 }}>
+
+        <NoteTabView />
 
       </View>
 
-      <View style={{ flexDirection: 'row', paddingVertical: 20, backgroundColor: 'white', borderColor: 'gray', borderTopWidth: 0.2, marginHorizontal: 10 }}>
+      <View style={{ flexDirection: 'row', paddingVertical: 20, backgroundColor: 'white', borderColor: 'gray', borderTopWidth: 0.3 }} >
         <Text style={{ flex: 2 }}></Text>
         <Text style={{ flex: 1, textAlign: 'center', color: 'green' }} onPress={() => props.setState(false)}  > বাতিল </Text>
         <Text style={{ flex: 1, color: 'green' }}> সংরক্ষণ </Text>

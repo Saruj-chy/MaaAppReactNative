@@ -23,8 +23,8 @@ const App = () => {
       {/* <OjonScreen /> */}
 
 
-      {/* <NoteScreen /> */}
-      <Testing />
+      <NoteScreen />
+      {/* <Testing /> */}
 
 
 
