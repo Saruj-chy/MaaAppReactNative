@@ -8,8 +8,11 @@ import NoteLokkonDetails from '../NoteLokkonDetails/NoteLokkonDetails';
 import NoteDialog from '../NoteDialog/NoteDialog';
 
 
+
+
 const NoteScreen = () => {
   const [state, setState] = useState(false);
+
 
 
   return (

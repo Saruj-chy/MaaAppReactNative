@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import NoteTabView from '../NoteTabView/NoteTabView';
 
+
+
+
 const NoteDialog = (props) => {
+
 
   return (
     <View style={styles.dialogContainer}>
@@ -23,7 +27,6 @@ const NoteDialog = (props) => {
     </View>
   );
 };
-
 
 const styles = StyleSheet.create({
   dialogContainer: {

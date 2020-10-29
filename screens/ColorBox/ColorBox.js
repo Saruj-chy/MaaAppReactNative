@@ -7,26 +7,32 @@ const ColorBox = ({ colorView, colorFunc, lokkonName }) => {
   let number = [];
   const [numb, setNumb] = useState(0);
 
+  //======   for object array sort
+  colorView.sort(function (a, b) {
+    return a.id - b.id;
+  });
+  // console.log(colorView);
+
 
   return (
     <View style={{ flexDirection: 'row', marginTop: 10, marginBottom: 10 }}>
       <View style={{ flex: 1.5, }}>
-        <Text style={{ paddingLeft: 10 }}>{lokkonName.name}</Text>
+        <Text style={{ paddingLeft: 10 }}> {lokkonName.name} </Text>
       </View>
 
       {
         matching = colorView.filter((data) => data.id === lokkonName.id),
-        console.log('match: ', matching.length),
+        //console.log('match: ', matching.length),
 
 
         matching.length >= 1 && matching !== undefined ? <View style={{ flex: 1, flexDirection: 'row' }}>
-          <TouchableOpacity style={{ height: 25, width: 30, backgroundColor: colorView[numb].first, }} onPress={() => {
+          <TouchableOpacity style={{ height: 25, width: 30, backgroundColor: colorView[lokkonName.id].first, }} onPress={() => {
             colorFunc(lokkonName.id, 'blue'); setNumb(lokkonName.id)
           }} />
 
-          <TouchableOpacity style={{ height: 25, width: 30, backgroundColor: colorView[numb].second, marginLeft: 5, marginRight: 5 }} onPress={() => colorFunc(lokkonName.id, 'yellow')} />
+          <TouchableOpacity style={{ height: 25, width: 30, backgroundColor: colorView[lokkonName.id].second, marginLeft: 5, marginRight: 5 }} onPress={() => colorFunc(lokkonName.id, 'yellow')} />
 
-          <TouchableOpacity style={{ height: 25, width: 30, backgroundColor: colorView[numb].third, }} onPress={() => colorFunc(lokkonName.id, 'red')} />
+          <TouchableOpacity style={{ height: 25, width: 30, backgroundColor: colorView[lokkonName.id].third, }} onPress={() => colorFunc(lokkonName.id, 'red')} />
 
         </View> :
 
