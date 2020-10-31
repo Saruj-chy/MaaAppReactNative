@@ -27,7 +27,8 @@ const ColorBox = ({ colorView, colorFunc, lokkonName }) => {
 
 
 
-        matching.length >= 1 && matching !== undefined ? <View style={{ flex: 1, flexDirection: 'row' }}>
+        matching.length >= 1 && matching !== undefined ? 
+        <View style={{ flex: 1, flexDirection: 'row' }}>
           <TouchableOpacity style={{ height: 25, width: 30, backgroundColor: colorView[lokkonName.id].first, }} onPress={() => {
             colorFunc(lokkonName.id, 'blue');
           }} />
@@ -36,7 +37,7 @@ const ColorBox = ({ colorView, colorFunc, lokkonName }) => {
 
           <TouchableOpacity style={{ height: 25, width: 30, backgroundColor: colorView[lokkonName.id].third, }} onPress={() => { colorFunc(lokkonName.id, 'red'); }} />
 
-        </View> :
+        </View>          :
 
           <View style={{ flex: 1, flexDirection: 'row' }}>
             <TouchableOpacity style={{ height: 25, width: 30, backgroundColor: 'gray', }} onPress={() => {

@@ -16,9 +16,31 @@ const LokkonFragment = ({ ViewColor, setViewColor }) => {
 
 
   const ColorFunction = (id, color) => {
-    let matchColor;
+    let matchColor, selectedColor;
 
     matchColor = ViewColor.filter(color => color.id !== id);
+    selectedColor = ViewColor.find(color => color.id === id);
+    console.log(selectedColor, selectedColor.first, color);
+    if(selectedColor.first === color ) {
+      switch(color){
+        case 'blue':
+        color = 'gray';
+        break;
+        case 'yellow':
+        color = 'blue';
+        break;
+        case 'red':
+        color = 'yellow';
+        break;
+        default:
+        color = 'gray';
+        break;
+      }
+    }
+    else{
+      color = color;
+    }
+
 
     switch (color) {
       case 'blue':
@@ -28,8 +50,6 @@ const LokkonFragment = ({ ViewColor, setViewColor }) => {
           second: 'gray',
           third: 'gray'
         }]);
-
-
 
         break;
       case 'yellow':
@@ -60,13 +80,16 @@ const LokkonFragment = ({ ViewColor, setViewColor }) => {
           third: 'gray'
         }]);
 
+      console.log(color) ;
+
+
 
         break;
 
     }
 
   }
-
+ 
   return (
     <View>
       <View style={{ flexDirection: 'row', backgroundColor: '#ad1457' }}>
