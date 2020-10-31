@@ -25,6 +25,7 @@ const App = () => {
 
 
       <NoteScreen />
+
       {/* <Testing /> */}
       {/* 
       <NoteTabView /> */}

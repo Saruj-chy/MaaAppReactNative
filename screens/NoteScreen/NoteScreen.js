@@ -14,7 +14,6 @@ const NoteScreen = () => {
   const [state, setState] = useState(false);
 
 
-
   return (
     <View style={{ backgroundColor: 'white' }}>
       <View style={styles.appbarView}>

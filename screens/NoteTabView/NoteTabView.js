@@ -6,6 +6,7 @@ import NoteFragment from '../Fragment/NoteFragment';
 import LokkonFragment from '../Fragment/LokkonFragment';
 
 import { ColorArray } from '../Constant/Constant';
+import NoteDialog from '../NoteDialog/NoteDialog';
 
 
 const Tab = createMaterialTopTabNavigator();
@@ -24,13 +25,17 @@ const NoteTabView = () => {
     );
   };
   const LokkonFragmentScreen = () => {
-    const [viewColor, setViewColor] = useState(ColorArray);
+    let [viewColor, setViewColor] = useState(ColorArray);
+    // console.log(viewColor);
     return (
       <View >
         <LokkonFragment ViewColor={viewColor} setViewColor={setViewColor} />
+
       </View>
     );
   }
+
+  // console.log(viewColor);
 
   return (
     <>
