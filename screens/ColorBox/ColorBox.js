@@ -21,13 +21,7 @@ const ColorBox = ({ colorView, colorFunc, lokkonName }) => {
       </View>
 
       {
-        matching = colorView.filter((data) => data.id === lokkonName.id),
-        // console.log('match: ', matching),
 
-
-
-
-        matching.length >= 1 && matching !== undefined ? 
         <View style={{ flex: 1, flexDirection: 'row' }}>
           <TouchableOpacity style={{ height: 25, width: 30, backgroundColor: colorView[lokkonName.id].first, }} onPress={() => {
             colorFunc(lokkonName.id, 'blue');
@@ -37,21 +31,7 @@ const ColorBox = ({ colorView, colorFunc, lokkonName }) => {
 
           <TouchableOpacity style={{ height: 25, width: 30, backgroundColor: colorView[lokkonName.id].third, }} onPress={() => { colorFunc(lokkonName.id, 'red'); }} />
 
-        </View>          :
-
-          <View style={{ flex: 1, flexDirection: 'row' }}>
-            <TouchableOpacity style={{ height: 25, width: 30, backgroundColor: 'gray', }} onPress={() => {
-              colorFunc(lokkonName.id, 'blue');
-            }} />
-
-            <TouchableOpacity style={{ height: 25, width: 30, backgroundColor: 'gray', marginLeft: 5, marginRight: 5 }} onPress={() => { colorFunc(lokkonName.id, 'yellow'); }} />
-
-            <TouchableOpacity style={{ height: 25, width: 30, backgroundColor: 'gray', }} onPress={() => { colorFunc(lokkonName.id, 'red'); }} />
-
-          </View>
-
-
-
+        </View>
 
       }
 
