@@ -8,6 +8,16 @@ export const AllLokkonName = [{ id: 0, name: 'পেটে ব্যথা' }, {
 { id: 27, name: 'তরল নির্গমন' }, { id: 28, name: 'ব্রণ' }, { id: 29, name: 'রাত্রীকালীন ঘাম' }];
 
 
+export const ColorClickCount = [{ id: 0, count: 0 }, { id: 1, count: 0 }, { id: 2, count: 0 },
+{ id: 3, count: 0 }, { id: 4, count: 0 }, { id: 5, count: 0 }, { id: 6, count: 0 },
+{ id: 7, count: 0 }, { id: 8, count: 0 }, { id: 9, count: 0 }, { id: 10, count: 0 },
+{ id: 11, count: 0 }, { id: 12, count: 0 }, { id: 13, count: 0 }, { id: 14, count: 0 },
+{ id: 15, count: 0 }, { id: 16, count: 0 }, { id: 17, count: 0 }, { id: 18, count: 0 },
+{ id: 19, count: 0 }, { id: 20, count: 0 }, { id: 21, count: 0 }, { id: 22, count: 0 },
+{ id: 23, count: 0 }, { id: 24, count: 0 }, { id: 25, count: 0 }, { id: 26, count: 0 },
+{ id: 27, count: 0 }, { id: 28, count: 0 }, { id: 29, count: 0 }];
+
+
 
 export const ColorArray = [{
   "first": "gray",

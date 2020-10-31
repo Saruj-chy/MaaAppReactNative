@@ -5,7 +5,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import NoteFragment from '../Fragment/NoteFragment';
 import LokkonFragment from '../Fragment/LokkonFragment';
 
-import { ColorArray } from '../Constant/Constant';
+import { ColorArray, ColorClickCount } from '../Constant/Constant';
 import NoteDialog from '../NoteDialog/NoteDialog';
 
 
@@ -26,10 +26,11 @@ const NoteTabView = () => {
   };
   const LokkonFragmentScreen = () => {
     let [viewColor, setViewColor] = useState(ColorArray);
+    let [countClickColor, setCountClickColor] = useState(ColorClickCount);
     // console.log(viewColor);
     return (
       <View >
-        <LokkonFragment ViewColor={viewColor} setViewColor={setViewColor} />
+        <LokkonFragment ViewColor={viewColor} setViewColor={setViewColor} CountClickColor={countClickColor} SetCountClickColor={setCountClickColor} />
 
       </View>
     );

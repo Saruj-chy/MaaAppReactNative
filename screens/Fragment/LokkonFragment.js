@@ -7,7 +7,7 @@ import { AllLokkonName } from '../Constant/Constant';
 
 
 
-const LokkonFragment = ({ ViewColor, setViewColor }) => {
+const LokkonFragment = ({ ViewColor, setViewColor, CountClickColor, SetCountClickColor }) => {
 
   const LokkonName = AllLokkonName;
 
@@ -20,24 +20,24 @@ const LokkonFragment = ({ ViewColor, setViewColor }) => {
 
     matchColor = ViewColor.filter(color => color.id !== id);
     selectedColor = ViewColor.find(color => color.id === id);
-    console.log(selectedColor, selectedColor.first, color);
-    if(selectedColor.first === color ) {
-      switch(color){
+    // console.log(selectedColor, selectedColor.first, color);
+    if (selectedColor.first === color) {
+      switch (color) {
         case 'blue':
-        color = 'gray';
-        break;
+          color = 'gray';
+          break;
         case 'yellow':
-        color = 'blue';
-        break;
+          color = 'blue';
+          break;
         case 'red':
-        color = 'yellow';
-        break;
+          color = 'yellow';
+          break;
         default:
-        color = 'gray';
-        break;
+          color = 'gray';
+          break;
       }
     }
-    else{
+    else {
       color = color;
     }
 
@@ -80,7 +80,7 @@ const LokkonFragment = ({ ViewColor, setViewColor }) => {
           third: 'gray'
         }]);
 
-      console.log(color) ;
+        console.log(color);
 
 
 
@@ -89,7 +89,44 @@ const LokkonFragment = ({ ViewColor, setViewColor }) => {
     }
 
   }
- 
+
+  const countFunction = id => {
+    let clickCount, previousClickCount;
+    let setClickCount;
+    let color;
+
+    previousClickCount = CountClickColor.filter(color => color.id !== id);
+    clickCount = CountClickColor.find(color => color.id === id);
+    setClickCount = {
+      id: id, count: clickCount.count + 1
+    };
+    SetCountClickColor([...previousClickCount, setClickCount]);
+
+    //======   for object array sort
+    CountClickColor.sort(function (a, b) {
+      return a.id - b.id;
+    });
+
+    console.log(CountClickColor);
+
+    if (clickCount.count % 4 === 0) {
+      color = 'blue';
+    }
+    if (clickCount.count % 4 === 1) {
+      color = 'yellow';
+    }
+    if (clickCount.count % 4 === 2) {
+      color = 'red';
+    }
+    if (clickCount.count % 4 === 3) {
+      color = 'gray';
+    }
+    console.log(color);
+
+    ColorFunction(id, color);
+
+  }
+
   return (
     <View>
       <View style={{ flexDirection: 'row', backgroundColor: '#ad1457' }}>
@@ -107,7 +144,7 @@ const LokkonFragment = ({ ViewColor, setViewColor }) => {
       </View>
       <ScrollView>
         {
-          LokkonName.map(data => <ColorBox colorView={ViewColor} colorFunc={ColorFunction} lokkonName={data} key={data.id} />)
+          LokkonName.map(data => <ColorBox colorView={ViewColor} colorFunc={ColorFunction} countFunc={countFunction} lokkonName={data} key={data.id} />)
         }
 
       </ScrollView>
