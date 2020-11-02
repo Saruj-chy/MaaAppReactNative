@@ -2,16 +2,16 @@ import React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import NoteTabView from '../NoteTabView/NoteTabView';
 import { databaseName } from '../Constant/Constant';
-
-
-
 import { openDatabase } from 'react-native-sqlite-storage';
 
 var db = openDatabase({ name: databaseName });
+// var SharedPreferences = require('react-native-shared-preferences');
 
 
 const NoteDialog = ({ CurrentDate, SetState }) => {
 
+
+  const [loadData, setLoadData] = useState([]);
 
   useEffect(() => {
     db.transaction((tx) => {
@@ -47,6 +47,49 @@ const NoteDialog = ({ CurrentDate, SetState }) => {
         }
       );
     });
+
+
+
+
+
+
+
+
+  }
+
+  const SavedTableData = () => {
+
+    console.log("submit here ");
+    var note = ' ';
+    alert('Submit');
+
+    // SharedPreferences.getItem("key", function (value) {
+    //   note = value;
+    //   if (note === undefined) {
+    //     note = 'hello';
+    //     // console.log(note)
+    //   }
+    //   console.log('LokkonFragmentvalue: ', value, note);
+    // });
+
+    // console.log('LokkonFragmentvalue: ', note);
+
+    // db.transaction((tx) => {
+    //   tx.executeSql(
+    //     'INSERT INTO note_lokkon (id, first, second, third, date, note) VALUES (?,?,?,?,?,?)',
+    //     ['id', 'first', 'second', 'third', CurrentDate, 'note'],
+    //     (tx, results) => {
+    //       console.log('Results', results.rowsAffected);
+    //     }
+    //   );
+    // });
+
+
+
+
+
+
+
   }
 
 
@@ -66,7 +109,7 @@ const NoteDialog = ({ CurrentDate, SetState }) => {
       <View style={{ flexDirection: 'row', paddingVertical: 20, backgroundColor: 'white', borderColor: 'gray', borderTopWidth: 0.3 }} >
         <Text style={{ flex: 2 }}></Text>
         <Text style={{ flex: 1, textAlign: 'center', color: 'green' }} onPress={() => { console.log('hello'); DeleteTableData(); SetState(false); }}> বাতিল </Text>
-        <Text style={{ flex: 1, color: 'green' }} onPress={() => { console.log('submit: '); alert('Submit') }}> সংরক্ষণ </Text>
+        <Text style={{ flex: 1, color: 'green' }} onPress={() => { console.log('submit: '); SavedTableData(); }}> সংরক্ষণ </Text>
       </View>
 
     </View>

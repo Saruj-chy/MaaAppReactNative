@@ -4,7 +4,7 @@ import { openDatabase } from 'react-native-sqlite-storage';
 
 var db = openDatabase({ name: 'MaaDatabase1.db' });
 
-export const databaseName = 'MaaDatabase22.db';
+export const databaseName = 'MaaDatabase26.db';
 
 export const AllLokkonName = [{ id: 0, name: 'পেটে ব্যথা' }, { id: 1, name: 'ক্ষুধামন্দা' }, { id: 2, name: 'পিঠে ব্যথা' },
 { id: 3, name: 'গ্যাস্ট্রিক' }, { id: 4, name: 'শরীর ব্যথা' }, { id: 5, name: 'স্তন ব্যথা' }, { id: 6, name: 'কোষ্ট্যকাঠ্যিন্য' },

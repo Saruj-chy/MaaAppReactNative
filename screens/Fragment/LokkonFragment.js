@@ -4,15 +4,15 @@ import { Text, View, TouchableOpacity, Alert, ScrollView } from 'react-native';
 import ColorBox from '../ColorBox/ColorBox';
 import ColorBox2 from '../ColorBox/ColorBox2';
 import { AllLokkonName, databaseName } from '../Constant/Constant';
-
 import { openDatabase } from 'react-native-sqlite-storage';
 
-var db = openDatabase({ name: databaseName });
 
+
+var db = openDatabase({ name: databaseName });
+var SharedPreferences = require('react-native-shared-preferences');
 
 
 const LokkonFragment = ({ ViewColor, setViewColor, CountClickColor, SetCountClickColor, CurrentDateNoteTabView }) => {
-
 
 
   const LokkonName = AllLokkonName;
@@ -32,7 +32,7 @@ const LokkonFragment = ({ ViewColor, setViewColor, CountClickColor, SetCountClic
             temp.push(results.rows.item(i));
             // console.log(results.rows.item(i))
           }
-          console.log('temp date: ', temp);
+          // console.log('temp date: ', temp);
 
           setFlatListItems(temp);
         }
@@ -40,53 +40,71 @@ const LokkonFragment = ({ ViewColor, setViewColor, CountClickColor, SetCountClic
     });
   }, []);
 
+  const dataLoad = () => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        'SELECT * FROM note_lokkon ',
+        [],
+        (tx, results) => {
+          var temp = [];
+          for (let i = 0; i < results.rows.length; ++i) {
+            temp.push(results.rows.item(i));
+            // console.log(results.rows.item(i))
+          }
+          // console.log('temp date: ', temp);
+
+          // setFlatListItems(temp);
+        }
+      );
+    });
+  }
+
 
 
 
   const savingDatabase = (id, first, second, third, count) => {
-    // console.log('database: ', id, first, second, third, count);
-    // console.log('CheckData: ', CurrentDateNoteTabView);
-    var temp = [];
 
-    // const item = flatListItems.filter(item => item.id === id);
-    // const tempItem = temp.filter(item => item.id === id);
-    // console.log(id, '     ', item.length, '     ', tempItem.length);
+    var note;
+    // console.log('flatListItems:  ', flatListItems);
+    // dataLoad();
+
+
+
+    SharedPreferences.getItem("key", function (value) {
+      note = value;
+      if (note === undefined) {
+        note = 'hello';
+        // console.log(note)
+      }
+      // console.log('LokkonFragmentvalue: ', value, note);
+    });
+
 
     if (count === 0) {
-      console.log('new:====   ');
-      // () => checkingData(id);
-
-      // const CheckData = checkData.filter(item => item.note_id === id);
-      // console.log('CheckData: ', CurrentDateNoteTabView);
-      // console.log('flatListItems: ', flatListItems);
-      // checkData;
+      // console.log('new:====   ', note);
 
       db.transaction(function (tx) {
         tx.executeSql(
-          'INSERT INTO note_lokkon (id, first, second, third, date) VALUES (?,?,?,?,?)',
-          [id, first, second, third, CurrentDateNoteTabView.date],
+          'INSERT INTO note_lokkon (id, first, second, third, date, note) VALUES (?,?,?,?,?,?)',
+          [id, first, second, third, CurrentDateNoteTabView.date, note],
           (tx, results) => {
-            // console.log('Results', results.rowsAffected);
+            console.log('Results', results.rowsAffected);
           }
         );
       });
     }
     else {
-      console.log('again...........');
+      // console.log('again...........', CurrentDateNoteTabView.date, note);
       db.transaction(function (tx) {
         tx.executeSql(
-          'UPDATE note_lokkon set first=?, second=? , third=? where note_id=?',
-          [first, second, third, id],
+          'UPDATE note_lokkon set first=?, second=? , third=?, date=? , note=? where id=?',
+          [first, second, third, CurrentDateNoteTabView.date, note, id],
           (tx, results) => {
             // console.log('Results', results.rowsAffected);
           }
         );
       });
     }
-
-    // console.log('database:  ', flatListItems.length);
-
-
   }
 
 
