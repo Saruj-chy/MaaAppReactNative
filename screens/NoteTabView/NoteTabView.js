@@ -13,9 +13,9 @@ const Tab = createMaterialTopTabNavigator();
 
 
 
-const NoteTabView = () => {
+const NoteTabView = ({ CurrentDateNoteDialog }) => {
 
-
+  // console.log('CurrentDateNoteDialog:  ', CurrentDateNoteDialog);
 
   const NoteFragmentScreen = () => {
     return (
@@ -30,7 +30,7 @@ const NoteTabView = () => {
     // console.log(viewColor);
     return (
       <View >
-        <LokkonFragment ViewColor={viewColor} setViewColor={setViewColor} CountClickColor={countClickColor} SetCountClickColor={setCountClickColor} />
+        <LokkonFragment ViewColor={viewColor} setViewColor={setViewColor} CountClickColor={countClickColor} SetCountClickColor={setCountClickColor} CurrentDateNoteTabView={CurrentDateNoteDialog} />
 
       </View>
     );

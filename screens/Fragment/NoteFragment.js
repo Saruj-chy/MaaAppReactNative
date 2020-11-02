@@ -8,7 +8,7 @@ const NoteFragment = () => {
       <TextInput
         placeholder="Enter Your Note..."
         style={{ borderColor: '#ad1457', borderBottomWidth: 2, margin: 20, fontSize: 18 }}
-        autoFocus={true}
+        // autoFocus={true}
         blurOnSubmit={false}
 
       />

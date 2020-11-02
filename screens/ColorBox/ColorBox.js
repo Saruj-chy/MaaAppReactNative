@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 
-const ColorBox = ({ colorView, colorFunc, countFunc, lokkonName }) => {
-  let matching, matching2, i = 0;
-  const [boxColor, setBoxColor] = useState([]);
+
+
+const ColorBox = ({ colorView, colorFunc, countFunc, lokkonName, SavingDatabase }) => {
 
   //======   for object array sort
   colorView.sort(function (a, b) {
@@ -15,7 +15,7 @@ const ColorBox = ({ colorView, colorFunc, countFunc, lokkonName }) => {
 
 
   return (
-    <TouchableOpacity onPress={() => { countFunc(lokkonName.id) }}>
+    <TouchableOpacity onPress={() => { countFunc(lokkonName.id); }}>
       <View style={{ flexDirection: 'row', paddingTop: 10, paddingBottom: 10, }}>
         <View style={{ flex: 1.5, }}>
           <Text style={{ paddingLeft: 10 }} disabled={true}> {lokkonName.name}   </Text>

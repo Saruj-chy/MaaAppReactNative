@@ -1,28 +1,72 @@
-import React, { useContext, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import NoteTabView from '../NoteTabView/NoteTabView';
+import { databaseName } from '../Constant/Constant';
 
 
 
+import { openDatabase } from 'react-native-sqlite-storage';
 
-const NoteDialog = (props) => {
+var db = openDatabase({ name: databaseName });
+
+
+const NoteDialog = ({ CurrentDate, SetState }) => {
+
+
+  useEffect(() => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        'SELECT * FROM note_lokkon ',
+        [],
+        (tx, results) => {
+          var temp = [];
+          for (let i = 0; i < results.rows.length; ++i) {
+            temp.push(results.rows.item(i));
+          }
+          console.log('table date: ', temp);
+
+        }
+      );
+    });
+  }, []);
+
+
+
+  const DeleteTableData = () => {
+
+
+    // alert('delete')
+
+    db.transaction((tx) => {
+      tx.executeSql(
+        'DELETE FROM  note_lokkon where date=?',
+        [CurrentDate.date],
+        (tx, results) => {
+          console.log('Results', results.rowsAffected);
+
+        }
+      );
+    });
+  }
+
+
 
 
 
   return (
     <View style={styles.dialogContainer}>
       <Text style={styles.dialogText}>আজ কেমন অনুভব করছেন? </Text>
-      <Text style={{ fontSize: 16, color: 'white', marginHorizontal: 15 }}>October 21, 2020 </Text>
+      <Text style={{ fontSize: 16, color: 'white', marginHorizontal: 15 }}>{CurrentDate.month} {CurrentDate.day}, {CurrentDate.year} </Text>
       <View style={{ backgroundColor: 'white', height: 250 }}>
 
-        <NoteTabView />
+        <NoteTabView CurrentDateNoteDialog={CurrentDate} />
 
       </View>
 
       <View style={{ flexDirection: 'row', paddingVertical: 20, backgroundColor: 'white', borderColor: 'gray', borderTopWidth: 0.3 }} >
         <Text style={{ flex: 2 }}></Text>
-        <Text style={{ flex: 1, textAlign: 'center', color: 'green' }} onPress={() => props.setState(false)}  > বাতিল </Text>
-        <Text style={{ flex: 1, color: 'green' }} > সংরক্ষণ </Text>
+        <Text style={{ flex: 1, textAlign: 'center', color: 'green' }} onPress={() => { console.log('hello'); DeleteTableData(); SetState(false); }}> বাতিল </Text>
+        <Text style={{ flex: 1, color: 'green' }} onPress={() => { console.log('submit: '); alert('Submit') }}> সংরক্ষণ </Text>
       </View>
 
     </View>

@@ -15,7 +15,7 @@ const NativeCalender = (props) => {
   const onDateChange = (date) => {
 
     console.log('object', date, 'START_DATE');
-    const yearDate = date._i.day + '-' + date._i.month + '-' + date._i.year;
+    const yearDate = date._i.day + '-' + parseInt(date._i.month + 1) + '-' + date._i.year;
     console.log(yearDate);
     setDate(yearDate);
   }
