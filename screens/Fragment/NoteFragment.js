@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, TextInput, View } from 'react-native';
+import { Text, TextInput, View, Button } from 'react-native';
 
 var SharedPreferences = require('react-native-shared-preferences');
 
@@ -7,10 +7,6 @@ var SharedPreferences = require('react-native-shared-preferences');
 const NoteFragment = () => {
   const [value, setValue] = React.useState('Enter Your Note...');
 
-  const NoteSaved = text => {
-    setValue(text);
-
-  }
   SharedPreferences.setItem("key", value);
   console.log(value);
 
@@ -22,6 +18,10 @@ const NoteFragment = () => {
         onChangeText={text => setValue(text)}
       // autoFocus={true}
       // blurOnSubmit={false}
+      />
+
+      <Button
+      title="Enter"
       />
 
     </View>

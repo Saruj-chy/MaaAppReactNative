@@ -18,9 +18,11 @@ const NoteTabView = ({ CurrentDateNoteDialog }) => {
   // console.log('CurrentDateNoteDialog:  ', CurrentDateNoteDialog);
 
   const NoteFragmentScreen = () => {
+      // const [value, setValue] = React.useState('Enter Your Note...');
+
     return (
       <View style={{ flex: 1, justifyContent: 'center', }}>
-        <NoteFragment />
+        <NoteFragment  />
       </View>
     );
   };
