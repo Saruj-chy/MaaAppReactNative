@@ -1,10 +1,16 @@
 import React, { useState } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 
+import { ColorArray, ColorClickCount, databaseName, AllLokkonName } from '../Constant/Constant';
+
+import { openDatabase } from 'react-native-sqlite-storage';
+var db = openDatabase({ name: databaseName });
+
 
 
 const ColorBox = ({ colorView, colorFunc, countFunc, lokkonName, SavingDatabase }) => {
 
+  const [boxColor, setBoxColor] = useState([]);
   //======   for object array sort
   colorView.sort(function (a, b) {
     return a.id - b.id;
@@ -12,6 +18,25 @@ const ColorBox = ({ colorView, colorFunc, countFunc, lokkonName, SavingDatabase 
   // console.log(colorView);
 
 
+  //================================================================
+  // useEffect(() => {
+  //   db.transaction((tx) => {
+  //     tx.executeSql(
+  //       'SELECT * FROM note_lokkon ',
+  //       [],
+  //       (tx, results) => {
+  //         var temp = [];
+  //         for (let i = 0; i < results.rows.length; ++i) {
+  //           temp.push(results.rows.item(i));
+  //         }
+  //         console.log('table note_lokkon box_color   ========: ', temp.length);
+  //         setBoxColor([...boxColor, temp]);
+
+  //       }
+  //     );
+  //   });
+  // }, []);
+  //----------------------------------------------------------------------------
 
 
   return (

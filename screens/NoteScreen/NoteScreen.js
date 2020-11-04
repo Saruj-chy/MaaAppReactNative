@@ -6,7 +6,7 @@ import CalenderPicker from '../DatePicker/CalenderPicker';
 import NativeCalender from '../DatePicker/NativeCalender';
 import NoteLokkonDetails from '../NoteLokkonDetails/NoteLokkonDetails';
 import NoteDialog from '../NoteDialog/NoteDialog';
-import { databaseName } from '../Constant/Constant';
+import { databaseName, ColorArray } from '../Constant/Constant';
 
 import { YellowBox } from 'react-native';
 import _ from 'lodash';
@@ -18,7 +18,6 @@ var db = openDatabase({ name: databaseName });
 
 const NoteScreen = () => {
   const [state, setState] = useState(false);
-  const [flatListItems, setFlatListItems] = useState([]);
   const [currentDate, setCurrentDate] = useState({ date: '', month: '', day: '', year: '' });
 
   const monthNames = ["January", "February", "March", "April", "May", "June",
@@ -37,8 +36,8 @@ const NoteScreen = () => {
             temp.push(results.rows.item(i));
             // console.log(results.rows.item(i))
           }
+          // console.log('object      ', temp.length)
 
-          setFlatListItems(temp);
         }
       );
     });
@@ -61,6 +60,24 @@ const NoteScreen = () => {
       };
       setCurrentDate(currenCalenderDate);
 
+      //=============================  data save in note lokkon from note_lokhon_table  ==================
+      ColorArray.map(item => {
+
+        db.transaction(function (tx) {
+          // console.log('...........', item.id, item.first, item.second, item.third, date);
+          tx.executeSql(
+            'INSERT INTO note_lokkon (id, first, second, third, date) VALUES (?,?,?,?,?)',
+            [item.id, item.first, item.second, item.third, date],
+            (tx, results) => {
+              // console.log('Results  note_lokkon ', results.rowsAffected);
+
+            }
+          );
+        });
+
+
+      });
+
     }
   }
 
@@ -73,11 +90,7 @@ const NoteScreen = () => {
 
       </View>
       {/* <CalenderPicker /> */}
-      {
-        console.log('hello'),
-        console.log(flatListItems)
 
-      }
 
       <ScrollView>
         <NativeCalender />

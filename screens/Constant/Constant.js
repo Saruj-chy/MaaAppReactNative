@@ -1,10 +1,11 @@
 import { useEffect } from "react";
+export const databaseName = 'MaaDatabase72.db';
 
 import { openDatabase } from 'react-native-sqlite-storage';
+var db = openDatabase({ name: databaseName });
 
-var db = openDatabase({ name: 'MaaDatabase1.db' });
 
-export const databaseName = 'MaaDatabase26.db';
+
 
 export const AllLokkonName = [{ id: 0, name: 'পেটে ব্যথা' }, { id: 1, name: 'ক্ষুধামন্দা' }, { id: 2, name: 'পিঠে ব্যথা' },
 { id: 3, name: 'গ্যাস্ট্রিক' }, { id: 4, name: 'শরীর ব্যথা' }, { id: 5, name: 'স্তন ব্যথা' }, { id: 6, name: 'কোষ্ট্যকাঠ্যিন্য' },
@@ -24,6 +25,27 @@ export const ColorClickCount = [{ id: 0, count: 0 }, { id: 1, count: 0 }, { id: 
 { id: 19, count: 0 }, { id: 20, count: 0 }, { id: 21, count: 0 }, { id: 22, count: 0 },
 { id: 23, count: 0 }, { id: 24, count: 0 }, { id: 25, count: 0 }, { id: 26, count: 0 },
 { id: 27, count: 0 }, { id: 28, count: 0 }, { id: 29, count: 0 }];
+
+// const boxColorView = () => {
+//   useEffect(() => {
+//     db.transaction((tx) => {
+//       tx.executeSql(
+//         'SELECT * FROM note_lokkon ',
+//         [],
+//         (tx, results) => {
+//           var temp = [];
+//           for (let i = 0; i < results.rows.length; ++i) {
+//             temp.push(results.rows.item(i));
+//           }
+//           // console.log('table note_lokkon box_color   ========: ', temp.length);
+//           // setBoxColor([...boxColor, temp]);
+//           return temp;
+
+//         }
+//       );
+//     });
+//   }, []);
+// }
 
 
 
