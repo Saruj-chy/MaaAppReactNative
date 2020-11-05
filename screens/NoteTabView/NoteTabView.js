@@ -4,44 +4,33 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import NoteFragment from '../Fragment/NoteFragment';
 import LokkonFragment from '../Fragment/LokkonFragment';
-
 import { ColorArray, ColorClickCount, databaseName } from '../Constant/Constant';
-
 import { openDatabase } from 'react-native-sqlite-storage';
 var SharedPreferences = require('react-native-shared-preferences');
 
-
 var db = openDatabase({ name: databaseName });
-
-
 const Tab = createMaterialTopTabNavigator();
-
-
 
 const NoteTabView = ({ CurrentDateNoteDialog, SetState }) => {
 
-
   let noteValue;
 
+  // useEffect(() => {
+  //   db.transaction((tx) => {
+  //     tx.executeSql(
+  //       'SELECT note_lokhon_table.first, note_lokhon_table.second, note_lokhon_table.third, note_save.note, note_lokhon_table.date FROM note_lokhon_table INNER JOIN note_save ON note_lokhon_table.date = note_save.date',
+  //       [],
+  //       (tx, results) => {
+  //         var temp = [];
+  //         for (let i = 0; i < results.rows.length; ++i) {
+  //           temp.push(results.rows.item(i));
+  //         }
+  //         // console.log('note_lokhon_table: ', temp);
 
-
-
-  useEffect(() => {
-    db.transaction((tx) => {
-      tx.executeSql(
-        'SELECT note_lokhon_table.first, note_lokhon_table.second, note_lokhon_table.third, note_save.note, note_lokhon_table.date FROM note_lokhon_table INNER JOIN note_save ON note_lokhon_table.date = note_save.date',
-        [],
-        (tx, results) => {
-          var temp = [];
-          for (let i = 0; i < results.rows.length; ++i) {
-            temp.push(results.rows.item(i));
-          }
-          // console.log('note_lokhon_table: ', temp);
-
-        }
-      );
-    });
-  }, []);
+  //       }
+  //     );
+  //   });
+  // }, []);
 
 
   const DeleteTableData = () => {
@@ -80,6 +69,10 @@ const NoteTabView = ({ CurrentDateNoteDialog, SetState }) => {
           var temp = [];
           for (let i = 0; i < results.rows.length; ++i) {
             temp.push(results.rows.item(i));
+          }
+          console.log('noteValue:  ', noteValue);
+          if (noteValue === undefined) {
+            noteValue = results.rows.item(i).note;
           }
 
 
@@ -142,7 +135,6 @@ const NoteTabView = ({ CurrentDateNoteDialog, SetState }) => {
 
           temp1.map(item => {
             db.transaction(function (tx) {
-              console.log('NoteTabView insert note_lokkon_change_color: ', item.count);
               tx.executeSql(
                 'INSERT INTO note_lokkon_change_color (id, first, second, third, count, date) VALUES (?,?,?,?,?,?)',
                 [item.id, item.first, item.second, item.third, item.count, CurrentDateNoteDialog.date],
@@ -160,14 +152,13 @@ const NoteTabView = ({ CurrentDateNoteDialog, SetState }) => {
       );
     });
 
-
     //------------------------------          note_lokkon theke note_lokhon_change_color data pass   --------------------------
 
 
 
 
 
-    //========================    not_lokkon   theke    note_lokhon_table e data pass ==========================
+    //========================    note_lokkon   theke    note_lokhon_table e data pass ==========================
 
     db.transaction((tx) => {
       tx.executeSql(
@@ -224,69 +215,11 @@ const NoteTabView = ({ CurrentDateNoteDialog, SetState }) => {
             });
           });
           //------------------------  insert data in note lokhon table ------------------------------
-
-
-
-
-          // console.log('temp date: ', temp);
-
-          setFlatListItems(temp);
         }
       );
     });
     //----------------------   note_lokkon theke note_lokhon_table e data pass -----------------------------------
 
-
-
-
-    //=======================     count table save  =================
-
-    db.transaction((tx) => {
-      tx.executeSql(
-        'SELECT * FROM count_table_previous WHERE date=? ',
-        [CurrentDateNoteDialog.date],
-        (tx, results) => {
-          var temp = [];
-          for (let i = 0; i < results.rows.length; ++i) {
-            temp.push(results.rows.item(i));
-            // console.log(results.rows.item(i))
-          }
-
-          //=====  insert data =====
-          temp.map(item => {
-            db.transaction(function (tx) {
-              db.transaction((tx) => {
-                // console.log('...........', item.id, item.count, CurrentDateNoteDialog.date);
-                tx.executeSql(
-                  'INSERT INTO count_table_final(id, count, date) VALUES (?,?,?)',
-                  [item.id, item.count, CurrentDateNoteDialog.date],
-                  (tx, results) => {
-                    // console.log('Results count_table_final', results.rowsAffected);
-                  }
-                );
-              });
-            });
-
-          });
-
-          //============= delete data
-          db.transaction((tx) => {
-            console.log('yes count delete done');
-            tx.executeSql(
-              'DELETE FROM  count_table_previous where date=?',
-              [CurrentDateNoteDialog.date],
-              (tx, results) => {
-                // console.log('Results', results.rowsAffected);
-              }
-            );
-          });
-
-          setFlatListItems(temp);
-        }
-      );
-    });
-
-    //------------------------------  count table save   --------------------------------------
 
 
   }

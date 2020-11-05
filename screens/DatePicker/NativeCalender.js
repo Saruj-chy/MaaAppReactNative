@@ -6,7 +6,7 @@ import {
 } from 'react-native';
 import CalendarPicker from 'react-native-calendar-picker';
 
-const NativeCalender = (props) => {
+const NativeCalender = ({ LokhonTableData }) => {
   const [date, setDate] = useState('');
 
   const minDate = new Date(); // Today
@@ -14,10 +14,14 @@ const NativeCalender = (props) => {
 
   const onDateChange = (date) => {
 
-    console.log('object', date, 'START_DATE');
+    // console.log('object', date, 'START_DATE');
     const yearDate = date._i.day + '-' + parseInt(date._i.month + 1) + '-' + date._i.year;
     console.log(yearDate);
     setDate(yearDate);
+    // console.log('yearDate:  ', yearDate);
+
+    LokhonTableData(yearDate);
+
   }
 
 

@@ -1,22 +1,44 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Pressable } from 'react-native';
 
-const NoteLokkonDetails = () => {
+const NoteLokkonDetails = ({ NoteLokkonData, NoteView, DialogPressable }) => {
+
+  const lokkonDetails = (item, index) => {
+    // console.log('index : ', index);
+    const numb = ['১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯', '১০', '১১', '১২', '১৩', '১৪', '১৫', '১৬', '১৭', '১৮', '১৯', '২০', '২১', '২২', '২৩', '২৪', '২৫', '২৬', '২৭', '২৮', '২৯', '৩০']
+    return (
+      <View>
+        <Text style={styles.textValueStyle}>  {numb[index]}. {item.name} : {item.first} </Text>
+      </View>
+    )
+  }
   return (
     <View style={{ flexDirection: 'row', marginLeft: 10, marginRight: 10, }}>
 
-      <View style={styles.itemStyle}>
-        <Text style={styles.textHeadingStyle}>নোট</Text>
-        <Text style={styles.textValueStyle}>তারিখঃ 19-10-2020 </Text>
-        <Text style={{ color: 'white', paddingBottom: 5 }}>কোন নোট পাওয়া যায় নি </Text>
+      <Pressable style={styles.itemStyle} onPress={() => DialogPressable(1)}>
+        <View >
+          <Text style={styles.textHeadingStyle}>নোট</Text>
+          <Text style={styles.textValueStyle}>তারিখঃ   {NoteView.date} </Text>
+          <Text style={{ color: 'white', paddingBottom: 5 }}> {NoteView.note}</Text>
 
-      </View>
-      <View style={styles.itemStyle}>
-        <Text style={styles.textHeadingStyle}> লক্ষণ </Text>
-        <Text style={styles.textValueStyle}>কোন লক্ষণ পাওয়া যায় নি </Text>
+        </View>
+      </Pressable>
+
+      <Pressable style={styles.itemStyle} onPress={() => DialogPressable(1)}>
+        <View >
+          <Text style={styles.textHeadingStyle}> লক্ষণ </Text>
+          {
+            //  console.log('NoteLokkonData.length  ', NoteLokkonData.length),
+            NoteLokkonData.length > 0 ?
+              NoteLokkonData.map((item, index) => lokkonDetails(item, index)) :
+              <Text style={styles.textValueStyle}>কোন লক্ষণ পাওয়া যায় নি </Text>
+
+          }
+          {/* <Text style={styles.textValueStyle}>কোন লক্ষণ পাওয়া যায় নি </Text> */}
 
 
-      </View>
+        </View>
+      </Pressable>
 
     </View>
   );

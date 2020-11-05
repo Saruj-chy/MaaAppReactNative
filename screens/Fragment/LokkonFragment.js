@@ -15,11 +15,6 @@ const LokkonFragment = ({ ViewColor, setViewColor, CountClickColor, SetCountClic
 
   const LokkonName = AllLokkonName;
 
-  // console.log(CurrentDateNoteTabView);
-
-  const [flatListItems, setFlatListItems] = useState([]);
-
-
   //================================================================
   useEffect(() => {
     db.transaction((tx) => {
@@ -31,28 +26,20 @@ const LokkonFragment = ({ ViewColor, setViewColor, CountClickColor, SetCountClic
           var temp1 = [];
           for (let i = 0; i < results.rows.length; ++i) {
             let count = parseInt(results.rows.item(i).count);
-            console.log('count: ', count);
-
 
             temp.push({ id: results.rows.item(i).id, first: results.rows.item(i).first, second: results.rows.item(i).second, third: results.rows.item(i).third, count: count });
             temp1.push({ id: results.rows.item(i).id, count: count });
 
           }
 
-          console.log('table note_lokkon color array   ========: ', temp.length);
-          console.log('table note_lokkon counting   ========: ', temp1.length);
-          // console.log('table note_lokkon box_color   ========: ', temp);
-          // setFlatListItems(temp);
+
           if (temp.length > 0) {
-            // console.log('LokkonFragment  yes load')
             setViewColor(temp);
             SetCountClickColor(temp1);
 
             temp.map(item => {
-              // console.log('LokkonFragment  map in temp')
 
               db.transaction(function (tx) {
-                // console.log('...........', item.id, item.first, item.second, item.third, item.date);
                 tx.executeSql(
                   'UPDATE note_lokkon set first=?, second=? , third=?, count=?, date=? where id=? AND date=?',
                   [item.first, item.second, item.third, item.count, CurrentDateNoteTabView.date, item.id, CurrentDateNoteTabView.date],
@@ -74,8 +61,6 @@ const LokkonFragment = ({ ViewColor, setViewColor, CountClickColor, SetCountClic
     });
   }, []);
 
-  // console.log('ViewColor:   ', ViewColor);
-
   //----------------------------------------------------------------------------
 
 
@@ -83,7 +68,6 @@ const LokkonFragment = ({ ViewColor, setViewColor, CountClickColor, SetCountClic
   const savingDatabase = (id, first, second, third, count) => {
 
     var note;
-    console.log('id, first, second, third, count:  ', id, first, second, third, count)
 
     SharedPreferences.getItem("key", function (value) {
       note = value;
@@ -91,41 +75,9 @@ const LokkonFragment = ({ ViewColor, setViewColor, CountClickColor, SetCountClic
         note = 'hello';
         // console.log(note)
       }
-      // console.log('LokkonFragmentvalue: ', value, note);
     });
 
 
-    // if (count === 0) {
-    //   // console.log('new:====   ', note);
-
-    //   db.transaction(function (tx) {
-    //     db.transaction((tx) => {
-    //       // console.log('LokkonFragmentvalue 1 : ', note, id, first, second, third, CurrentDateNoteTabView.date,);
-    //       tx.executeSql(
-    //         'INSERT INTO note_lokkon (id, first, second, third, date, note) VALUES (?,?,?,?,?,?)',
-    //         [id, first, second, third, CurrentDateNoteTabView.date, note],
-    //         (tx, results) => {
-    //           // console.log('Results', results.rowsAffected);
-    //         }
-    //       );
-    //     });
-    //   });
-
-    //   db.transaction(function (tx) {
-    //     db.transaction((tx) => {
-    //       // console.log('Count Value : ', id, count);
-    //       tx.executeSql(
-    //         'INSERT INTO count_table_previous(id, count, date) VALUES (?,?,?)',
-    //         [id, count, CurrentDateNoteTabView.date],
-    //         (tx, results) => {
-    //           // console.log('Results count', results.rowsAffected);
-    //         }
-    //       );
-    //     });
-    //   });
-    // }
-    // else {
-    // console.log('again...........', CurrentDateNoteTabView.date, note);
 
 
     db.transaction(function (tx) {
@@ -136,19 +88,6 @@ const LokkonFragment = ({ ViewColor, setViewColor, CountClickColor, SetCountClic
           // console.log('Results Update note_lokkon', results.rowsAffected);
         }
       );
-    });
-
-    db.transaction(function (tx) {
-      db.transaction((tx) => {
-        // console.log('Count Value : ', id, count);
-        tx.executeSql(
-          'UPDATE INTO count_table_previous set id=?, count=?, date=? where id=? AND date=?',
-          [id, count, id, CurrentDateNoteTabView.date],
-          (tx, results) => {
-            // console.log('Results count', results.rowsAffected);
-          }
-        );
-      });
     });
 
 
