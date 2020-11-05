@@ -15,6 +15,7 @@ const ColorBox = ({ colorView, colorFunc, countFunc, lokkonName, SavingDatabase 
   colorView.sort(function (a, b) {
     return a.id - b.id;
   });
+  // console.log(colorView);
 
 
 

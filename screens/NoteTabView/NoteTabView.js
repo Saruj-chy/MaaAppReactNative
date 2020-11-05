@@ -20,11 +20,11 @@ const Tab = createMaterialTopTabNavigator();
 
 const NoteTabView = ({ CurrentDateNoteDialog, SetState }) => {
 
-  const [allColor, setAllColor] = useState(ColorArray);
 
   let noteValue;
 
-  // console.log('CurrentDateNoteDialog:  ', CurrentDateNoteDialog);
+
+
 
   useEffect(() => {
     db.transaction((tx) => {
@@ -43,45 +43,6 @@ const NoteTabView = ({ CurrentDateNoteDialog, SetState }) => {
     });
   }, []);
 
-
-
-  const dataLoad = () => {
-    db.transaction((tx) => {
-      tx.executeSql(
-        'SELECT * FROM note_lokkon ',
-        [],
-        (tx, results) => {
-          var temp = [];
-          for (let i = 0; i < results.rows.length; ++i) {
-            temp.push(results.rows.item(i));
-            // console.log(results.rows.item(i))
-          }
-          // console.log('temp date note_lokkon: ', temp);
-
-          // setFlatListItems(temp);
-        }
-      );
-    });
-
-    db.transaction((tx) => {
-      tx.executeSql(
-        'SELECT * FROM count_table_previous ',
-        [],
-        (tx, results) => {
-          var temp = [];
-          for (let i = 0; i < results.rows.length; ++i) {
-            temp.push(results.rows.item(i));
-            // console.log(results.rows.item(i))
-          }
-          // console.log('temp date count_table_previous: ', temp);
-
-          // setFlatListItems(temp);
-        }
-      );
-    });
-
-
-  }
 
   const DeleteTableData = () => {
 
@@ -120,7 +81,6 @@ const NoteTabView = ({ CurrentDateNoteDialog, SetState }) => {
           for (let i = 0; i < results.rows.length; ++i) {
             temp.push(results.rows.item(i));
           }
-          // console.log('note_save data: ', temp);
 
 
           if (temp.length > 0) {
@@ -135,7 +95,6 @@ const NoteTabView = ({ CurrentDateNoteDialog, SetState }) => {
             });
           } else {
             db.transaction((tx) => {
-              // console.log('LokkonFragmentvalue 1 : ', note);
               tx.executeSql(
                 'INSERT INTO note_save (date, note) VALUES (?,?)',
                 [CurrentDateNoteDialog.date, noteValue],
@@ -145,7 +104,6 @@ const NoteTabView = ({ CurrentDateNoteDialog, SetState }) => {
               );
             });
           };
-          // console.log('Saved Table TabView: ', temp);
 
         }
       );
@@ -168,9 +126,7 @@ const NoteTabView = ({ CurrentDateNoteDialog, SetState }) => {
             temp1.push(results.rows.item(i));
             // console.log(results.rows.item(i))
           }
-          // console.log(' note_lokkon data : ----------', temp1.length)
-          // console.log(' note_lokkon data : ----------', temp1)
-          // console.log('data : ----------', temp1)
+
 
           db.transaction((tx) => {
 
@@ -179,18 +135,14 @@ const NoteTabView = ({ CurrentDateNoteDialog, SetState }) => {
               [CurrentDateNoteDialog.date],
               (tx, results) => {
                 // console.log('Results', results.rowsAffected);
-
-                // console.log('yes delete done note_lokkon_change_color');
               }
             );
           });
 
 
-          // console.log('object  note_lokkon :  ', temp1.length)
           temp1.map(item => {
-            // console.log('object  note_lokkon_change_color :  ', temp1.length)
             db.transaction(function (tx) {
-              // console.log('...........', item.id, item.first, item.second, item.third, date);
+              console.log('NoteTabView insert note_lokkon_change_color: ', item.count);
               tx.executeSql(
                 'INSERT INTO note_lokkon_change_color (id, first, second, third, count, date) VALUES (?,?,?,?,?,?)',
                 [item.id, item.first, item.second, item.third, item.count, CurrentDateNoteDialog.date],
@@ -236,20 +188,9 @@ const NoteTabView = ({ CurrentDateNoteDialog, SetState }) => {
               'DELETE FROM  note_lokkon where date=?',
               [CurrentDateNoteDialog.date],
               (tx, results) => {
-                console.log('Results   note_lokkon', results.rowsAffected);
+                // console.log('Results   note_lokkon', results.rowsAffected);
 
-                // allColor.map(item => {
-                //   db.transaction(function (tx) {
-                //     console.log('...........', item.id, item.first, item.second, item.third, CurrentDateNoteDialog.date);
-                //     tx.executeSql(
-                //       'INSERT INTO note_lokkon (id, first, second, third, date) VALUES (?,?,?,?,?)',
-                //       [item.id, item.first, item.second, item.third, CurrentDateNoteDialog.date],
-                //       (tx, results) => {
-                //         // console.log('Results', results.rowsAffected);
-                //       }
-                //     );
-                //   });
-                // })
+
 
               }
             );
@@ -336,28 +277,9 @@ const NoteTabView = ({ CurrentDateNoteDialog, SetState }) => {
               [CurrentDateNoteDialog.date],
               (tx, results) => {
                 // console.log('Results', results.rowsAffected);
-
-                // allColor.map(item => {
-                //   db.transaction(function (tx) {
-                //     console.log('...........', item.id, item.first, item.second, item.third, CurrentDateNoteDialog.date);
-                //     tx.executeSql(
-                //       'INSERT INTO count_table_final (id, count, date) VALUES (?,?,?)',
-                //       [item.id, item.first, item.second, item.third, CurrentDateNoteDialog.date],
-                //       (tx, results) => {
-                //         // console.log('Results', results.rowsAffected);
-                //       }
-                //     );
-                //   });
-                // })
-
               }
             );
           });
-
-
-
-
-          // console.log('temp date: ', temp);
 
           setFlatListItems(temp);
         }
@@ -389,44 +311,6 @@ const NoteTabView = ({ CurrentDateNoteDialog, SetState }) => {
   const LokkonFragmentScreen = () => {
     let [viewColor, setViewColor] = useState(ColorArray);
     let [countClickColor, setCountClickColor] = useState(ColorClickCount);
-    // console.log(viewColor);
-
-    //================================================================
-    // useEffect(() => {
-    //   db.transaction((tx) => {
-    //     tx.executeSql(
-    //       'SELECT * FROM note_lokkon ',
-    //       [],
-    //       (tx, results) => {
-    //         var temp = [];
-    //         for (let i = 0; i < results.rows.length; ++i) {
-    //           temp.push(results.rows.item(i));
-    //         }
-    //         console.log('table note_lokkon box_color   ========: ', temp.length);
-
-    //         temp.map(item => {
-    //           setViewColor([...viewColor, {
-    //             id: item.id,
-    //             first: item.first,
-    //             second: 'yellow',
-    //             third: item.third
-    //           }])
-    //         })
-    //         // let colorboxArray = {
-    //         //   id: 2,
-    //         //   first: 'gray',
-    //         //   second: 'gray',
-    //         //   third: 'gray'
-    //         // }
-    //         console.log(viewColor)
-    //         // setViewColor([viewColor, colorboxArray])
-
-    //       }
-    //     );
-    //   });
-    // }, []);
-    //----------------------------------------------------------------------------
-
 
     return (
       <View >
@@ -435,8 +319,6 @@ const NoteTabView = ({ CurrentDateNoteDialog, SetState }) => {
       </View>
     );
   }
-
-  // console.log(viewColor);
 
   return (
     <>

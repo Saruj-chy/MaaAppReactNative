@@ -31,12 +31,8 @@ const LokkonFragment = ({ ViewColor, setViewColor, CountClickColor, SetCountClic
           var temp1 = [];
           for (let i = 0; i < results.rows.length; ++i) {
             let count = parseInt(results.rows.item(i).count);
-            if (count >= 0) {
-              count = count + 1;
-            }
-            else {
-              count = 0;
-            }
+            console.log('count: ', count);
+
 
             temp.push({ id: results.rows.item(i).id, first: results.rows.item(i).first, second: results.rows.item(i).second, third: results.rows.item(i).third, count: count });
             temp1.push({ id: results.rows.item(i).id, count: count });
@@ -87,6 +83,7 @@ const LokkonFragment = ({ ViewColor, setViewColor, CountClickColor, SetCountClic
   const savingDatabase = (id, first, second, third, count) => {
 
     var note;
+    console.log('id, first, second, third, count:  ', id, first, second, third, count)
 
     SharedPreferences.getItem("key", function (value) {
       note = value;
@@ -129,10 +126,12 @@ const LokkonFragment = ({ ViewColor, setViewColor, CountClickColor, SetCountClic
     // }
     // else {
     // console.log('again...........', CurrentDateNoteTabView.date, note);
+
+
     db.transaction(function (tx) {
       tx.executeSql(
         'UPDATE note_lokkon set first=?, second=? , third=?, count=?, date=? , note=? where id=? AND date=?',
-        [first, second, third, count, CurrentDateNoteTabView.date, note, id, CurrentDateNoteTabView.date],
+        [first, second, third, count, CurrentDateNoteTabView.date, count, id, CurrentDateNoteTabView.date],
         (tx, results) => {
           // console.log('Results Update note_lokkon', results.rowsAffected);
         }
@@ -191,10 +190,11 @@ const LokkonFragment = ({ ViewColor, setViewColor, CountClickColor, SetCountClic
           id: id,
           first: color,
           second: 'gray',
-          third: 'gray'
+          third: 'gray',
+          count: count
         };
         // console.log('blue: ', selectPushColor.id, selectPushColor.first, selectPushColor.second, selectPushColor.third);
-        savingDatabase(selectPushColor.id, selectPushColor.first, selectPushColor.second, selectPushColor.third, count);
+        savingDatabase(selectPushColor.id, selectPushColor.first, selectPushColor.second, selectPushColor.third, count + 1);
 
         setViewColor([...matchColor, selectPushColor]);
         break;
@@ -204,10 +204,11 @@ const LokkonFragment = ({ ViewColor, setViewColor, CountClickColor, SetCountClic
           id: id,
           first: color,
           second: color,
-          third: 'gray'
+          third: 'gray',
+          count: count
         };
         // console.log('yellow: ', selectPushColor.id, selectPushColor.first, selectPushColor.second, selectPushColor.third);
-        savingDatabase(selectPushColor.id, selectPushColor.first, selectPushColor.second, selectPushColor.third, count);
+        savingDatabase(selectPushColor.id, selectPushColor.first, selectPushColor.second, selectPushColor.third, count + 1);
         setViewColor([...matchColor, selectPushColor]);
         break;
 
@@ -216,10 +217,11 @@ const LokkonFragment = ({ ViewColor, setViewColor, CountClickColor, SetCountClic
           id: id,
           first: color,
           second: color,
-          third: color
+          third: color,
+          count: count
         };
         // console.log('red: ', selectPushColor.id, selectPushColor.first, selectPushColor.second, selectPushColor.third);
-        savingDatabase(selectPushColor.id, selectPushColor.first, selectPushColor.second, selectPushColor.third, count);
+        savingDatabase(selectPushColor.id, selectPushColor.first, selectPushColor.second, selectPushColor.third, count + 1);
         setViewColor([...matchColor, selectPushColor]);
         break;
 
@@ -228,10 +230,11 @@ const LokkonFragment = ({ ViewColor, setViewColor, CountClickColor, SetCountClic
           id: id,
           first: 'gray',
           second: 'gray',
-          third: 'gray'
+          third: 'gray',
+          count: count
         };
         // console.log('default: ', selectPushColor.id, selectPushColor.first, selectPushColor.second, selectPushColor.third);
-        savingDatabase(selectPushColor.id, selectPushColor.first, selectPushColor.second, selectPushColor.third, count);
+        savingDatabase(selectPushColor.id, selectPushColor.first, selectPushColor.second, selectPushColor.third, count + 1);
         setViewColor([...matchColor, selectPushColor]);
         break;
 
@@ -244,11 +247,11 @@ const LokkonFragment = ({ ViewColor, setViewColor, CountClickColor, SetCountClic
     let setClickCount;
     let color;
 
-    console.log('LokkonFragment CountClickColor = ', CountClickColor);
+    // console.log('LokkonFragment CountClickColor = ', CountClickColor);
 
     previousClickCount = CountClickColor.filter(color => color.id !== id);
     clickCount = CountClickColor.find(color => color.id === id);
-    console.log('LokkonFragment clickCount = ', clickCount);
+    // console.log('LokkonFragment clickCount = ', clickCount);
     setClickCount = {
       id: id, count: clickCount.count + 1
     };

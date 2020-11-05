@@ -23,8 +23,8 @@ const NoteDialog = ({ CurrentDate, SetState }) => {
           for (let i = 0; i < results.rows.length; ++i) {
             temp.push(results.rows.item(i));
           }
-          // console.log('NoteDialog-- note_lokkon_change_color   ========: ', temp);
-          // console.log('table note_lokkon_change_color   ========: ', temp);
+          // console.log('NoteDialog-- note_lokkon   ========: ', temp);
+          console.log('table note_lokkon length   ========: ', temp.length);
 
         }
       );

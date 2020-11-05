@@ -79,10 +79,10 @@ const NoteScreen = () => {
       ColorArray.map(item => {
 
         db.transaction(function (tx) {
-          // console.log('...........', item.id, item.first, item.second, item.third, date);
+          // console.log('...........', item.id, item.first, item.second, item.third, item.count, date);
           tx.executeSql(
-            'INSERT INTO note_lokkon (id, first, second, third, date) VALUES (?,?,?,?,?)',
-            [item.id, item.first, item.second, item.third, date],
+            'INSERT INTO note_lokkon (id, first, second, third, count, date) VALUES (?,?,?,?,?,?)',
+            [item.id, item.first, item.second, item.third, item.count, date],
             (tx, results) => {
               // console.log('Results  note_lokkon ', results.rowsAffected);
 
