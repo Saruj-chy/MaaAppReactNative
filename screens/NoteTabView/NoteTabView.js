@@ -109,7 +109,7 @@ const NoteTabView = ({ CurrentDateNoteDialog, SetState }) => {
     SetState(false);
 
 
-
+    //=========================================    data saved in note_saved     =========================================
     db.transaction((tx) => {
       // console.log('object')
       tx.executeSql(
@@ -150,8 +150,9 @@ const NoteTabView = ({ CurrentDateNoteDialog, SetState }) => {
         }
       );
     });
+    //  -------------------------------------------    data saved in note_saved     -----------------------------------------
 
-    // console.log('noteValue:  ', noteValue);
+
 
 
     //=============================  note_lokkon theke note_lokhon_change_color data pass  ================================
@@ -159,7 +160,7 @@ const NoteTabView = ({ CurrentDateNoteDialog, SetState }) => {
 
     db.transaction((tx) => {
       tx.executeSql(
-        'SELECT DISTINCT id,  first, second, third,  date FROM note_lokkon WHERE date=?',
+        'SELECT DISTINCT id,  first, second, third, count, date FROM note_lokkon WHERE date=?',
         [CurrentDateNoteDialog.date],
         (tx, results) => {
           var temp1 = [];
@@ -167,6 +168,8 @@ const NoteTabView = ({ CurrentDateNoteDialog, SetState }) => {
             temp1.push(results.rows.item(i));
             // console.log(results.rows.item(i))
           }
+          // console.log(' note_lokkon data : ----------', temp1.length)
+          // console.log(' note_lokkon data : ----------', temp1)
           // console.log('data : ----------', temp1)
 
           db.transaction((tx) => {
@@ -189,10 +192,10 @@ const NoteTabView = ({ CurrentDateNoteDialog, SetState }) => {
             db.transaction(function (tx) {
               // console.log('...........', item.id, item.first, item.second, item.third, date);
               tx.executeSql(
-                'INSERT INTO note_lokkon_change_color (id, first, second, third, date) VALUES (?,?,?,?,?)',
-                [item.id, item.first, item.second, item.third, CurrentDateNoteDialog.date],
+                'INSERT INTO note_lokkon_change_color (id, first, second, third, count, date) VALUES (?,?,?,?,?,?)',
+                [item.id, item.first, item.second, item.third, item.count, CurrentDateNoteDialog.date],
                 (tx, results) => {
-                  // console.log('Results  note_lokkon_change_color ', results.rowsAffected);
+                  // console.log('Results insert note_lokkon_change_color ', results.rowsAffected);
 
                 }
               );
@@ -212,11 +215,11 @@ const NoteTabView = ({ CurrentDateNoteDialog, SetState }) => {
 
 
 
-    //========================    not_lokkon theke note_lokhon_table e data pass ==========================
+    //========================    not_lokkon   theke    note_lokhon_table e data pass ==========================
 
     db.transaction((tx) => {
       tx.executeSql(
-        'SELECT DISTINCT id, first, second, third, date FROM note_lokkon WHERE date=? AND first!="gray" ',
+        'SELECT DISTINCT id, first, second, third, count, date FROM note_lokkon WHERE date=? AND first!="gray" ',
         [CurrentDateNoteDialog.date],
         (tx, results) => {
           var temp = [];
@@ -252,40 +255,27 @@ const NoteTabView = ({ CurrentDateNoteDialog, SetState }) => {
             );
           });
 
-          //================  insert data in note lokhon table ============
+          //==================================  delete note_lokhon_table   =================================
           db.transaction((tx) => {
+            // console.log('yes delete done');
             tx.executeSql(
-              'SELECT * FROM note_lokhon_table WHERE date=?',
+              'DELETE FROM  note_lokhon_table where date=?',
               [CurrentDateNoteDialog.date],
               (tx, results) => {
-                var temp1 = [];
-                for (let i = 0; i < results.rows.length; ++i) {
-                  temp1.push(results.rows.item(i));
-                  // console.log(results.rows.item(i))
-                }
-                if (temp1.length > 0) {
-                  db.transaction((tx) => {
-                    // console.log('yes delete done');
-                    tx.executeSql(
-                      'DELETE FROM  note_lokhon_table where date=?',
-                      [CurrentDateNoteDialog.date],
-                      (tx, results) => {
-                        // console.log('Results', results.rowsAffected);
-                      }
-                    );
-                  });
-                }
+                // console.log('Results', results.rowsAffected);
               }
             );
           });
+          //   -----------------------------------  delete note_lokhon_table   -------------------------------
 
-          // console.log(' length note_lokhon_table:   ', temp.length)
+
+
           temp.map(item => {
             db.transaction(function (tx) {
               // console.log('...........', item.id, item.first, item.second, item.third, CurrentDateNoteDialog.date);
               tx.executeSql(
-                'INSERT INTO note_lokhon_table (id, first, second, third, date) VALUES (?,?,?,?,?)',
-                [item.id, item.first, item.second, item.third, CurrentDateNoteDialog.date],
+                'INSERT INTO note_lokhon_table (id, first, second, third, count, date) VALUES (?,?,?,?,?,?)',
+                [item.id, item.first, item.second, item.third, item.count, CurrentDateNoteDialog.date],
                 (tx, results) => {
                   // console.log('Results  note_lokhon_table ', results.rowsAffected);
                 }

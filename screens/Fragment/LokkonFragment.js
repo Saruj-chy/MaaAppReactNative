@@ -19,83 +19,74 @@ const LokkonFragment = ({ ViewColor, setViewColor, CountClickColor, SetCountClic
 
   const [flatListItems, setFlatListItems] = useState([]);
 
+
+  //================================================================
   useEffect(() => {
     db.transaction((tx) => {
       tx.executeSql(
-        'SELECT * FROM note_lokhon_table WHERE date=?',
-        [CurrentDateNoteTabView.date],
+        'SELECT * FROM note_lokkon_change_color ',
+        [],
         (tx, results) => {
           var temp = [];
+          var temp1 = [];
           for (let i = 0; i < results.rows.length; ++i) {
-            temp.push(results.rows.item(i));
-            // console.log(results.rows.item(i))
+            let count = parseInt(results.rows.item(i).count);
+            if (count >= 0) {
+              count = count + 1;
+            }
+            else {
+              count = 0;
+            }
+
+            temp.push({ id: results.rows.item(i).id, first: results.rows.item(i).first, second: results.rows.item(i).second, third: results.rows.item(i).third, count: count });
+            temp1.push({ id: results.rows.item(i).id, count: count });
+
           }
-          // console.log('temp note_lokhon_table: ', temp.length);
 
-          // setViewColor([...ViewColor, temp]);
+          console.log('table note_lokkon color array   ========: ', temp.length);
+          console.log('table note_lokkon counting   ========: ', temp1.length);
+          // console.log('table note_lokkon box_color   ========: ', temp);
+          // setFlatListItems(temp);
+          if (temp.length > 0) {
+            // console.log('LokkonFragment  yes load')
+            setViewColor(temp);
+            SetCountClickColor(temp1);
 
-          // if (temp.length > 0) {
-          //   temp.map(item => {
-          //     // const itemColor = {
-          //     //   id: itemColor.id,
-          //     //   first: itemColor.first,
-          //     //   second: itemColor.second,
-          //     //   third: itemColor.third
-          //     // }
-          //     // console.log('itemColor:  ', itemColor)
-          //     setViewColor([...ViewColor, {
-          //       id: item.id,
-          //       first: item.first,
-          //       second: item.second,
-          //       third: item.third
-          //     }])
-          //   })
-          // }
+            temp.map(item => {
+              // console.log('LokkonFragment  map in temp')
+
+              db.transaction(function (tx) {
+                // console.log('...........', item.id, item.first, item.second, item.third, item.date);
+                tx.executeSql(
+                  'UPDATE note_lokkon set first=?, second=? , third=?, count=?, date=? where id=? AND date=?',
+                  [item.first, item.second, item.third, item.count, CurrentDateNoteTabView.date, item.id, CurrentDateNoteTabView.date],
+                  (tx, results) => {
+                    // console.log(' LokkonFragment  Results UPDATE note_lokkon ', results.rowsAffected);
+
+                  }
+                );
+              });
+
+            });
+
+
+          }
+
 
         }
       );
     });
   }, []);
 
-  useEffect(() => {
-    db.transaction((tx) => {
-      tx.executeSql(
-        'SELECT * FROM count_table_final WHERE date=?',
-        [CurrentDateNoteTabView.date],
-        (tx, results) => {
-          var temp = [];
-          for (let i = 0; i < results.rows.length; ++i) {
-            temp.push(results.rows.item(i));
-            // console.log(results.rows.item(i))
-          }
-          // console.log('temp count_table_final: ', temp.length);
+  // console.log('ViewColor:   ', ViewColor);
 
-          // setViewColor(temp);
-
-          // if (temp.length > 0) {
-          //   temp.map(item => SetCountClickColor([...CountClickColor, item]))
-          // }
-
-        }
-      );
-    });
-  }, []);
-
-
-
-
+  //----------------------------------------------------------------------------
 
 
 
   const savingDatabase = (id, first, second, third, count) => {
 
     var note;
-    // console.log('flatListItems:  ', flatListItems);
-    // dataLoad();
-
-
-
-
 
     SharedPreferences.getItem("key", function (value) {
       note = value;
@@ -107,63 +98,63 @@ const LokkonFragment = ({ ViewColor, setViewColor, CountClickColor, SetCountClic
     });
 
 
-    if (count === 0) {
-      // console.log('new:====   ', note);
+    // if (count === 0) {
+    //   // console.log('new:====   ', note);
 
-      db.transaction(function (tx) {
-        db.transaction((tx) => {
-          // console.log('LokkonFragmentvalue 1 : ', note, id, first, second, third, CurrentDateNoteTabView.date,);
-          tx.executeSql(
-            'INSERT INTO note_lokkon (id, first, second, third, date, note) VALUES (?,?,?,?,?,?)',
-            [id, first, second, third, CurrentDateNoteTabView.date, note],
-            (tx, results) => {
-              // console.log('Results', results.rowsAffected);
-            }
-          );
-        });
-      });
+    //   db.transaction(function (tx) {
+    //     db.transaction((tx) => {
+    //       // console.log('LokkonFragmentvalue 1 : ', note, id, first, second, third, CurrentDateNoteTabView.date,);
+    //       tx.executeSql(
+    //         'INSERT INTO note_lokkon (id, first, second, third, date, note) VALUES (?,?,?,?,?,?)',
+    //         [id, first, second, third, CurrentDateNoteTabView.date, note],
+    //         (tx, results) => {
+    //           // console.log('Results', results.rowsAffected);
+    //         }
+    //       );
+    //     });
+    //   });
 
-      db.transaction(function (tx) {
-        db.transaction((tx) => {
-          // console.log('Count Value : ', id, count);
-          tx.executeSql(
-            'INSERT INTO count_table_previous(id, count, date) VALUES (?,?,?)',
-            [id, count, CurrentDateNoteTabView.date],
-            (tx, results) => {
-              // console.log('Results count', results.rowsAffected);
-            }
-          );
-        });
-      });
-    }
-    else {
-      // console.log('again...........', CurrentDateNoteTabView.date, note);
-      db.transaction(function (tx) {
+    //   db.transaction(function (tx) {
+    //     db.transaction((tx) => {
+    //       // console.log('Count Value : ', id, count);
+    //       tx.executeSql(
+    //         'INSERT INTO count_table_previous(id, count, date) VALUES (?,?,?)',
+    //         [id, count, CurrentDateNoteTabView.date],
+    //         (tx, results) => {
+    //           // console.log('Results count', results.rowsAffected);
+    //         }
+    //       );
+    //     });
+    //   });
+    // }
+    // else {
+    // console.log('again...........', CurrentDateNoteTabView.date, note);
+    db.transaction(function (tx) {
+      tx.executeSql(
+        'UPDATE note_lokkon set first=?, second=? , third=?, count=?, date=? , note=? where id=? AND date=?',
+        [first, second, third, count, CurrentDateNoteTabView.date, note, id, CurrentDateNoteTabView.date],
+        (tx, results) => {
+          // console.log('Results Update note_lokkon', results.rowsAffected);
+        }
+      );
+    });
+
+    db.transaction(function (tx) {
+      db.transaction((tx) => {
+        // console.log('Count Value : ', id, count);
         tx.executeSql(
-          'UPDATE note_lokkon set first=?, second=? , third=?, date=? , note=? where id=? AND date=?',
-          [first, second, third, CurrentDateNoteTabView.date, note, id, CurrentDateNoteTabView.date],
+          'UPDATE INTO count_table_previous set id=?, count=?, date=? where id=? AND date=?',
+          [id, count, id, CurrentDateNoteTabView.date],
           (tx, results) => {
-            // console.log('Results Update', results.rowsAffected);
+            // console.log('Results count', results.rowsAffected);
           }
         );
       });
-
-      db.transaction(function (tx) {
-        db.transaction((tx) => {
-          // console.log('Count Value : ', id, count);
-          tx.executeSql(
-            'UPDATE INTO count_table_previous set id=?, count=?, date=? where id=? AND date=?',
-            [id, count, id, CurrentDateNoteTabView.date],
-            (tx, results) => {
-              // console.log('Results count', results.rowsAffected);
-            }
-          );
-        });
-      });
+    });
 
 
-    }
   }
+  // }
 
 
 
@@ -253,8 +244,11 @@ const LokkonFragment = ({ ViewColor, setViewColor, CountClickColor, SetCountClic
     let setClickCount;
     let color;
 
+    console.log('LokkonFragment CountClickColor = ', CountClickColor);
+
     previousClickCount = CountClickColor.filter(color => color.id !== id);
     clickCount = CountClickColor.find(color => color.id === id);
+    console.log('LokkonFragment clickCount = ', clickCount);
     setClickCount = {
       id: id, count: clickCount.count + 1
     };

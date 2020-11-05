@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-export const databaseName = 'MaaDatabase72.db';
+export const databaseName = 'MaaDatabase83.db';
 
 import { openDatabase } from 'react-native-sqlite-storage';
 var db = openDatabase({ name: databaseName });
@@ -26,208 +26,216 @@ export const ColorClickCount = [{ id: 0, count: 0 }, { id: 1, count: 0 }, { id: 
 { id: 23, count: 0 }, { id: 24, count: 0 }, { id: 25, count: 0 }, { id: 26, count: 0 },
 { id: 27, count: 0 }, { id: 28, count: 0 }, { id: 29, count: 0 }];
 
-// const boxColorView = () => {
-//   useEffect(() => {
-//     db.transaction((tx) => {
-//       tx.executeSql(
-//         'SELECT * FROM note_lokkon ',
-//         [],
-//         (tx, results) => {
-//           var temp = [];
-//           for (let i = 0; i < results.rows.length; ++i) {
-//             temp.push(results.rows.item(i));
-//           }
-//           // console.log('table note_lokkon box_color   ========: ', temp.length);
-//           // setBoxColor([...boxColor, temp]);
-//           return temp;
-
-//         }
-//       );
-//     });
-//   }, []);
-// }
-
-
 
 export const ColorArray = [{
   "first": "gray",
   "id": 0,
   "second": "gray",
-  "third": "gray"
+  "third": "gray",
+  "count": 0
 },
 {
   "first": "gray",
   "id": 1,
   "second": "gray",
-  "third": "gray"
+  "third": "gray",
+  "count": 0
 },
 {
   "first": "gray",
   "id": 2,
   "second": "gray",
-  "third": "gray"
+  "third": "gray",
+  "count": 0
 },
 {
   "first": "gray",
   "id": 3,
   "second": "gray",
-  "third": "gray"
+  "third": "gray",
+  "count": 0
 },
 {
   "first": "gray",
   "id": 4,
   "second": "gray",
-  "third": "gray"
+  "third": "gray",
+  "count": 0
 },
 {
   "first": "gray",
   "id": 5,
   "second": "gray",
-  "third": "gray"
+  "third": "gray",
+  "count": 0
 },
 {
   "first": "gray",
   "id": 6,
   "second": "gray",
-  "third": "gray"
+  "third": "gray",
+  "count": 0
 },
 {
   "first": "gray",
   "id": 7,
   "second": "gray",
-  "third": "gray"
+  "third": "gray",
+  "count": 0
 },
 {
   "first": "gray",
   "id": 8,
   "second": "gray",
-  "third": "gray"
+  "third": "gray",
+  "count": 0
 },
 {
   "first": "gray",
   "id": 9,
   "second": "gray",
-  "third": "gray"
+  "third": "gray",
+  "count": 0
 },
 {
   "first": "gray",
   "id": 10,
   "second": "gray",
-  "third": "gray"
+  "third": "gray",
+  "count": 0
 },
 {
   "first": "gray",
   "id": 11,
   "second": "gray",
-  "third": "gray"
+  "third": "gray",
+  "count": 0
 },
 {
   "first": "gray",
   "id": 12,
   "second": "gray",
-  "third": "gray"
+  "third": "gray",
+  "count": 0
 },
 {
   "first": "gray",
   "id": 13,
   "second": "gray",
-  "third": "gray"
+  "third": "gray",
+  "count": 0
 },
 {
   "first": "gray",
   "id": 14,
   "second": "gray",
-  "third": "gray"
+  "third": "gray",
+  "count": 0
 },
 {
   "first": "gray",
   "id": 15,
   "second": "gray",
-  "third": "gray"
+  "third": "gray",
+  "count": 0
 },
 {
   "first": "gray",
   "id": 16,
   "second": "gray",
-  "third": "gray"
+  "third": "gray",
+  "count": 0
 },
 {
   "first": "gray",
   "id": 17,
   "second": "gray",
-  "third": "gray"
+  "third": "gray",
+  "count": 0
 },
 {
   "first": "gray",
   "id": 18,
   "second": "gray",
-  "third": "gray"
+  "third": "gray",
+  "count": 0
 },
 {
   "first": "gray",
   "id": 19,
   "second": "gray",
-  "third": "gray"
+  "third": "gray",
+  "count": 0
 },
 {
   "first": "gray",
   "id": 20,
   "second": "gray",
-  "third": "gray"
+  "third": "gray",
+  "count": 0
 },
 {
   "first": "gray",
   "id": 21,
   "second": "gray",
-  "third": "gray"
+  "third": "gray",
+  "count": 0
 },
 {
   "first": "gray",
   "id": 22,
   "second": "gray",
-  "third": "gray"
+  "third": "gray",
+  "count": 0
 },
 {
   "first": "gray",
   "id": 23,
   "second": "gray",
-  "third": "gray"
+  "third": "gray",
+  "count": 0
 },
 {
   "first": "gray",
   "id": 24,
   "second": "gray",
-  "third": "gray"
+  "third": "gray",
+  "count": 0
 },
 {
   "first": "gray",
   "id": 25,
   "second": "gray",
-  "third": "gray"
+  "third": "gray",
+  "count": 0
 },
 {
   "first": "gray",
   "id": 26,
   "second": "gray",
-  "third": "gray"
+  "third": "gray",
+  "count": 0
 },
 {
   "first": "gray",
   "id": 27,
   "second": "gray",
-  "third": "gray"
+  "third": "gray",
+  "count": 0
 },
 {
   "first": "gray",
   "id": 28,
   "second": "gray",
-  "third": "gray"
+  "third": "gray",
+  "count": 0
 },
 {
   "first": "gray",
   "id": 29,
   "second": "gray",
-  "third": "gray"
+  "third": "gray",
+  "count": 0
 }];
 
 

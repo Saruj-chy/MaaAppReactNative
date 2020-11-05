@@ -19,7 +19,7 @@ const NoteFragment = ({ SavedValue, CurrentDateNoteDialog }) => {
           for (let i = 0; i < results.rows.length; ++i) {
             temp.push(results.rows.item(i));
           }
-          console.log('table date========: ', temp[0].note, CurrentDateNoteDialog.date);
+          // console.log('table date========: ', temp[0].note, CurrentDateNoteDialog.date);
           setValue(temp[0].note);
 
         }
@@ -37,10 +37,6 @@ const NoteFragment = ({ SavedValue, CurrentDateNoteDialog }) => {
       // autoFocus={true}
       // blurOnSubmit={false}
       />
-      {
-        console.log('value:;::::::::::: ', value)
-      }
-
 
     </View>
   );

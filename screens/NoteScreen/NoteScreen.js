@@ -19,6 +19,7 @@ var db = openDatabase({ name: databaseName });
 const NoteScreen = () => {
   const [state, setState] = useState(false);
   const [currentDate, setCurrentDate] = useState({ date: '', month: '', day: '', year: '' });
+  const [lokkonData, setLokkonData] = useState([]);
 
   const monthNames = ["January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
@@ -28,7 +29,7 @@ const NoteScreen = () => {
   useEffect(() => {
     db.transaction((tx) => {
       tx.executeSql(
-        'SELECT DISTINCT id, first, second, third, date, note  FROM note_lokkon ',
+        'SELECT * FROM note_lokkon ',
         [],
         (tx, results) => {
           var temp = [];
@@ -37,6 +38,7 @@ const NoteScreen = () => {
             // console.log(results.rows.item(i))
           }
           // console.log('object      ', temp.length)
+          setLokkonData(temp);
 
         }
       );
@@ -61,6 +63,19 @@ const NoteScreen = () => {
       setCurrentDate(currenCalenderDate);
 
       //=============================  data save in note lokkon from note_lokhon_table  ==================
+      if (lokkonData > 0) {
+        db.transaction((tx) => {
+          // console.log('yes delete done');
+          tx.executeSql(
+            'DELETE FROM  note_lokkon where date=?',
+            [date],
+            (tx, results) => {
+              // console.log('Results', results.rowsAffected);
+
+            }
+          );
+        });
+      }
       ColorArray.map(item => {
 
         db.transaction(function (tx) {

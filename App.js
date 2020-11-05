@@ -35,7 +35,7 @@ const App = () => {
           if (res.rows.length == 0) {
             txn.executeSql('DROP TABLE IF EXISTS note_lokhon_table', []);
             txn.executeSql(
-              'CREATE TABLE IF NOT EXISTS note_lokhon_table(note_id INTEGER PRIMARY KEY AUTOINCREMENT, id INT(10),  first VARCHAR(20), second VARCHAR(20), third VARCHAR(20), date VARCHAR(20), note VARCHAR(1000))',
+              'CREATE TABLE IF NOT EXISTS note_lokhon_table(note_id INTEGER PRIMARY KEY AUTOINCREMENT, id INT(10),  first VARCHAR(20), second VARCHAR(20), third VARCHAR(20), count INT(50), date VARCHAR(20), note VARCHAR(1000))',
               []
             );
           }
@@ -54,7 +54,7 @@ const App = () => {
           if (res.rows.length == 0) {
             txn.executeSql('DROP TABLE IF EXISTS note_lokkon_change_color', []);
             txn.executeSql(
-              'CREATE TABLE IF NOT EXISTS note_lokkon_change_color(note_id INTEGER PRIMARY KEY AUTOINCREMENT, id INT(10),  first VARCHAR(20), second VARCHAR(20), third VARCHAR(20), date VARCHAR(20), note VARCHAR(1000))',
+              'CREATE TABLE IF NOT EXISTS note_lokkon_change_color(note_id INTEGER PRIMARY KEY AUTOINCREMENT, id INT(10),  first VARCHAR(20), second VARCHAR(20), third VARCHAR(20), count INT(50), date VARCHAR(20), note VARCHAR(1000))',
               []
             );
           }
@@ -73,7 +73,7 @@ const App = () => {
           if (res.rows.length == 0) {
             txn.executeSql('DROP TABLE IF EXISTS note_lokkon', []);
             txn.executeSql(
-              'CREATE TABLE IF NOT EXISTS note_lokkon(note_id INTEGER PRIMARY KEY AUTOINCREMENT, id INT(10),  first VARCHAR(20), second VARCHAR(20), third VARCHAR(20), date VARCHAR(20), note VARCHAR(1000))',
+              'CREATE TABLE IF NOT EXISTS note_lokkon(note_id INTEGER PRIMARY KEY AUTOINCREMENT, id INT(10),  first VARCHAR(20), second VARCHAR(20), third VARCHAR(20),count INT(50), date VARCHAR(20), note VARCHAR(1000))',
               []
             );
           }
