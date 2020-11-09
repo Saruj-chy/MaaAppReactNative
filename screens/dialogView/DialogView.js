@@ -86,10 +86,16 @@ const DialogView = ({ SetState, AddWomenOjon, SetOjonFirst }) => {
   //========================          SavedValue
 
   const SavedValue = (kilogram) => {
+    if (clickPound || clickKg && cmState || feetState) {
+      AddWomenOjon(kilogram);
+      SetState(false);
+      SetOjonFirst(true);
+    }
+    else {
+      alert('please fill all field');
+    }
 
-    AddWomenOjon(kilogram);
-    SetState(false);
-    SetOjonFirst(true);
+
 
   }
 
