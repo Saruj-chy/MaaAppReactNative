@@ -28,13 +28,11 @@ const NoteLokkonDetails = ({ NoteLokkonData, NoteView, DialogPressable }) => {
         <View >
           <Text style={styles.textHeadingStyle}> লক্ষণ </Text>
           {
-            //  console.log('NoteLokkonData.length  ', NoteLokkonData.length),
             NoteLokkonData.length > 0 ?
               NoteLokkonData.map((item, index) => lokkonDetails(item, index)) :
               <Text style={styles.textValueStyle}>কোন লক্ষণ পাওয়া যায় নি </Text>
 
           }
-          {/* <Text style={styles.textValueStyle}>কোন লক্ষণ পাওয়া যায় নি </Text> */}
 
 
         </View>

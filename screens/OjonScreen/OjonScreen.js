@@ -1,55 +1,302 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Modal, ScrollView, StyleSheet, Text, View, Alert } from 'react-native';
 import Dialog from 'react-native-popup-dialog';
 import OjonSavedScreen from './OjonSavedScreen';
-
 import DialogView from '../dialogView/DialogView';
 import DialogOjon from '../dialogView/DialogOjon';
+import moment from "moment";
+import { AllLokkonName, databaseName, ojonSavedValue } from '../Constant/Constant';
+import { openDatabase } from 'react-native-sqlite-storage';
+
+var db = openDatabase({ name: databaseName });
 
 
-const ojonSavedValue = [
-  { id: 1, week: 'প্রাথমিক ওজন', ojon: '0.0' },
-  { id: 2, week: '01', ojon: '--' }, { id: 3, week: '02', ojon: '--' }, { id: 4, week: '03', ojon: '--' }, { id: 5, week: '04', ojon: '--' },
-  { id: 6, week: '05', ojon: '--' }, { id: 7, week: '06', ojon: '--' }, { id: 8, week: '07', ojon: '--' }, { id: 9, week: '08', ojon: '--' },
-  { id: 10, week: '09', ojon: '--' }, { id: 11, week: '10', ojon: '--' }, { id: 12, week: '11', ojon: '--' }, { id: 13, week: '12', ojon: '--' },
-  { id: 14, week: '13', ojon: '--' }, { id: 15, week: '14', ojon: '--' }, { id: 16, week: '15', ojon: '--' }, { id: 17, week: '16', ojon: '--' },
-  { id: 18, week: '17', ojon: '--' }, { id: 19, week: '18', ojon: '--' }, { id: 20, week: '19', ojon: '--' }, { id: 21, week: '20', ojon: '--' },
-  { id: 22, week: '21', ojon: '--' }, { id: 23, week: '22', ojon: '--' }, { id: 24, week: '23', ojon: '--' }, { id: 25, week: '24', ojon: '--' },
-  { id: 26, week: '25', ojon: '--' }, { id: 27, week: '26', ojon: '--' }, { id: 28, week: '27', ojon: '--' }, { id: 29, week: '28', ojon: '--' },
-  { id: 30, week: '29', ojon: '--' }, { id: 31, week: '30', ojon: '--' }, { id: 32, week: '31', ojon: '--' }, { id: 33, week: '32', ojon: '--' },
-  { id: 34, week: '33', ojon: '--' }, { id: 35, week: '34', ojon: '--' }, { id: 36, week: '35', ojon: '--' }, { id: 37, week: '36', ojon: '--' },
-  { id: 38, week: '37', ojon: '--' }, { id: 39, week: '38', ojon: '--' }, { id: 40, week: '39', ojon: '--' }, { id: 41, week: '40', ojon: '--' },
-
-]
 
 const OjonScreen = () => {
 
   const [state, setState] = useState(false);
   const [ojonFirst, setOjonFirst] = useState(false);
-
   const [womenOjon, setWomenOjon] = useState(ojonSavedValue);
 
+  //============================    create database table ------------------------------------------
+  useEffect(() => {
+    db.transaction(function (txn) {
+      txn.executeSql(
+        "SELECT name FROM sqlite_master WHERE type='table' AND name='ojon_table'",
+        [],
+        function (tx, res) {
+          // console.log('item:', res.rows.length);
+          if (res.rows.length == 0) {
+            txn.executeSql('DROP TABLE IF EXISTS ojon_table', []);
+            txn.executeSql(
+              'CREATE TABLE IF NOT EXISTS ojon_table(ojon_id INTEGER PRIMARY KEY AUTOINCREMENT, id INT(50), ojon VARCHAR(20), current_date VARCHAR(20), week_date VARCHAR(20) )',
+              []
+            );
+          }
+        }
+      );
+    });
+  }, []);
+
+  useEffect(() => {
+    db.transaction(function (txn) {
+      txn.executeSql(
+        "SELECT name FROM sqlite_master WHERE type='table' AND name='ojon_table_2'",
+        [],
+        function (tx, res) {
+          // console.log('item:', res.rows.length);
+          if (res.rows.length == 0) {
+            txn.executeSql('DROP TABLE IF EXISTS ojon_table_2', []);
+            txn.executeSql(
+              'CREATE TABLE IF NOT EXISTS ojon_table_2(ojon_id INTEGER PRIMARY KEY AUTOINCREMENT, id INT(50), ojon VARCHAR(20), week VARCHAR(20) )',
+              []
+            );
+          }
+        }
+      );
+    });
+  }, []);
+  // --------------------------------       create database table    --------------------------------
+
+  // =======================================================   when table empty initial data load in db    ========================================
+  useEffect(() => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        'SELECT * FROM ojon_table ',
+        [],
+        (tx, results) => {
+          if (results.rows.length === 0) {
+            //============    first data insert in ojon table
+            db.transaction(function (tx) {
+              tx.executeSql(
+                'INSERT INTO ojon_table (id, ojon, current_date, week_date) VALUES (?,?,?,?)',
+                [0, 0, 'date1', 'date2'],
+                (tx, results) => {
+                  console.log('Results  ojon_table initial ', results.rowsAffected);
+
+                }
+              );
+            });
+            //===========       all constant data insert in ojon_table_2     ============
+            ojonSavedValue.map(item => {
+              db.transaction(function (tx) {
+                tx.executeSql(
+                  'INSERT INTO ojon_table_2 (id, week, ojon) VALUES (?,?,?)',
+                  [item.id, item.week, item.ojon],
+                  (tx, results) => {
+                    // console.log('Results  ojon_table_2 ', results.rowsAffected);
+
+                  }
+                );
+              });
+            })
+
+          }
+          else {
+            console.log('ojon_table_2 data load');
+            OjonLoadInTableChart();
+            setOjonFirst(true);
+
+          }
+        }
+      );
+    });
+  }, []);
+  //------------------------------------------------------------------------------     when table empty initial data load in db    ----------------
 
 
-  //================ setWomenOjon =================
-  const womenAddOjon = value => {
-    // console.log('Women Add ojon', value);
-    // const x = 2;
-    // const womenValue = { id: x, week: '01', ojon: value }
-    // // setWomenOjon([...womenOjon, womenValue])
 
-    // const valueCheck = womenOjon.filter(pd => pd.id !== x);
-    // setWomenOjon([...valueCheck, womenValue])
-    // console.log(valueCheck);
-    Alert.alert('item saved');
+  //=============================== setWomenOjon =================
+  const womenAddOjon = (ojon) => {
+    const currentDate = moment();
+    const month1 = currentDate.format("MM");
+    const day1 = currentDate.format("D");
+    const year1 = currentDate.format("YYYY");
+
+    const weeksDate = currentDate.add(1, 'weeks');
+    const month2 = weeksDate.format("MM");
+    const day2 = weeksDate.format("D");
+    const year2 = weeksDate.format("YYYY");
+    // console.log('day2, month2, year2: ', day2, month2, year2);
+
+    var date1 = day1 + '-' + month1 + '-' + year1;
+    var date2 = day2 + '-' + month2 + '-' + year2;
+
+
+    //===========  data load in ojon chart
+    OjonLoadInTableChart();
+
+
+
+    db.transaction((tx) => {
+      tx.executeSql(
+        'SELECT * FROM ojon_table ',
+        [],
+        (tx, results) => {
+
+          let tableDate = results.rows.item(results.rows.length - 1).week_date;
+          let tableOjonID = results.rows.item(results.rows.length - 1).ojon_id;
+          let tableID = results.rows.item(results.rows.length - 1).id;
+
+          var temp = [];
+          for (let i = 1; i < results.rows.length; ++i) {
+            temp.push({ id: results.rows.item(i).id, week: results.rows.item(i).week, ojon: results.rows.item(i).ojon, current_date: results.rows.item(i).current_date, week_date: results.rows.item(i).week_date });
+
+          }
+
+          if (results.rows.length === 1) {
+            // console.log('previousDate:  ');
+            TableDataInserted(1, ojon, date1, date2);
+            UpdateTableData_2(1, ojon);
+          }
+          else if (results.rows.length === 2) {
+            TableDataInserted(2, ojon, date1, date2);
+            UpdateTableData_2(2, ojon);
+          }
+
+          else if (results.rows.length >= 3 && results.rows.length <= 41) {
+            // console.log('tableOjonId: ', tableID + 1, ' updated date:  ', date1, '  date2: ', date2, '  tableDate: ', tableDate);
+
+            if (tableDate === date1) {
+              // console.log('data inserted')
+              TableDataInserted(tableID + 1, ojon, date1, date2);
+              UpdateTableData_2(tableID + 1, ojon);
+
+            }
+            else {
+              // console.log('data update', tableOjonID);
+              UpdateTableData(tableOjonID, ojon);
+              UpdateTableData_2(tableOjonID - 1, ojon);
+            }
+
+          }
+          else {
+            UpdateTableData(tableOjonID, ojon);
+            UpdateTableData_2(tableOjonID - 1, ojon);
+          }
+
+        }
+      );
+    });
+
+
 
   }
-  // console.log(womenOjon);
+
+  //=============================       UpdatedTableData
+  const UpdateTableData = (id, ojon) => {
+    db.transaction(function (tx) {
+      tx.executeSql(
+        'UPDATE ojon_table set ojon=? where ojon_id=?',
+        [ojon, id],
+        (tx, results) => {
+          console.log('Results UPDATE ojon_table ', results.rowsAffected);
+
+
+        }
+      );
+    });
+
+
+  }
+
+  const UpdateTableData_2 = (id, ojon) => {
+    db.transaction(function (tx) {
+      tx.executeSql(
+        'UPDATE ojon_table_2 set ojon=? where ojon_id=?',
+        [ojon, id],
+        (tx, results) => {
+          console.log('Results UPDATE ojon_table_2 ', results.rowsAffected, ' id: ', id);
+          OjonLoadInTableChart();
+        }
+      );
+    });
+
+
+  }
+
+  //  ========================= TableDataInserted   =========================
+  const TableDataInserted = (id, ojon, date1, date2) => {
+    db.transaction(function (tx) {
+      console.log(' TableDataInserted : ', id, ojon, date1, date2);
+      tx.executeSql(
+        'INSERT INTO ojon_table (id, ojon, current_date, week_date) VALUES (?,?,?,?)',
+        [id, ojon, date1, date2],
+        (tx, results) => {
+          console.log('Results  ojon_table ', results.rowsAffected);
+
+        }
+      );
+    });
+  }
+  //  ======================    OjonLoadInTableChart function      ===============
+
+  const OjonLoadInTableChart = () => {
+    db.transaction(function (tx) {
+      tx.executeSql(
+        'SELECT * FROM ojon_table_2',
+        [],
+        (tx, results) => {
+          var temp = [];
+          for (let i = 0; i < results.rows.length; ++i) {
+            temp.push({ id: results.rows.item(i).id, week: results.rows.item(i).week, ojon: results.rows.item(i).ojon });
+
+          }
+          setWomenOjon(temp);
+
+        }
+      );
+    });
+
+  }
+
+
+
+  //=======================================    for useLess table Data show for testing 
+  const TableShow = () => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        'SELECT * FROM ojon_table ',
+        [],
+        (tx, results) => {
+          console.log(' results.rows.length: ', results.rows.length);
+          var temp = [];
+          for (let i = 0; i < results.rows.length; ++i) {
+            temp.push(results.rows.item(i));
+
+          }
+          console.log(temp);
+
+
+        }
+      );
+    });
+
+    db.transaction((tx) => {
+      tx.executeSql(
+        'SELECT * FROM ojon_table_2 ',
+        [],
+        (tx, results) => {
+          console.log(' results.rows.length: ', results.rows.length);
+          var temp2 = [];
+          for (let i = 0; i < results.rows.length; ++i) {
+            temp2.push(results.rows.item(i));
+
+          }
+          console.log('ojon_table_2: ', temp2);
+        }
+      );
+    });
+  }
+
+
+
+
   return (
     <View style={{ backgroundColor: 'white' }}>
       <View style={styles.appbarView}>
         <Text style={styles.appbarText}> ওজন  </Text>
-        <Button title="click" color="#ad1457" onPress={() => setState(true)} />
+        <Button title="click" color="#ad1457" onPress={() => { setState(true); }} />
 
       </View>
 
@@ -80,7 +327,7 @@ const OjonScreen = () => {
       {/* graph chart  */}
 
       <View style={styles.layoutStyle}>
-        <Text style={styles.weekOjnoTextStyle}>ওজনের ছক</Text>
+        <Text style={styles.weekOjnoTextStyle} onPress={() => TableShow()}>ওজনের ছক</Text>
 
         <View style={{ backgroundColor: 'white', height: 270, }}>
 
@@ -90,15 +337,17 @@ const OjonScreen = () => {
 
       </View>
 
+
       <Dialog
         visible={state}
         onTouchOutside={() => setState(false)}
       >
         {
-          console.log(ojonFirst),
-          ojonFirst ? <DialogOjon setState={setState} addWomenOjon={womenAddOjon} /> :
-            <DialogView setState={setState} addWomenOjon={womenAddOjon} setOjonFirst={setOjonFirst} />
+          // console.log(ojonFirst),
+          ojonFirst ? <DialogOjon SetState={setState} AddWomenOjon={womenAddOjon} /> :
+            <DialogView SetState={setState} AddWomenOjon={womenAddOjon} SetOjonFirst={setOjonFirst} />
         }
+        {/* <DialogView SetState={setState} AddWomenOjon={womenAddOjon} SetOjonFirst={setOjonFirst} /> */}
 
         {/* <DialogView setState={setState} addWomenOjon={womenAddOjon} setOjonFirst={setOjonFirst} /> */}
         {/* <DialogOjon setState={setState} addWomenOjon={womenAddOjon} /> */}

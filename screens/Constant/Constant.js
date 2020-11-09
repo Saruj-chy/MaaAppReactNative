@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-export const databaseName = 'MaaDatabase99.db';
+export const databaseName = 'MaaDatabase129.db';
 
 import { openDatabase } from 'react-native-sqlite-storage';
 var db = openDatabase({ name: databaseName });
@@ -237,6 +237,22 @@ export const ColorArray = [{
   "third": "gray",
   "count": 0
 }];
+
+
+export const ojonSavedValue = [
+  { id: 0, week: 'প্রাথমিক ওজন', ojon: '0.0' },
+  { id: 1, week: '01', ojon: '--' }, { id: 2, week: '02', ojon: '--' }, { id: 3, week: '03', ojon: '--' }, { id: 4, week: '04', ojon: '--' },
+  { id: 5, week: '05', ojon: '--' }, { id: 6, week: '06', ojon: '--' }, { id: 7, week: '07', ojon: '--' }, { id: 8, week: '08', ojon: '--' },
+  { id: 9, week: '09', ojon: '--' }, { id: 10, week: '10', ojon: '--' }, { id: 11, week: '11', ojon: '--' }, { id: 12, week: '12', ojon: '--' },
+  { id: 13, week: '13', ojon: '--' }, { id: 14, week: '14', ojon: '--' }, { id: 15, week: '15', ojon: '--' }, { id: 16, week: '16', ojon: '--' },
+  { id: 17, week: '17', ojon: '--' }, { id: 18, week: '18', ojon: '--' }, { id: 19, week: '19', ojon: '--' }, { id: 20, week: '20', ojon: '--' },
+  { id: 21, week: '21', ojon: '--' }, { id: 22, week: '22', ojon: '--' }, { id: 23, week: '23', ojon: '--' }, { id: 24, week: '24', ojon: '--' },
+  { id: 25, week: '25', ojon: '--' }, { id: 26, week: '26', ojon: '--' }, { id: 27, week: '27', ojon: '--' }, { id: 28, week: '28', ojon: '--' },
+  { id: 29, week: '29', ojon: '--' }, { id: 30, week: '30', ojon: '--' }, { id: 31, week: '31', ojon: '--' }, { id: 32, week: '32', ojon: '--' },
+  { id: 33, week: '33', ojon: '--' }, { id: 34, week: '34', ojon: '--' }, { id: 35, week: '35', ojon: '--' }, { id: 36, week: '36', ojon: '--' },
+  { id: 37, week: '37', ojon: '--' }, { id: 38, week: '38', ojon: '--' }, { id: 39, week: '39', ojon: '--' }, { id: 40, week: '40', ojon: '--' },
+
+]
 
 
 

@@ -32,10 +32,10 @@ const App = () => {
 
       {/* <JigashaScreen /> */}
 
-      {/* <OjonScreen /> */}
+      <OjonScreen />
 
 
-      <NoteScreen />
+      {/* <NoteScreen /> */}
 
       {/* <Testing /> */}
       {/* 

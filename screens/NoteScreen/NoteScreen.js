@@ -28,6 +28,86 @@ const NoteScreen = () => {
     "July", "August", "September", "October", "November", "December"
   ];
 
+  //===================   from App App   create table in db   ==================================
+  useEffect(() => {
+    db.transaction(function (txn) {
+      txn.executeSql(
+        "SELECT name FROM sqlite_master WHERE type='table' AND name='note_lokkon'",
+        [],
+        function (tx, res) {
+          // console.log('item:', res.rows.length);
+          if (res.rows.length == 0) {
+            txn.executeSql('DROP TABLE IF EXISTS note_lokkon', []);
+            txn.executeSql(
+              'CREATE TABLE IF NOT EXISTS note_lokkon(note_id INTEGER PRIMARY KEY AUTOINCREMENT, id INT(10),  first VARCHAR(20), second VARCHAR(20), third VARCHAR(20),count INT(50), date VARCHAR(20), note VARCHAR(1000))',
+              []
+            );
+          }
+        }
+      );
+    });
+  }, []);
+
+  useEffect(() => {
+    db.transaction(function (txn) {
+      txn.executeSql(
+        "SELECT name FROM sqlite_master WHERE type='table' AND name='note_lokhon_table'",
+        [],
+        function (tx, res) {
+          // console.log('item:', res.rows.length);
+          if (res.rows.length == 0) {
+            txn.executeSql('DROP TABLE IF EXISTS note_lokhon_table', []);
+            txn.executeSql(
+              'CREATE TABLE IF NOT EXISTS note_lokhon_table(note_id INTEGER PRIMARY KEY AUTOINCREMENT, id INT(10),  first VARCHAR(20), second VARCHAR(20), third VARCHAR(20), count INT(50), date VARCHAR(20), note VARCHAR(1000))',
+              []
+            );
+          }
+        }
+      );
+    });
+  }, []);
+
+  useEffect(() => {
+    db.transaction(function (txn) {
+      txn.executeSql(
+        "SELECT name FROM sqlite_master WHERE type='table' AND name='note_lokkon_change_color'",
+        [],
+        function (tx, res) {
+          // console.log('item:', res.rows.length);
+          if (res.rows.length == 0) {
+            txn.executeSql('DROP TABLE IF EXISTS note_lokkon_change_color', []);
+            txn.executeSql(
+              'CREATE TABLE IF NOT EXISTS note_lokkon_change_color(note_id INTEGER PRIMARY KEY AUTOINCREMENT, id INT(10),  first VARCHAR(20), second VARCHAR(20), third VARCHAR(20), count INT(50), date VARCHAR(20), note VARCHAR(1000))',
+              []
+            );
+          }
+        }
+      );
+    });
+  }, []);
+
+  useEffect(() => {
+    db.transaction(function (txn) {
+      txn.executeSql(
+        "SELECT name FROM sqlite_master WHERE type='table' AND name='note_save'",
+        [],
+        function (tx, res) {
+          // console.log('item:', res.rows.length);
+          if (res.rows.length == 0) {
+            txn.executeSql('DROP TABLE IF EXISTS note_save', []);
+            txn.executeSql(
+              'CREATE TABLE IF NOT EXISTS note_save(id INTEGER PRIMARY KEY AUTOINCREMENT, date VARCHAR(20), note VARCHAR(1000))',
+              []
+            );
+          }
+        }
+      );
+    });
+  }, []);
+  //---------------------------------              from App App   create table in db           -----------------------------
+
+
+
   //==============   data load when NoteScreen Start   ========================
   useEffect(() => {
     const todayDate = new Date();
@@ -36,9 +116,6 @@ const NoteScreen = () => {
 
 
     db.transaction((tx) => {
-
-
-
       //==================    lokkon details
       tx.executeSql(
         'SELECT * FROM note_lokhon_table WHERE date = ? ',
@@ -192,89 +269,6 @@ const NoteScreen = () => {
   //   -----------------------------     data from note_lokkon  for delete note_lokkon table    --------------------------
 
 
-
-  //===================   from App App   create table in db   ==================================
-
-  useEffect(() => {
-    db.transaction(function (txn) {
-      txn.executeSql(
-        "SELECT name FROM sqlite_master WHERE type='table' AND name='note_lokkon'",
-        [],
-        function (tx, res) {
-          // console.log('item:', res.rows.length);
-          if (res.rows.length == 0) {
-            txn.executeSql('DROP TABLE IF EXISTS note_lokkon', []);
-            txn.executeSql(
-              'CREATE TABLE IF NOT EXISTS note_lokkon(note_id INTEGER PRIMARY KEY AUTOINCREMENT, id INT(10),  first VARCHAR(20), second VARCHAR(20), third VARCHAR(20),count INT(50), date VARCHAR(20), note VARCHAR(1000))',
-              []
-            );
-          }
-        }
-      );
-    });
-  }, []);
-
-
-  useEffect(() => {
-    db.transaction(function (txn) {
-      txn.executeSql(
-        "SELECT name FROM sqlite_master WHERE type='table' AND name='note_lokhon_table'",
-        [],
-        function (tx, res) {
-          // console.log('item:', res.rows.length);
-          if (res.rows.length == 0) {
-            txn.executeSql('DROP TABLE IF EXISTS note_lokhon_table', []);
-            txn.executeSql(
-              'CREATE TABLE IF NOT EXISTS note_lokhon_table(note_id INTEGER PRIMARY KEY AUTOINCREMENT, id INT(10),  first VARCHAR(20), second VARCHAR(20), third VARCHAR(20), count INT(50), date VARCHAR(20), note VARCHAR(1000))',
-              []
-            );
-          }
-        }
-      );
-    });
-  }, []);
-
-  useEffect(() => {
-    db.transaction(function (txn) {
-      txn.executeSql(
-        "SELECT name FROM sqlite_master WHERE type='table' AND name='note_lokkon_change_color'",
-        [],
-        function (tx, res) {
-          // console.log('item:', res.rows.length);
-          if (res.rows.length == 0) {
-            txn.executeSql('DROP TABLE IF EXISTS note_lokkon_change_color', []);
-            txn.executeSql(
-              'CREATE TABLE IF NOT EXISTS note_lokkon_change_color(note_id INTEGER PRIMARY KEY AUTOINCREMENT, id INT(10),  first VARCHAR(20), second VARCHAR(20), third VARCHAR(20), count INT(50), date VARCHAR(20), note VARCHAR(1000))',
-              []
-            );
-          }
-        }
-      );
-    });
-  }, []);
-
-
-
-
-  useEffect(() => {
-    db.transaction(function (txn) {
-      txn.executeSql(
-        "SELECT name FROM sqlite_master WHERE type='table' AND name='note_save'",
-        [],
-        function (tx, res) {
-          // console.log('item:', res.rows.length);
-          if (res.rows.length == 0) {
-            txn.executeSql('DROP TABLE IF EXISTS note_save', []);
-            txn.executeSql(
-              'CREATE TABLE IF NOT EXISTS note_save(id INTEGER PRIMARY KEY AUTOINCREMENT, date VARCHAR(20), note VARCHAR(1000))',
-              []
-            );
-          }
-        }
-      );
-    });
-  }, []);
-  //---------------------------------              from App App   create table in db           -----------------------------
 
 
 

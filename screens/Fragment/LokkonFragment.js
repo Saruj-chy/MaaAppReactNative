@@ -19,8 +19,8 @@ const LokkonFragment = ({ ViewColor, setViewColor, CountClickColor, SetCountClic
   useEffect(() => {
     db.transaction((tx) => {
       tx.executeSql(
-        'SELECT * FROM note_lokkon_change_color ',
-        [],
+        'SELECT * FROM note_lokkon_change_color WHERE date =? ',
+        [CurrentDateNoteTabView.date],
         (tx, results) => {
           var temp = [];
           var temp1 = [];

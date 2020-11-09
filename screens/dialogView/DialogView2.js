@@ -3,7 +3,7 @@ import { Alert, StyleSheet, Text, TextInput, View } from 'react-native';
 
 
 
-const DialogView = ({ SetState, AddWomenOjon, SetOjonFirst }) => {
+const DialogView2 = ({ SetState, AddWomenOjon, SetOjonFirst }) => {
 
   // const { stateSetUp } = props.setUp;
 
@@ -87,7 +87,16 @@ const DialogView = ({ SetState, AddWomenOjon, SetOjonFirst }) => {
 
   const SavedValue = (kilogram) => {
 
-    AddWomenOjon(kilogram);
+    const todayDate = new Date();
+    const dateOf = todayDate.getDate() + "-" + parseInt(todayDate.getMonth() + 1) + "-" + todayDate.getFullYear();
+    console.log('DialogOjon dateOf :   ', dateOf);
+
+    var d = new Date();
+    console.log(' getdate: ', d.getDate() - 9);
+
+    console.log('kilogram: ', kilogram);
+
+    AddWomenOjon(kilogram, dateOf);
     SetState(false);
     SetOjonFirst(true);
 
@@ -165,6 +174,7 @@ const DialogView = ({ SetState, AddWomenOjon, SetOjonFirst }) => {
           <Text style={{ flex: 1, textAlign: 'center', color: '#890e4f' }} onPress={() => SetState(false)} > বাতিল </Text>
           <Text style={{ flex: 1, color: '#890e4f' }}
             onPress={() => {
+
               SavedValue(kilogram);
             }}> সংরক্ষণ </Text>
         </View>
@@ -217,4 +227,4 @@ const styles = StyleSheet.create({
 
 })
 
-export default DialogView;
+export default DialogView2;
