@@ -30,9 +30,9 @@ const App = () => {
   return (
     <View>
 
-      <JigashaScreen />
+      {/* <JigashaScreen /> */}
 
-      {/* <OjonScreen /> */}
+      <OjonScreen />
 
 
       {/* <NoteScreen /> */}

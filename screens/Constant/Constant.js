@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-export const databaseName = 'MaaDatabase129.db';
+export const databaseName = 'MaaDatabase130.db';
 
 import { openDatabase } from 'react-native-sqlite-storage';
 var db = openDatabase({ name: databaseName });

@@ -7,16 +7,21 @@ import DialogOjon from '../dialogView/DialogOjon';
 import moment from "moment";
 import { AllLokkonName, databaseName, ojonSavedValue } from '../Constant/Constant';
 import { openDatabase } from 'react-native-sqlite-storage';
+import LineChartScreen from '../LineChartScreen/LineChartScreen';
+import LineChartScreen2 from '../LineChartScreen/LineChartScreen2';
 
 var db = openDatabase({ name: databaseName });
-
-
+var SharedPreferences = require('react-native-shared-preferences');
 
 const OjonScreen = () => {
 
   const [state, setState] = useState(false);
   const [ojonFirst, setOjonFirst] = useState(false);
   const [womenOjon, setWomenOjon] = useState(ojonSavedValue);
+  const [BMIValue, setBMIValue] = useState('');
+
+
+
 
   //============================    create database table ------------------------------------------
   useEffect(() => {
@@ -93,14 +98,24 @@ const OjonScreen = () => {
 
           }
           else {
-            console.log('ojon_table_2 data load');
+            console.log('ojon_table_2 data load here');
             OjonLoadInTableChart();
             setOjonFirst(true);
+            console.log('BMIValue: ', BMIValue);
+            if (BMIValue === '') {
+              SharedPreferences.getItem("bmi_value", function (value) {
+                console.log(value, '    BMIVALUE  ', BMIValue);
+                setBMIValue(value);
+                SelectedMaxMinWeight(value);
 
+
+              });
+            }
           }
         }
       );
-    });
+    }
+    );
   }, []);
   //------------------------------------------------------------------------------     when table empty initial data load in db    ----------------
 
@@ -148,6 +163,7 @@ const OjonScreen = () => {
             // console.log('previousDate:  ');
             TableDataInserted(1, ojon, date1, date2);
             UpdateTableData_2(1, ojon);
+
           }
           else if (results.rows.length === 2) {
             TableDataInserted(2, ojon, date1, date2);
@@ -225,6 +241,7 @@ const OjonScreen = () => {
         (tx, results) => {
           console.log('Results  ojon_table ', results.rowsAffected);
 
+
         }
       );
     });
@@ -254,6 +271,8 @@ const OjonScreen = () => {
 
   //=======================================    for useLess table Data show for testing 
   const TableShow = () => {
+    // let bmi = 25;
+    // SharedPreferences.setItem("bmi_value", bmi.toString());
     db.transaction((tx) => {
       tx.executeSql(
         'SELECT * FROM ojon_table ',
@@ -289,7 +308,63 @@ const OjonScreen = () => {
     });
   }
 
+  const detailsGraphClicked = () => {
+    // SharedPreferences.getItem("bmi_value", function (value) {
+    //   console.log(value, '    BMIVALUE  ', BMIValue);
+    // });
+  }
 
+
+  let ojonValue = 80;
+
+  //==================================       data show in Graph chart    ====================================
+  const [weightMax, setWeightMax] = useState([]);
+  const [weightMin, setWeightMin] = useState([]);
+
+  const SelectedMaxMinWeight = (BMI) => {
+    let underWtMn = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 5, 0, 0, 0, 9, 0, 0, 0, 13, 0, 0, 0, 17, 0, 0, 0, 20, 0, 22, 0, 24, 25, 26, 27, 28];
+    let underWtMx = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 10, 0, 0, 0, 15, 0, 0, 0, 20, 0, 0, 0, 25, 0, 0, 0, 30, 0, 32, 0, 35, 36, 37, 39, 40];
+    let normalWtMn = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 4, 0, 0, 0, 8, 0, 0, 0, 11, 0, 0, 0, 15, 0, 0, 0, 18, 0, 20, 0, 21, 22, 23, 24, 25];
+    let normalWtMx = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 10, 0, 0, 0, 14, 0, 0, 0, 18, 0, 0, 0, 22, 0, 0, 0, 27, 0, 29, 0, 31, 32, 32, 34, 35];
+    let overWtMn = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 3, 0, 0, 0, 5, 0, 0, 0, 7, 0, 0, 0, 9, 0, 0, 0, 11, 0, 12, 0, 13, 13, 14, 14, 15];
+    let overWtMx = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 8, 0, 0, 0, 11, 0, 0, 0, 14, 0, 0, 0, 17, 0, 0, 0, 19, 0, 21, 0, 22, 23, 23, 24, 25];
+    let obeseWtMn = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 3, 0, 0, 0, 4, 0, 0, 0, 6, 0, 0, 0, 7, 0, 0, 0, 8, 0, 9, 0, 10, 10, 10, 11, 11];
+    let obeseWtMx = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 6, 0, 0, 0, 8, 0, 0, 0, 11, 0, 0, 0, 13, 0, 0, 0, 15, 0, 16, 0, 17, 18, 19, 19, 20];
+    let maxWeight = [], minWeight = [];
+    maxWeight[0] = minWeight[0] = 100;
+
+    let numb = 100 + obeseWtMn[0] / 2.2;
+    // console.log(numb)
+
+    if (BMI < 18.5) {
+      for (let i = 0; i < 40; i++) {
+        maxWeight[i + 1] = parseFloat((maxWeight[0] + underWtMx[i] / 2.2).toFixed(2));
+        minWeight[i + 1] = parseFloat((minWeight[0] + underWtMn[i] / 2.2).toFixed(2));
+      }
+    }
+    else if (BMI >= 18.5 && BMI < 25.0) {
+      //Normal Weight
+      for (let i = 0; i < 40; i++) {
+        maxWeight[i + 1] = parseFloat((maxWeight[0] + normalWtMx[i] / 2.2).toFixed(2));
+        minWeight[i + 1] = parseFloat((minWeight[0] + normalWtMn[i] / 2.2).toFixed(2));
+      }
+    } else if (BMI >= 25.0 && BMI < 30.0) {
+      //Over Weight
+      for (let i = 0; i < 40; i++) {
+        maxWeight[i + 1] = parseFloat((maxWeight[0] + overWtMx[i] / 2.2).toFixed(2));
+        minWeight[i + 1] = parseFloat((minWeight[0] + overWtMn[i] / 2.2).toFixed(2));
+      }
+    } else if (BMI >= 30.0) {
+      // OVISH
+      for (let i = 0; i < 40; i++) {
+        maxWeight[i + 1] = parseFloat((maxWeight[0] + obeseWtMx[i] / 2.2).toFixed(2));
+        minWeight[i + 1] = parseFloat((minWeight[0] + obeseWtMn[i] / 2.2).toFixed(2));
+      }
+    }
+    console.log(' maxWeight:  ', maxWeight, '   minWeight    ', minWeight);
+    setWeightMax(maxWeight);
+    setWeightMin(minWeight);
+  }
 
 
   return (
@@ -329,11 +404,14 @@ const OjonScreen = () => {
       <View style={styles.layoutStyle}>
         <Text style={styles.weekOjnoTextStyle} onPress={() => TableShow()}>ওজনের ছক</Text>
 
-        <View style={{ backgroundColor: 'white', height: 270, }}>
+        <View style={{ backgroundColor: 'white', height: 280, }}>
+
+          {/* <LineChartScreen initialOjon={ojonValue} WeightMax={weightMax} /> */}
+          <LineChartScreen2 WeightMax={weightMax} />
 
         </View>
 
-        <Text style={styles.weekOjnoTextStyle}> বিস্তারিত দেখতে গ্রাফ চাপুন </Text>
+        <Text style={styles.weekOjnoTextStyle} onPress={() => detailsGraphClicked()}> বিস্তারিত দেখতে গ্রাফ চাপুন </Text>
 
       </View>
 
@@ -345,7 +423,7 @@ const OjonScreen = () => {
         {
           // console.log(ojonFirst),
           ojonFirst ? <DialogOjon SetState={setState} AddWomenOjon={womenAddOjon} /> :
-            <DialogView SetState={setState} AddWomenOjon={womenAddOjon} SetOjonFirst={setOjonFirst} />
+            <DialogView SetState={setState} AddWomenOjon={womenAddOjon} SetOjonFirst={setOjonFirst} SetBMIValue={setBMIValue} />
         }
         {/* <DialogView SetState={setState} AddWomenOjon={womenAddOjon} SetOjonFirst={setOjonFirst} /> */}
 
@@ -353,8 +431,6 @@ const OjonScreen = () => {
         {/* <DialogOjon setState={setState} addWomenOjon={womenAddOjon} /> */}
 
       </Dialog>
-
-
 
 
 

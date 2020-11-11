@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Alert, StyleSheet, Text, TextInput, View } from 'react-native';
+var SharedPreferences = require('react-native-shared-preferences');
 
 
 
-const DialogView = ({ SetState, AddWomenOjon, SetOjonFirst }) => {
+const DialogView = ({ SetState, AddWomenOjon, SetOjonFirst, SetBMIValue }) => {
 
   // const { stateSetUp } = props.setUp;
 
@@ -43,6 +44,7 @@ const DialogView = ({ SetState, AddWomenOjon, SetOjonFirst }) => {
     const result = feetValue.toFixed(1).toString();
     const arrayValue = (result + "").split(".");
 
+    setCmValue(text);
     setFeet(arrayValue[0]);
     setInch(arrayValue[1]);
   }
@@ -60,9 +62,6 @@ const DialogView = ({ SetState, AddWomenOjon, SetOjonFirst }) => {
     console.log(centValue);
 
     handleFeetInch(centValue);
-
-
-
   }
   const handleAddInch = text => {
     const centValue = { ...cent, inch: text };
@@ -90,13 +89,22 @@ const DialogView = ({ SetState, AddWomenOjon, SetOjonFirst }) => {
       AddWomenOjon(kilogram);
       SetState(false);
       SetOjonFirst(true);
+      // console.log('Inch :   ', cmValue);
+      const bmi = CalculateBMI(kilogram, cmValue);
+      // console.log('bmi saved:  ', bmi);
+      SetBMIValue(bmi);
+      SharedPreferences.setItem("bmi_value", bmi.toString());
     }
     else {
       alert('please fill all field');
     }
+  }
 
-
-
+  const CalculateBMI = (kilogram, cmValue) => {
+    let bmi, squareMeter;
+    squareMeter = cmValue / 100;
+    bmi = kilogram / (squareMeter * squareMeter);
+    return bmi;
   }
 
 
