@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { Alert, StyleSheet, Text, TextInput, View } from 'react-native';
-var SharedPreferences = require('react-native-shared-preferences');
 
 
 
-const DialogView = ({ SetState, AddWomenOjon, SetOjonFirst, SetBMIValue }) => {
+const DialogView2 = ({ SetState, AddWomenOjon, SetOjonFirst }) => {
 
   // const { stateSetUp } = props.setUp;
 
@@ -44,7 +43,6 @@ const DialogView = ({ SetState, AddWomenOjon, SetOjonFirst, SetBMIValue }) => {
     const result = feetValue.toFixed(1).toString();
     const arrayValue = (result + "").split(".");
 
-    setCmValue(text);
     setFeet(arrayValue[0]);
     setInch(arrayValue[1]);
   }
@@ -62,6 +60,9 @@ const DialogView = ({ SetState, AddWomenOjon, SetOjonFirst, SetBMIValue }) => {
     console.log(centValue);
 
     handleFeetInch(centValue);
+
+
+
   }
   const handleAddInch = text => {
     const centValue = { ...cent, inch: text };
@@ -85,26 +86,20 @@ const DialogView = ({ SetState, AddWomenOjon, SetOjonFirst, SetBMIValue }) => {
   //========================          SavedValue
 
   const SavedValue = (kilogram) => {
-    if (clickPound || clickKg && cmState || feetState) {
-      AddWomenOjon(kilogram);
-      SetState(false);
-      SetOjonFirst(true);
-      // console.log('Inch :   ', cmValue);
-      const bmi = CalculateBMI(kilogram, cmValue);
-      // console.log('bmi saved:  ', bmi);
-      SetBMIValue(bmi);
-      SharedPreferences.setItem("bmi_value", bmi.toString());
-    }
-    else {
-      alert('please fill all field');
-    }
-  }
 
-  const CalculateBMI = (kilogram, cmValue) => {
-    let bmi, squareMeter;
-    squareMeter = cmValue / 100;
-    bmi = kilogram / (squareMeter * squareMeter);
-    return bmi;
+    const todayDate = new Date();
+    const dateOf = todayDate.getDate() + "-" + parseInt(todayDate.getMonth() + 1) + "-" + todayDate.getFullYear();
+    console.log('DialogOjon dateOf :   ', dateOf);
+
+    var d = new Date();
+    console.log(' getdate: ', d.getDate() - 9);
+
+    console.log('kilogram: ', kilogram);
+
+    AddWomenOjon(kilogram, dateOf);
+    SetState(false);
+    SetOjonFirst(true);
+
   }
 
 
@@ -179,6 +174,7 @@ const DialogView = ({ SetState, AddWomenOjon, SetOjonFirst, SetBMIValue }) => {
           <Text style={{ flex: 1, textAlign: 'center', color: '#890e4f' }} onPress={() => SetState(false)} > বাতিল </Text>
           <Text style={{ flex: 1, color: '#890e4f' }}
             onPress={() => {
+
               SavedValue(kilogram);
             }}> সংরক্ষণ </Text>
         </View>
@@ -231,4 +227,4 @@ const styles = StyleSheet.create({
 
 })
 
-export default DialogView;
+export default DialogView2;

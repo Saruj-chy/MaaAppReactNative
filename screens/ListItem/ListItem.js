@@ -23,7 +23,7 @@ const ListItem = (props) => {
     <View style={styles.container}>
       <Text style={styles.titleStyle} onPress={handleList}>{id}: {title}</Text>
       {
-        position && state && <Text style={styles.descStyle} visibility={true}> {desc} </Text>
+        position && state && <Text style={styles.descStyle} > {desc} </Text>
       }
 
     </View>

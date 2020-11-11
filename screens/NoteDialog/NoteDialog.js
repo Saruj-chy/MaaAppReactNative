@@ -1,28 +1,40 @@
-import React, { useContext, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import NoteTabView from '../NoteTabView/NoteTabView';
+import { databaseName } from '../Constant/Constant';
+import { openDatabase } from 'react-native-sqlite-storage';
+
+var db = openDatabase({ name: databaseName });
+var SharedPreferences = require('react-native-shared-preferences');
 
 
+const NoteDialog = ({ CurrentDate, SetState }) => {
+
+  useEffect(() => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        'SELECT * FROM note_lokkon_change_color ',
+        [],
+        (tx, results) => {
+          var temp = [];
+          for (let i = 0; i < results.rows.length; ++i) {
+            temp.push(results.rows.item(i));
+          }
 
 
-const NoteDialog = (props) => {
-
-
+        }
+      );
+    });
+  }, []);
 
   return (
     <View style={styles.dialogContainer}>
       <Text style={styles.dialogText}>আজ কেমন অনুভব করছেন? </Text>
-      <Text style={{ fontSize: 16, color: 'white', marginHorizontal: 15 }}>October 21, 2020 </Text>
-      <View style={{ backgroundColor: 'white', height: 250 }}>
+      <Text style={{ fontSize: 16, color: 'white', marginHorizontal: 15 }}>{CurrentDate.month} {CurrentDate.day}, {CurrentDate.year} </Text>
+      <View style={{ backgroundColor: 'white', height: 350 }}>
 
-        <NoteTabView />
+        <NoteTabView CurrentDateNoteDialog={CurrentDate} SetState={SetState} />
 
-      </View>
-
-      <View style={{ flexDirection: 'row', paddingVertical: 20, backgroundColor: 'white', borderColor: 'gray', borderTopWidth: 0.3 }} >
-        <Text style={{ flex: 2 }}></Text>
-        <Text style={{ flex: 1, textAlign: 'center', color: 'green' }} onPress={() => props.setState(false)}  > বাতিল </Text>
-        <Text style={{ flex: 1, color: 'green' }} > সংরক্ষণ </Text>
       </View>
 
     </View>
