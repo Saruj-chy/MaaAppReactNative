@@ -8,7 +8,7 @@ import {
 
 import { LineChart } from 'react-native-charts-wrapper';
 
-const LineChartScreen = ({ initialOjon, WeightMax }) => {
+const LineChartScreen = ({ initialOjon, WeightMax, WeightMin }) => {
 
   // const [weightMax, setWeightMax] = useState([]);
   // const [weightMin, setWeightMin] = useState([]);
@@ -78,28 +78,28 @@ const LineChartScreen = ({ initialOjon, WeightMax }) => {
 
   }
   // const weight2 = DataValues(weightMax);
-  // console.log('object:  ', weightMax[0]);
+  // console.log('object:  ', WeightMax.length);
 
   const DataSets = {
     dataSets: [{
       values: [
-        { x: 0, y: normalWtMn[0] }, { x: 1, y: initialOjon + 1 }, { x: 2, y: initialOjon + 2 }, { x: 3, y: initialOjon + 3 }, { x: 4, y: initialOjon + 4 },
-        { x: 5, y: initialOjon + 5 }, { x: 6, y: initialOjon + 6 }, { x: 7, y: initialOjon + 7 }, { x: 8, y: initialOjon + 8 }, { x: 9, y: initialOjon + 9 },
-        { x: 10, y: initialOjon + 10 }, { x: 11, y: initialOjon + 11 }, { x: 12, y: initialOjon + 12 }, { x: 13, y: initialOjon + 13 }, { x: 13, y: initialOjon + 14 },
-        { x: 15, y: initialOjon + 15 }, { x: 16, y: initialOjon + 16 }, { x: 17, y: initialOjon + 17 }, { x: 18, y: initialOjon + 18 }, { x: 19, y: initialOjon + 19 },
-        { x: 20, y: initialOjon + 20 }, { x: 21, y: initialOjon + 21 }, { x: 22, y: initialOjon + 22 }, { x: 23, y: initialOjon + 23 }, { x: 24, y: initialOjon + 24 },
-        { x: 25, y: initialOjon + 25 }, { x: 26, y: initialOjon + 26 }, { x: 27, y: initialOjon + 27 }, { x: 28, y: initialOjon + 28 }, { x: 29, y: initialOjon + 29 },
-        { x: 30, y: initialOjon + 30 }, { x: 31, y: initialOjon + 31 }, { x: 32, y: initialOjon + 32 }, { x: 33, y: initialOjon + 33 }, { x: 34, y: initialOjon + 34 },
-        { x: 35, y: initialOjon + 35 }, { x: 36, y: initialOjon + 36 }, { x: 37, y: initialOjon + 37 }, { x: 38, y: initialOjon + 38 }, { x: 39, y: initialOjon + 39 }, { x: 40, y: initialOjon + 40 }
+        { x: 0, y: WeightMax[0] }, { x: 1, y: WeightMax[1] }, { x: 2, y: WeightMax[2] }, { x: 3, y: WeightMax[3] }, { x: 4, y: WeightMax[4] },
+        { x: 5, y: WeightMax[5] }, { x: 6, y: WeightMax[6] }, { x: 7, y: WeightMax[7] }, { x: 8, y: WeightMax[8] }, { x: 9, y: WeightMax[9] },
+        { x: 10, y: WeightMax[10] }, { x: 11, y: WeightMax[11] }, { x: 12, y: WeightMax[12] }, { x: 13, y: WeightMax[13] }, { x: 13, y: WeightMax[14] },
+        { x: 15, y: WeightMax[15] }, { x: 16, y: WeightMax[16] }, { x: 17, y: WeightMax[17] }, { x: 18, y: WeightMax[18] }, { x: 19, y: WeightMax[19] },
+        { x: 20, y: WeightMax[20] }, { x: 21, y: WeightMax[21] }, { x: 22, y: WeightMax[22] }, { x: 23, y: WeightMax[23] }, { x: 24, y: WeightMax[24] },
+        { x: 25, y: WeightMax[25] }, { x: 26, y: WeightMax[26] }, { x: 27, y: WeightMax[27] }, { x: 28, y: WeightMax[28] }, { x: 29, y: WeightMax[29] },
+        { x: 30, y: WeightMax[30] }, { x: 31, y: WeightMax[31] }, { x: 32, y: WeightMax[32] }, { x: 33, y: WeightMax[33] }, { x: 34, y: WeightMax[34] },
+        { x: 35, y: WeightMax[35] }, { x: 36, y: WeightMax[36] }, { x: 37, y: WeightMax[37] }, { x: 38, y: WeightMax[38] }, { x: 39, y: WeightMax[39] }, { x: 40, y: WeightMax[40] }
       ],
       label: 'ন্যূনত্বম ওজন ',
       config: ConfigA
     }, {
       values: [
-        { x: 0, y: 80 },
-        { x: 1, y: 85 },
-        { x: 5, y: 90 },
-        { x: 10, y: 95 },
+        { x: 0, y: 100 },
+        { x: 1, y: 101 },
+        { x: 5, y: 102 },
+        { x: 10, y: 103 },
         { x: 15, y: 105 },
 
       ],
@@ -107,14 +107,14 @@ const LineChartScreen = ({ initialOjon, WeightMax }) => {
       config: ConfigB
     }, {
       values: [
-        { x: 0, y: initialOjon }, { x: 1, y: initialOjon + 3 }, { x: 2, y: initialOjon + 4 }, { x: 3, y: initialOjon + 6 }, { x: 4, y: initialOjon + 8 },
-        { x: 5, y: initialOjon + 9 }, { x: 6, y: initialOjon + 10 }, { x: 7, y: initialOjon + 11 }, { x: 8, y: initialOjon + 13 }, { x: 9, y: initialOjon + 14 },
-        { x: 10, y: initialOjon + 15 }, { x: 11, y: initialOjon + 16 }, { x: 12, y: initialOjon + 17 }, { x: 13, y: initialOjon + 18 }, { x: 13, y: initialOjon + 19 },
-        { x: 15, y: initialOjon + 20 }, { x: 16, y: initialOjon + 21 }, { x: 17, y: initialOjon + 23 }, { x: 18, y: initialOjon + 25 }, { x: 19, y: initialOjon + 24 },
-        { x: 20, y: initialOjon + 25 }, { x: 21, y: initialOjon + 26 }, { x: 22, y: initialOjon + 28 }, { x: 23, y: initialOjon + 27 }, { x: 24, y: initialOjon + 28 },
-        { x: 25, y: initialOjon + 30 }, { x: 26, y: initialOjon + 31 }, { x: 27, y: initialOjon + 32 }, { x: 28, y: initialOjon + 34 }, { x: 29, y: initialOjon + 33 },
-        { x: 30, y: initialOjon + 35 }, { x: 31, y: initialOjon + 36 }, { x: 32, y: initialOjon + 37 }, { x: 33, y: initialOjon + 38 }, { x: 34, y: initialOjon + 39 },
-        { x: 35, y: initialOjon + 40 }, { x: 36, y: initialOjon + 42 }, { x: 37, y: initialOjon + 41 }, { x: 38, y: initialOjon + 44 }, { x: 39, y: initialOjon + 47 }, { x: 40, y: initialOjon + 50 }
+        { x: 0, y: WeightMin[0] }, { x: 1, y: WeightMin[1] }, { x: 2, y: WeightMin[2] }, { x: 3, y: WeightMin[3] }, { x: 4, y: WeightMin[4] },
+        { x: 5, y: WeightMin[5] }, { x: 6, y: WeightMin[6] }, { x: 7, y: WeightMin[7] }, { x: 8, y: WeightMin[8] }, { x: 9, y: WeightMin[9] },
+        { x: 10, y: WeightMin[10] }, { x: 11, y: WeightMin[11] }, { x: 12, y: WeightMin[12] }, { x: 13, y: WeightMin[13] }, { x: 13, y: WeightMin[14] },
+        { x: 15, y: WeightMin[15] }, { x: 16, y: WeightMin[16] }, { x: 17, y: WeightMin[17] }, { x: 18, y: WeightMin[18] }, { x: 19, y: WeightMin[19] },
+        { x: 20, y: WeightMin[20] }, { x: 21, y: WeightMin[21] }, { x: 22, y: WeightMin[22] }, { x: 23, y: WeightMin[23] }, { x: 24, y: WeightMin[24] },
+        { x: 25, y: WeightMin[25] }, { x: 26, y: WeightMin[26] }, { x: 27, y: WeightMin[27] }, { x: 28, y: WeightMin[28] }, { x: 29, y: WeightMin[29] },
+        { x: 30, y: WeightMin[30] }, { x: 31, y: WeightMin[31] }, { x: 32, y: WeightMin[32] }, { x: 33, y: WeightMin[33] }, { x: 34, y: WeightMin[34] },
+        { x: 35, y: WeightMin[35] }, { x: 36, y: WeightMin[36] }, { x: 37, y: WeightMin[37] }, { x: 38, y: WeightMin[38] }, { x: 39, y: WeightMin[39] }, { x: 40, y: WeightMin[40] }
       ],
       label: ' সর্বোচ্চ ওজন',
       config: ConfigC
@@ -139,50 +139,6 @@ const LineChartScreen = ({ initialOjon, WeightMax }) => {
   }
 
 
-  // const SelectedMaxMinWeight = (BMI) => {
-  //   let underWtMn = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 5, 0, 0, 0, 9, 0, 0, 0, 13, 0, 0, 0, 17, 0, 0, 0, 20, 0, 22, 0, 24, 25, 26, 27, 28];
-  //   let underWtMx = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 10, 0, 0, 0, 15, 0, 0, 0, 20, 0, 0, 0, 25, 0, 0, 0, 30, 0, 32, 0, 35, 36, 37, 39, 40];
-  //   let normalWtMn = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 4, 0, 0, 0, 8, 0, 0, 0, 11, 0, 0, 0, 15, 0, 0, 0, 18, 0, 20, 0, 21, 22, 23, 24, 25];
-  //   let normalWtMx = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 10, 0, 0, 0, 14, 0, 0, 0, 18, 0, 0, 0, 22, 0, 0, 0, 27, 0, 29, 0, 31, 32, 32, 34, 35];
-  //   let overWtMn = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 3, 0, 0, 0, 5, 0, 0, 0, 7, 0, 0, 0, 9, 0, 0, 0, 11, 0, 12, 0, 13, 13, 14, 14, 15];
-  //   let overWtMx = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 8, 0, 0, 0, 11, 0, 0, 0, 14, 0, 0, 0, 17, 0, 0, 0, 19, 0, 21, 0, 22, 23, 23, 24, 25];
-  //   let obeseWtMn = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 3, 0, 0, 0, 4, 0, 0, 0, 6, 0, 0, 0, 7, 0, 0, 0, 8, 0, 9, 0, 10, 10, 10, 11, 11];
-  //   let obeseWtMx = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 6, 0, 0, 0, 8, 0, 0, 0, 11, 0, 0, 0, 13, 0, 0, 0, 15, 0, 16, 0, 17, 18, 19, 19, 20];
-  //   let maxWeight = [], minWeight = [];
-  //   maxWeight[0] = minWeight[0] = 100;
-
-  //   let numb = 100 + obeseWtMn[0] / 2.2;
-  //   console.log(numb)
-
-  //   if (BMI < 18.5) {
-  //     for (let i = 0; i < 40; i++) {
-  //       maxWeight[i + 1] = parseFloat((maxWeight[0] + underWtMx[i] / 2.2).toFixed(2));
-  //       minWeight[i + 1] = parseFloat((minWeight[0] + underWtMn[i] / 2.2).toFixed(2));
-  //     }
-  //   }
-  //   else if (BMI >= 18.5 && BMI < 25.0) {
-  //     //Normal Weight
-  //     for (let i = 0; i < 40; i++) {
-  //       maxWeight[i + 1] = parseFloat((maxWeight[0] + normalWtMx[i] / 2.2).toFixed(2));
-  //       minWeight[i + 1] = parseFloat((minWeight[0] + normalWtMn[i] / 2.2).toFixed(2));
-  //     }
-  //   } else if (BMI >= 25.0 && BMI < 30.0) {
-  //     //Over Weight
-  //     for (let i = 0; i < 40; i++) {
-  //       maxWeight[i + 1] = parseFloat((maxWeight[0] + overWtMx[i] / 2.2).toFixed(2));
-  //       minWeight[i + 1] = parseFloat((minWeight[0] + overWtMn[i] / 2.2).toFixed(2));
-  //     }
-  //   } else if (BMI >= 30.0) {
-  //     // OVISH
-  //     for (let i = 0; i < 40; i++) {
-  //       maxWeight[i + 1] = parseFloat((maxWeight[0] + obeseWtMx[i] / 2.2).toFixed(2));
-  //       minWeight[i + 1] = parseFloat((minWeight[0] + obeseWtMn[i] / 2.2).toFixed(2));
-  //     }
-  //   }
-  //   // console.log(' maxWeight:  ', maxWeight, '   minWeight    ', minWeight);
-  //   setWeightMax(maxWeight);
-  //   setWeightMin(minWeight);
-  // }
 
   return (
     <View style={{ flex: 1 }}>

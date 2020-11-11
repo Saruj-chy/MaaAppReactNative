@@ -94,6 +94,7 @@ const DialogView = ({ SetState, AddWomenOjon, SetOjonFirst, SetBMIValue }) => {
       // console.log('bmi saved:  ', bmi);
       SetBMIValue(bmi);
       SharedPreferences.setItem("bmi_value", bmi.toString());
+      SharedPreferences.setItem("initial_ojon", kilogram.toString());
     }
     else {
       alert('please fill all field');

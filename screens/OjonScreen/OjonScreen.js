@@ -14,6 +14,10 @@ var db = openDatabase({ name: databaseName });
 var SharedPreferences = require('react-native-shared-preferences');
 
 const OjonScreen = () => {
+  let underWeightMax = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  let underWeightMin = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  const [weightMax, setWeightMax] = useState(underWeightMax);
+  const [weightMin, setWeightMin] = useState(underWeightMin);
 
   const [state, setState] = useState(false);
   const [ojonFirst, setOjonFirst] = useState(false);
@@ -103,12 +107,18 @@ const OjonScreen = () => {
             setOjonFirst(true);
             console.log('BMIValue: ', BMIValue);
             if (BMIValue === '') {
-              SharedPreferences.getItem("bmi_value", function (value) {
-                console.log(value, '    BMIVALUE  ', BMIValue);
-                setBMIValue(value);
-                SelectedMaxMinWeight(value);
+              // SharedPreferences.getItem(['bmi_value', 'initial_ojon'], function (value) {
+              //   // console.log(parseFloat(value[0]), '    BMIVALUE  ', parseFloat(value[1]));
+              //   // setBMIValue(value[0]);
+              //   // SelectedMaxMinWeight(value[0], value[1]);
 
 
+              // });
+              SharedPreferences.getItems(['bmi_value', 'initial_ojon'], function (values) {
+                console.log(values)
+                console.log(parseFloat(values[0]), '    BMIVALUE  ', parseFloat(values[1]));
+                setBMIValue(values[0]);
+                SelectedMaxMinWeight(parseFloat(values[0]), parseFloat(values[1]));
               });
             }
           }
@@ -309,32 +319,30 @@ const OjonScreen = () => {
   }
 
   const detailsGraphClicked = () => {
-    // SharedPreferences.getItem("bmi_value", function (value) {
-    //   console.log(value, '    BMIVALUE  ', BMIValue);
-    // });
+    SharedPreferences.getItems(['bmi_value', 'initial_ojon'], function (values) {
+      console.log(values)
+    });
   }
 
 
   let ojonValue = 80;
 
   //==================================       data show in Graph chart    ====================================
-  const [weightMax, setWeightMax] = useState([]);
-  const [weightMin, setWeightMin] = useState([]);
 
-  const SelectedMaxMinWeight = (BMI) => {
-    let underWtMn = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 5, 0, 0, 0, 9, 0, 0, 0, 13, 0, 0, 0, 17, 0, 0, 0, 20, 0, 22, 0, 24, 25, 26, 27, 28];
-    let underWtMx = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 10, 0, 0, 0, 15, 0, 0, 0, 20, 0, 0, 0, 25, 0, 0, 0, 30, 0, 32, 0, 35, 36, 37, 39, 40];
-    let normalWtMn = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 4, 0, 0, 0, 8, 0, 0, 0, 11, 0, 0, 0, 15, 0, 0, 0, 18, 0, 20, 0, 21, 22, 23, 24, 25];
-    let normalWtMx = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 10, 0, 0, 0, 14, 0, 0, 0, 18, 0, 0, 0, 22, 0, 0, 0, 27, 0, 29, 0, 31, 32, 32, 34, 35];
-    let overWtMn = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 3, 0, 0, 0, 5, 0, 0, 0, 7, 0, 0, 0, 9, 0, 0, 0, 11, 0, 12, 0, 13, 13, 14, 14, 15];
-    let overWtMx = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 8, 0, 0, 0, 11, 0, 0, 0, 14, 0, 0, 0, 17, 0, 0, 0, 19, 0, 21, 0, 22, 23, 23, 24, 25];
-    let obeseWtMn = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 3, 0, 0, 0, 4, 0, 0, 0, 6, 0, 0, 0, 7, 0, 0, 0, 8, 0, 9, 0, 10, 10, 10, 11, 11];
-    let obeseWtMx = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 6, 0, 0, 0, 8, 0, 0, 0, 11, 0, 0, 0, 13, 0, 0, 0, 15, 0, 16, 0, 17, 18, 19, 19, 20];
+
+  const SelectedMaxMinWeight = (BMI, ojonValue) => {
+    let underWtMn = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 5, 0, 0, 0, 9, 0, 0, 0, 13, 0, 0, 0, 17, 0, 0, 0, 20, 0, 22, 0, 24, 25, 26, 27, 28, 29];
+    let underWtMx = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 10, 0, 0, 0, 15, 0, 0, 0, 20, 0, 0, 0, 25, 0, 0, 0, 30, 0, 32, 0, 35, 36, 37, 39, 40, 41];
+    let normalWtMn = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 4, 0, 0, 0, 8, 0, 0, 0, 11, 0, 0, 0, 15, 0, 0, 0, 18, 0, 20, 0, 21, 22, 23, 24, 25, 26];
+    let normalWtMx = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 10, 0, 0, 0, 14, 0, 0, 0, 18, 0, 0, 0, 22, 0, 0, 0, 27, 0, 29, 0, 31, 32, 32, 34, 35, 27];
+    let overWtMn = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 3, 0, 0, 0, 5, 0, 0, 0, 7, 0, 0, 0, 9, 0, 0, 0, 11, 0, 12, 0, 13, 13, 14, 14, 15, 26];
+    let overWtMx = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 8, 0, 0, 0, 11, 0, 0, 0, 14, 0, 0, 0, 17, 0, 0, 0, 19, 0, 21, 0, 22, 23, 23, 24, 25, 26];
+    let obeseWtMn = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 3, 0, 0, 0, 4, 0, 0, 0, 6, 0, 0, 0, 7, 0, 0, 0, 8, 0, 9, 0, 10, 10, 10, 11, 11, 12];
+    let obeseWtMx = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 6, 0, 0, 0, 8, 0, 0, 0, 11, 0, 0, 0, 13, 0, 0, 0, 15, 0, 16, 0, 17, 18, 19, 19, 20, 21];
     let maxWeight = [], minWeight = [];
-    maxWeight[0] = minWeight[0] = 100;
+    maxWeight[0] = minWeight[0] = ojonValue;
 
-    let numb = 100 + obeseWtMn[0] / 2.2;
-    // console.log(numb)
+    console.log(' underWtMn: ', underWtMn.length, ' underWtMx: ', underWtMx.length, ' normalWtMn: ', normalWtMn.length, ' normalWtMx: ', normalWtMx.length, ' overWtMn: ', overWtMn.length, ' overWtMx: ', overWtMx.length, ' obeseWtMn: ', obeseWtMn.length, ' overWtMx: ', overWtMx.length)
 
     if (BMI < 18.5) {
       for (let i = 0; i < 40; i++) {
@@ -406,8 +414,8 @@ const OjonScreen = () => {
 
         <View style={{ backgroundColor: 'white', height: 280, }}>
 
-          {/* <LineChartScreen initialOjon={ojonValue} WeightMax={weightMax} /> */}
-          <LineChartScreen2 WeightMax={weightMax} />
+          <LineChartScreen initialOjon={ojonValue} WeightMax={weightMax} WeightMin={weightMin} />
+          {/* <LineChartScreen2 WeightMax={weightMax} /> */}
 
         </View>
 

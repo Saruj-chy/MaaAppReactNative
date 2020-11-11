@@ -13,9 +13,8 @@ import { LineChart } from 'react-native-charts-wrapper';
 
 class LineChartScreen2 extends React.Component {
 
-  constructor() {
-    super();
-    console.log('object  LineChart 2 ', this.props.WeightMax);
+  constructor(props) {
+    super(props);
 
     this.state = {
       data: {},
@@ -79,8 +78,8 @@ class LineChartScreen2 extends React.Component {
               }
             }, {
               values: [
-                { x: 1, y: 11000, marker: "a very long long long long long long long long \nmarker at top left" },
-                { x: 20, y: 90, marker: "eat eat eat, never\n stop eat" },
+                { x: 1, y: this.props.WeightMax[0], marker: "a very long long long long long long long long \nmarker at top left" },
+                { x: 20, y: this.props.WeightMax[10], marker: "eat eat eat, never\n stop eat" },
                 { x: 40, y: -130, marker: "" },
                 { x: 65, y: 11000, marker: "test top center marker" },
                 { x: 70, y: -2000, marker: "eat more" },
@@ -122,6 +121,7 @@ class LineChartScreen2 extends React.Component {
     } else {
       this.setState({ ...this.state, selectedEntry: JSON.stringify(entry) })
     }
+    console.log('object  LineChart 2 ', this.props.WeightMax[0]);
 
     console.log(event.nativeEvent)
   }
@@ -159,7 +159,7 @@ class LineChartScreen2 extends React.Component {
             xAxis={this.state.xAxis}
 
 
-          // onSelect={this.handleSelect.bind(this)}
+            onSelect={this.handleSelect.bind(this)}
           // onChange={(event) => console.log(event.nativeEvent)}
 
           // ref="chart"

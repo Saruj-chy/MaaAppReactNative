@@ -14,7 +14,6 @@ import PickerShow from './screens/dialogView/PickerShow'
 import NoteScreen from './screens/NoteScreen/NoteScreen';
 import Testing from './screens/Test/Testing';
 import NoteTabView from './screens/NoteTabView/NoteTabView';
-import Register from './screens/Register/Register';
 
 
 
