@@ -14,10 +14,10 @@ var db = openDatabase({ name: databaseName });
 var SharedPreferences = require('react-native-shared-preferences');
 
 const OjonScreen = () => {
-  let underWeightMax = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-  let underWeightMin = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-  const [weightMax, setWeightMax] = useState(underWeightMax);
-  const [weightMin, setWeightMin] = useState(underWeightMin);
+  let underWeight = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+  const [weightMax, setWeightMax] = useState(underWeight);
+  const [weightMin, setWeightMin] = useState(underWeight);
 
   const [state, setState] = useState(false);
   const [ojonFirst, setOjonFirst] = useState(false);
@@ -81,7 +81,7 @@ const OjonScreen = () => {
                 'INSERT INTO ojon_table (id, ojon, current_date, week_date) VALUES (?,?,?,?)',
                 [0, 0, 'date1', 'date2'],
                 (tx, results) => {
-                  console.log('Results  ojon_table initial ', results.rowsAffected);
+                  // console.log('Results  ojon_table initial ', results.rowsAffected);
 
                 }
               );
@@ -102,21 +102,10 @@ const OjonScreen = () => {
 
           }
           else {
-            console.log('ojon_table_2 data load here');
             OjonLoadInTableChart();
             setOjonFirst(true);
-            console.log('BMIValue: ', BMIValue);
             if (BMIValue === '') {
-              // SharedPreferences.getItem(['bmi_value', 'initial_ojon'], function (value) {
-              //   // console.log(parseFloat(value[0]), '    BMIVALUE  ', parseFloat(value[1]));
-              //   // setBMIValue(value[0]);
-              //   // SelectedMaxMinWeight(value[0], value[1]);
-
-
-              // });
               SharedPreferences.getItems(['bmi_value', 'initial_ojon'], function (values) {
-                console.log(values)
-                console.log(parseFloat(values[0]), '    BMIVALUE  ', parseFloat(values[1]));
                 setBMIValue(values[0]);
                 SelectedMaxMinWeight(parseFloat(values[0]), parseFloat(values[1]));
               });
@@ -216,7 +205,7 @@ const OjonScreen = () => {
         'UPDATE ojon_table set ojon=? where ojon_id=?',
         [ojon, id],
         (tx, results) => {
-          console.log('Results UPDATE ojon_table ', results.rowsAffected);
+          // console.log('Results UPDATE ojon_table ', results.rowsAffected);
 
 
         }
@@ -232,7 +221,7 @@ const OjonScreen = () => {
         'UPDATE ojon_table_2 set ojon=? where ojon_id=?',
         [ojon, id],
         (tx, results) => {
-          console.log('Results UPDATE ojon_table_2 ', results.rowsAffected, ' id: ', id);
+          // console.log('Results UPDATE ojon_table_2 ', results.rowsAffected, ' id: ', id);
           OjonLoadInTableChart();
         }
       );
@@ -249,7 +238,7 @@ const OjonScreen = () => {
         'INSERT INTO ojon_table (id, ojon, current_date, week_date) VALUES (?,?,?,?)',
         [id, ojon, date1, date2],
         (tx, results) => {
-          console.log('Results  ojon_table ', results.rowsAffected);
+          // console.log('Results  ojon_table ', results.rowsAffected);
 
 
         }
@@ -283,95 +272,158 @@ const OjonScreen = () => {
   const TableShow = () => {
     // let bmi = 25;
     // SharedPreferences.setItem("bmi_value", bmi.toString());
-    db.transaction((tx) => {
-      tx.executeSql(
-        'SELECT * FROM ojon_table ',
-        [],
-        (tx, results) => {
-          console.log(' results.rows.length: ', results.rows.length);
-          var temp = [];
-          for (let i = 0; i < results.rows.length; ++i) {
-            temp.push(results.rows.item(i));
+    // db.transaction((tx) => {
+    //   tx.executeSql(
+    //     'SELECT * FROM ojon_table ',
+    //     [],
+    //     (tx, results) => {
+    //       console.log(' results.rows.length: ', results.rows.length);
+    //       var temp = [];
+    //       for (let i = 0; i < results.rows.length; ++i) {
+    //         temp.push(results.rows.item(i));
 
-          }
-          console.log(temp);
+    //       }
+    //       // console.log(temp);
 
 
-        }
-      );
-    });
+    //     }
+    //   );
+    // });
 
-    db.transaction((tx) => {
-      tx.executeSql(
-        'SELECT * FROM ojon_table_2 ',
-        [],
-        (tx, results) => {
-          console.log(' results.rows.length: ', results.rows.length);
-          var temp2 = [];
-          for (let i = 0; i < results.rows.length; ++i) {
-            temp2.push(results.rows.item(i));
+    // db.transaction((tx) => {
+    //   tx.executeSql(
+    //     'SELECT * FROM ojon_table_2 ',
+    //     [],
+    //     (tx, results) => {
+    //       console.log(' results.rows.length: ', results.rows.length);
+    //       var temp2 = [];
+    //       for (let i = 0; i < results.rows.length; ++i) {
+    //         temp2.push(results.rows.item(i));
 
-          }
-          console.log('ojon_table_2: ', temp2);
-        }
-      );
-    });
+    //       }
+    //       // console.log('ojon_table_2: ', temp2);
+    //     }
+    //   );
+    // });
   }
 
   const detailsGraphClicked = () => {
     SharedPreferences.getItems(['bmi_value', 'initial_ojon'], function (values) {
-      console.log(values)
+      // console.log(values)
     });
   }
 
 
-  let ojonValue = 80;
 
   //==================================       data show in Graph chart    ====================================
 
-
   const SelectedMaxMinWeight = (BMI, ojonValue) => {
-    let underWtMn = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 5, 0, 0, 0, 9, 0, 0, 0, 13, 0, 0, 0, 17, 0, 0, 0, 20, 0, 22, 0, 24, 25, 26, 27, 28, 29];
-    let underWtMx = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 10, 0, 0, 0, 15, 0, 0, 0, 20, 0, 0, 0, 25, 0, 0, 0, 30, 0, 32, 0, 35, 36, 37, 39, 40, 41];
-    let normalWtMn = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 4, 0, 0, 0, 8, 0, 0, 0, 11, 0, 0, 0, 15, 0, 0, 0, 18, 0, 20, 0, 21, 22, 23, 24, 25, 26];
-    let normalWtMx = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 10, 0, 0, 0, 14, 0, 0, 0, 18, 0, 0, 0, 22, 0, 0, 0, 27, 0, 29, 0, 31, 32, 32, 34, 35, 27];
-    let overWtMn = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 3, 0, 0, 0, 5, 0, 0, 0, 7, 0, 0, 0, 9, 0, 0, 0, 11, 0, 12, 0, 13, 13, 14, 14, 15, 26];
-    let overWtMx = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 8, 0, 0, 0, 11, 0, 0, 0, 14, 0, 0, 0, 17, 0, 0, 0, 19, 0, 21, 0, 22, 23, 23, 24, 25, 26];
-    let obeseWtMn = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 3, 0, 0, 0, 4, 0, 0, 0, 6, 0, 0, 0, 7, 0, 0, 0, 8, 0, 9, 0, 10, 10, 10, 11, 11, 12];
-    let obeseWtMx = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 6, 0, 0, 0, 8, 0, 0, 0, 11, 0, 0, 0, 13, 0, 0, 0, 15, 0, 16, 0, 17, 18, 19, 19, 20, 21];
+    let underWtMn = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 5, 0, 0, 0, 9, 0, 0, 0, 13, 0, 0, 0, 17, 0, 0, 0, 20, 0, 22, 0, 24, 25, 26, 27, 28];
+    let underWtMx = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 10, 0, 0, 0, 15, 0, 0, 0, 20, 0, 0, 0, 25, 0, 0, 0, 30, 0, 32, 0, 35, 36, 37, 39, 40];
+    let normalWtMn = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 4, 0, 0, 0, 8, 0, 0, 0, 11, 0, 0, 0, 15, 0, 0, 0, 18, 0, 20, 0, 21, 22, 23, 24, 25];
+    let normalWtMx = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 10, 0, 0, 0, 14, 0, 0, 0, 18, 0, 0, 0, 22, 0, 0, 0, 27, 0, 29, 0, 31, 32, 32, 34, 35];
+    let overWtMn = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 3, 0, 0, 0, 5, 0, 0, 0, 7, 0, 0, 0, 9, 0, 0, 0, 11, 0, 12, 0, 13, 13, 14, 14, 15];
+    let overWtMx = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 8, 0, 0, 0, 11, 0, 0, 0, 14, 0, 0, 0, 17, 0, 0, 0, 19, 0, 21, 0, 22, 23, 23, 24, 25];
+    let obeseWtMn = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 3, 0, 0, 0, 4, 0, 0, 0, 6, 0, 0, 0, 7, 0, 0, 0, 8, 0, 9, 0, 10, 10, 10, 11, 11];
+    let obeseWtMx = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 6, 0, 0, 0, 8, 0, 0, 0, 11, 0, 0, 0, 13, 0, 0, 0, 15, 0, 16, 0, 17, 18, 19, 19, 20];
     let maxWeight = [], minWeight = [];
     maxWeight[0] = minWeight[0] = ojonValue;
 
-    console.log(' underWtMn: ', underWtMn.length, ' underWtMx: ', underWtMx.length, ' normalWtMn: ', normalWtMn.length, ' normalWtMx: ', normalWtMx.length, ' overWtMn: ', overWtMn.length, ' overWtMx: ', overWtMx.length, ' obeseWtMn: ', obeseWtMn.length, ' overWtMx: ', overWtMx.length)
+    // console.log('bmi: ', BMI, '  ojonValue: ', ojonValue);
+
+    // console.log(' underWtMn: ', underWtMn.length, ' underWtMx: ', underWtMx.length, ' normalWtMn: ', normalWtMn.length, ' normalWtMx: ', normalWtMx.length, ' overWtMn: ', overWtMn.length, ' overWtMx: ', overWtMx.length, ' obeseWtMn: ', obeseWtMn.length, ' overWtMx: ', overWtMx.length)
 
     if (BMI < 18.5) {
       for (let i = 0; i < 40; i++) {
-        maxWeight[i + 1] = parseFloat((maxWeight[0] + underWtMx[i] / 2.2).toFixed(2));
-        minWeight[i + 1] = parseFloat((minWeight[0] + underWtMn[i] / 2.2).toFixed(2));
+        if (underWtMx[i] === 0) {
+          maxWeight[i + 1] = maxWeight[i];
+          minWeight[i + 1] = minWeight[i];
+        }
+        else {
+          maxWeight[i + 1] = parseFloat((maxWeight[0] + underWtMx[i] / 2.2).toFixed(2));
+          minWeight[i + 1] = parseFloat((minWeight[0] + underWtMn[i] / 2.2).toFixed(2));
+        }
+        // maxWeight[i + 1] = parseFloat((maxWeight[0] + underWtMx[i] / 2.2).toFixed(2));
+        // minWeight[i + 1] = parseFloat((minWeight[0] + underWtMn[i] / 2.2).toFixed(2));
+
       }
     }
     else if (BMI >= 18.5 && BMI < 25.0) {
       //Normal Weight
       for (let i = 0; i < 40; i++) {
-        maxWeight[i + 1] = parseFloat((maxWeight[0] + normalWtMx[i] / 2.2).toFixed(2));
-        minWeight[i + 1] = parseFloat((minWeight[0] + normalWtMn[i] / 2.2).toFixed(2));
+        if (underWtMx[i] === 0) {
+          maxWeight[i + 1] = maxWeight[i];
+          minWeight[i + 1] = minWeight[i];
+        }
+        else {
+          maxWeight[i + 1] = parseFloat((maxWeight[0] + normalWtMx[i] / 2.2).toFixed(2));
+          minWeight[i + 1] = parseFloat((minWeight[0] + normalWtMn[i] / 2.2).toFixed(2));
+        }
+        // maxWeight[i + 1] = parseFloat((maxWeight[0] + normalWtMx[i] / 2.2).toFixed(2));
+        // minWeight[i + 1] = parseFloat((minWeight[0] + normalWtMn[i] / 2.2).toFixed(2));
       }
     } else if (BMI >= 25.0 && BMI < 30.0) {
       //Over Weight
       for (let i = 0; i < 40; i++) {
-        maxWeight[i + 1] = parseFloat((maxWeight[0] + overWtMx[i] / 2.2).toFixed(2));
-        minWeight[i + 1] = parseFloat((minWeight[0] + overWtMn[i] / 2.2).toFixed(2));
+        if (underWtMx[i] === 0) {
+          maxWeight[i + 1] = maxWeight[i];
+          minWeight[i + 1] = minWeight[i];
+        }
+        else {
+          maxWeight[i + 1] = parseFloat((maxWeight[0] + overWtMx[i] / 2.2).toFixed(2));
+          minWeight[i + 1] = parseFloat((minWeight[0] + overWtMn[i] / 2.2).toFixed(2));
+        }
+        // maxWeight[i + 1] = parseFloat((maxWeight[0] + overWtMx[i] / 2.2).toFixed(2));
+        // minWeight[i + 1] = parseFloat((minWeight[0] + overWtMn[i] / 2.2).toFixed(2));
+
       }
     } else if (BMI >= 30.0) {
       // OVISH
       for (let i = 0; i < 40; i++) {
-        maxWeight[i + 1] = parseFloat((maxWeight[0] + obeseWtMx[i] / 2.2).toFixed(2));
-        minWeight[i + 1] = parseFloat((minWeight[0] + obeseWtMn[i] / 2.2).toFixed(2));
+        if (underWtMx[i] === 0) {
+          maxWeight[i + 1] = maxWeight[i];
+          minWeight[i + 1] = minWeight[i];
+        }
+        else {
+          maxWeight[i + 1] = parseFloat((maxWeight[0] + obeseWtMx[i] / 2.2).toFixed(2));
+          minWeight[i + 1] = parseFloat((minWeight[0] + obeseWtMn[i] / 2.2).toFixed(2));
+        }
+
+        // maxWeight[i + 1] = parseFloat((maxWeight[0] + obeseWtMx[i] / 2.2).toFixed(2));
+        // minWeight[i + 1] = parseFloat((minWeight[0] + obeseWtMn[i] / 2.2).toFixed(2));
       }
     }
-    console.log(' maxWeight:  ', maxWeight, '   minWeight    ', minWeight);
+    // console.log(' maxWeight:  ', maxWeight, '   minWeight-----------    ', minWeight);
+    //===== function
+    ForLoop(maxWeight);
+    ForLoop(minWeight);
+
+    // console.log(' maxWeight:  ', maxWeight, '   minWeight    ', minWeight);
     setWeightMax(maxWeight);
     setWeightMin(minWeight);
+  }
+
+  const ForLoop = weight => {
+    for (let i = 0; i < 40; i++) {
+      if (weight[i] === weight[i + 1]) {
+        for (let j = 40; j > 0; j--) {
+          if (weight[j] === weight[i]) {
+            let subWeight = weight[j + 1] - weight[i];
+            let divideWeight = subWeight / ((j + 1) - i);
+            for (let k = i + 1; k <= j; k++) {
+
+              weight[k] = weight[k - 1] + divideWeight;
+
+              // console.log('k  ', k, '  i: ', i, '  weights:  ', weight[k]);
+            }
+            i = j;
+            break;
+
+          }
+
+        }
+      }
+    }
   }
 
 
@@ -414,7 +466,7 @@ const OjonScreen = () => {
 
         <View style={{ backgroundColor: 'white', height: 280, }}>
 
-          <LineChartScreen initialOjon={ojonValue} WeightMax={weightMax} WeightMin={weightMin} />
+          <LineChartScreen WeightMax={weightMax} WeightMin={weightMin} />
           {/* <LineChartScreen2 WeightMax={weightMax} /> */}
 
         </View>

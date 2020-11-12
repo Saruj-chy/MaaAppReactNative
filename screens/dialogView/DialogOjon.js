@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, StyleSheet, Text, TextInput, View } from 'react-native';
-
 import { AllLokkonName, databaseName, ojonSavedValue } from '../Constant/Constant';
 import { openDatabase } from 'react-native-sqlite-storage';
 var db = openDatabase({ name: databaseName });
+var SharedPreferences = require('react-native-shared-preferences');
+
 
 const DialogOjon = ({ SetState, AddWomenOjon }) => {
 
@@ -11,21 +12,25 @@ const DialogOjon = ({ SetState, AddWomenOjon }) => {
   const [weekNumber, setWeekNumber] = useState('');
 
   //======================     ojon table load for show week number   ==================
-  useEffect(() => {
-    db.transaction((tx) => {
-      tx.executeSql(
-        'SELECT * FROM ojon_table ',
-        [],
-        (tx, results) => {
-          let weekNumber = results.rows.item(results.rows.length - 1).id;
-          console.log('  weekNumber  :  ', weekNumber - 1);
-          setWeekNumber(weekNumber - 1);
-        }
-      );
-    });
-  }, []);
+  // useEffect(() => {
+  //   db.transaction((tx) => {
+  //     tx.executeSql(
+  //       'SELECT * FROM ojon_table ',
+  //       [],
+  //       (tx, results) => {
+  //         let weekNumber = results.rows.item(results.rows.length - 1).id;
+  //         console.log('  weekNumber  :  ', weekNumber - 1);
+  //         setWeekNumber(weekNumber - 1);
+  //       }
+  //     );
+  //   });
+  // }, []);
   //   -----------------------------------------     ojon table load for show week number   ---------------------------------------------
 
+  SharedPreferences.getItem("week", function (value) {
+    console.log('week:  ', value);
+    setWeekNumber(value);
+  });
 
   const SavedValueDialogOjon = (kilogram) => {
     AddWomenOjon(kilogram);

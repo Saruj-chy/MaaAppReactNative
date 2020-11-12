@@ -3,6 +3,10 @@ export const databaseName = 'MaaDatabase130.db';
 
 import { openDatabase } from 'react-native-sqlite-storage';
 var db = openDatabase({ name: databaseName });
+var SharedPreferences = require('react-native-shared-preferences');
+
+let week = 4;
+SharedPreferences.setItem("week", week.toString());
 
 
 

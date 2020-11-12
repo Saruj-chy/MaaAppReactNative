@@ -14,6 +14,7 @@ import PickerShow from './screens/dialogView/PickerShow'
 import NoteScreen from './screens/NoteScreen/NoteScreen';
 import Testing from './screens/Test/Testing';
 import NoteTabView from './screens/NoteTabView/NoteTabView';
+import BottomViewScreen from './screens/BottomView/BottomViewScreen';
 
 
 
@@ -27,7 +28,7 @@ const App = () => {
 
 
   return (
-    <View>
+    <>
 
       {/* <JigashaScreen /> */}
 
@@ -36,15 +37,11 @@ const App = () => {
 
       {/* <NoteScreen /> */}
 
-      {/* <Testing /> */}
-      {/* 
-      <NoteTabView /> */}
 
-      {/* <Register /> */}
+      {/* <BottomViewScreen /> */}
 
 
-
-    </View>
+    </>
   )
 }
 
