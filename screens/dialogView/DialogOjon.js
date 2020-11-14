@@ -1,35 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, StyleSheet, Text, TextInput, View } from 'react-native';
-
 import { AllLokkonName, databaseName, ojonSavedValue } from '../Constant/Constant';
 import { openDatabase } from 'react-native-sqlite-storage';
 var db = openDatabase({ name: databaseName });
+var SharedPreferences = require('react-native-shared-preferences');
+
 
 const DialogOjon = ({ SetState, AddWomenOjon }) => {
 
   const [kilogram, setKilogram] = useState('');
   const [weekNumber, setWeekNumber] = useState('');
+  const [ojonText, setOjonText] = useState(false);
 
-  //======================     ojon table load for show week number   ==================
-  useEffect(() => {
-    db.transaction((tx) => {
-      tx.executeSql(
-        'SELECT * FROM ojon_table ',
-        [],
-        (tx, results) => {
-          let weekNumber = results.rows.item(results.rows.length - 1).id;
-          console.log('  weekNumber  :  ', weekNumber - 1);
-          setWeekNumber(weekNumber - 1);
-        }
-      );
-    });
-  }, []);
+
   //   -----------------------------------------     ojon table load for show week number   ---------------------------------------------
 
+  SharedPreferences.getItem("week", function (value) {
+    // console.log('week:  ', value);
+    setWeekNumber(value);
+  });
 
   const SavedValueDialogOjon = (kilogram) => {
-    AddWomenOjon(kilogram);
-    SetState(false);
+    if (kilogram >= 0 && kilogram <= 200) {
+      AddWomenOjon(kilogram, weekNumber);
+      SetState(false);
+      setOjonText(false);
+    }
+    else {
+      setOjonText(true);
+    }
   }
 
   return (
@@ -50,6 +49,9 @@ const DialogOjon = ({ SetState, AddWomenOjon }) => {
             keyboardType="numeric"
             onChangeText={text => setKilogram(text)}
           />
+          {
+            ojonText && <Text style={{ marginLeft: 20, color: 'red' }} > Please enter your weight 0-200 kg </Text>
+          }
         </View>
 
 

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Text, View, TouchableOpacity, Alert, ScrollView } from 'react-native';
 // import { ScrollView } from 'react-native-gesture-handler';
 import ColorBox from '../ColorBox/ColorBox';
-import ColorBox2 from '../ColorBox/ColorBox2';
 import { AllLokkonName, databaseName } from '../Constant/Constant';
 import { openDatabase } from 'react-native-sqlite-storage';
 

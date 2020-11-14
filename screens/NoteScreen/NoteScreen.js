@@ -303,7 +303,6 @@ const NoteScreen = () => {
         });
       }
       ColorArray.map(item => {
-
         db.transaction(function (tx) {
           // console.log('...........', item.id, item.first, item.second, item.third, item.count, date);
           tx.executeSql(
