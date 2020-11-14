@@ -14,11 +14,11 @@ var db = openDatabase({ name: databaseName });
 var SharedPreferences = require('react-native-shared-preferences');
 
 const OjonScreen = () => {
+  let underWeight = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
-  const [weightMax, setWeightMax] = useState([]);
-  const [weightMin, setWeightMin] = useState([]);
+  const [weightMax, setWeightMax] = useState(underWeight);
+  const [weightMin, setWeightMin] = useState(underWeight);
   const [BMIValue, setBMIValue] = useState('');
-  const [lineOjon, setLineOjon] = useState([]);
 
 
   const [state, setState] = useState(false);
@@ -39,7 +39,7 @@ const OjonScreen = () => {
           if (res.rows.length == 0) {
             txn.executeSql('DROP TABLE IF EXISTS ojon_table', []);
             txn.executeSql(
-              'CREATE TABLE IF NOT EXISTS ojon_table(ojon_id INTEGER PRIMARY KEY AUTOINCREMENT, id INT(50), ojon VARCHAR(20), week VARCHAR(20) )',
+              'CREATE TABLE IF NOT EXISTS ojon_table(ojon_id INTEGER PRIMARY KEY AUTOINCREMENT, id INT(50), ojon VARCHAR(20), current_date VARCHAR(20), week_date VARCHAR(20) )',
               []
             );
           }
@@ -48,6 +48,24 @@ const OjonScreen = () => {
     });
   }, []);
 
+  useEffect(() => {
+    db.transaction(function (txn) {
+      txn.executeSql(
+        "SELECT name FROM sqlite_master WHERE type='table' AND name='ojon_table_2'",
+        [],
+        function (tx, res) {
+          // console.log('item:', res.rows.length);
+          if (res.rows.length == 0) {
+            txn.executeSql('DROP TABLE IF EXISTS ojon_table_2', []);
+            txn.executeSql(
+              'CREATE TABLE IF NOT EXISTS ojon_table_2(ojon_id INTEGER PRIMARY KEY AUTOINCREMENT, id INT(50), ojon VARCHAR(20), week VARCHAR(20) )',
+              []
+            );
+          }
+        }
+      );
+    });
+  }, []);
   // --------------------------------       create database table    --------------------------------
 
   // =======================================================   when table empty initial data load in db    ========================================
@@ -58,39 +76,39 @@ const OjonScreen = () => {
         [],
         (tx, results) => {
           if (results.rows.length === 0) {
+            //============    first data insert in ojon table
+            db.transaction(function (tx) {
+              tx.executeSql(
+                'INSERT INTO ojon_table (id, ojon, current_date, week_date) VALUES (?,?,?,?)',
+                [0, 0, 'date1', 'date2'],
+                (tx, results) => {
+                  // console.log('Results  ojon_table initial ', results.rowsAffected);
 
+                }
+              );
+            });
+            //===========       all constant data insert in ojon_table_2     ============
             ojonSavedValue.map(item => {
               db.transaction(function (tx) {
-                // console.log('...........', item.id, item.first, item.second, item.third, item.count, date);
                 tx.executeSql(
-                  'INSERT INTO ojon_table (id, ojon, week) VALUES (?,?,?)',
-                  [item.id, item.ojon, item.week],
+                  'INSERT INTO ojon_table_2 (id, week, ojon) VALUES (?,?,?)',
+                  [item.id, item.week, item.ojon],
                   (tx, results) => {
-                    // console.log('Results  note_lokkon ', results.rowsAffected);
+                    // console.log('Results  ojon_table_2 ', results.rowsAffected);
+
                   }
                 );
               });
-
-
-            });
-
+            })
 
           }
           else {
             OjonLoadInTableChart();
-            // CurrentOjon()
+            setOjonFirst(true);
             if (BMIValue === '') {
               SharedPreferences.getItems(['bmi_value', 'initial_ojon'], function (values) {
-                if (values[0] !== "null") {
-                  setBMIValue(values[0]);
-                  setOjonFirst(true);
-                  SelectedMaxMinWeight(parseFloat(values[0]), parseFloat(values[1]));
-                }
-                else {
-                  setOjonFirst(false);
-                }
-
-
+                setBMIValue(values[0]);
+                SelectedMaxMinWeight(parseFloat(values[0]), parseFloat(values[1]));
               });
             }
           }
@@ -104,17 +122,92 @@ const OjonScreen = () => {
 
 
   //=============================== setWomenOjon =================
-  const womenAddOjon = (ojon, id, bmi) => {
-    console.log('id : ', id)
-    if (id === 0) {
-      SelectedMaxMinWeight(parseFloat(bmi), parseFloat(ojon));
-    }
+  const womenAddOjon = (ojon) => {
+    const currentDate = moment();
+    const month1 = currentDate.format("MM");
+    const day1 = currentDate.format("D");
+    const year1 = currentDate.format("YYYY");
+
+    const weeksDate = currentDate.add(1, 'weeks');
+    const month2 = weeksDate.format("MM");
+    const day2 = weeksDate.format("D");
+    const year2 = weeksDate.format("YYYY");
+    // console.log('day2, month2, year2: ', day2, month2, year2);
+
+    var date1 = day1 + '-' + month1 + '-' + year1;
+    var date2 = day2 + '-' + month2 + '-' + year2;
+
+
+    //===========  data load in ojon chart
+    OjonLoadInTableChart();
+
+
+
+    db.transaction((tx) => {
+      tx.executeSql(
+        'SELECT * FROM ojon_table ',
+        [],
+        (tx, results) => {
+
+          let tableDate = results.rows.item(results.rows.length - 1).week_date;
+          let tableOjonID = results.rows.item(results.rows.length - 1).ojon_id;
+          let tableID = results.rows.item(results.rows.length - 1).id;
+
+          var temp = [];
+          for (let i = 1; i < results.rows.length; ++i) {
+            temp.push({ id: results.rows.item(i).id, week: results.rows.item(i).week, ojon: results.rows.item(i).ojon, current_date: results.rows.item(i).current_date, week_date: results.rows.item(i).week_date });
+
+          }
+
+          if (results.rows.length === 1) {
+            // console.log('previousDate:  ');
+            TableDataInserted(1, ojon, date1, date2);
+            UpdateTableData_2(1, ojon);
+
+          }
+          else if (results.rows.length === 2) {
+            TableDataInserted(2, ojon, date1, date2);
+            UpdateTableData_2(2, ojon);
+          }
+
+          else if (results.rows.length >= 3 && results.rows.length <= 41) {
+            // console.log('tableOjonId: ', tableID + 1, ' updated date:  ', date1, '  date2: ', date2, '  tableDate: ', tableDate);
+
+            if (tableDate === date1) {
+              // console.log('data inserted')
+              TableDataInserted(tableID + 1, ojon, date1, date2);
+              UpdateTableData_2(tableID + 1, ojon);
+
+            }
+            else {
+              // console.log('data update', tableOjonID);
+              UpdateTableData(tableOjonID, ojon);
+              UpdateTableData_2(tableOjonID - 1, ojon);
+            }
+
+          }
+          else {
+            UpdateTableData(tableOjonID, ojon);
+            UpdateTableData_2(tableOjonID - 1, ojon);
+          }
+
+        }
+      );
+    });
+
+
+
+  }
+
+  //=============================       UpdatedTableData
+  const UpdateTableData = (id, ojon) => {
     db.transaction(function (tx) {
       tx.executeSql(
-        'UPDATE ojon_table set ojon=?  where id=?',
-        [ojon, parseInt(id)],
+        'UPDATE ojon_table set ojon=? where ojon_id=?',
+        [ojon, id],
         (tx, results) => {
-          OjonLoadInTableChart();
+          // console.log('Results UPDATE ojon_table ', results.rowsAffected);
+
 
         }
       );
@@ -123,13 +216,42 @@ const OjonScreen = () => {
 
   }
 
+  const UpdateTableData_2 = (id, ojon) => {
+    db.transaction(function (tx) {
+      tx.executeSql(
+        'UPDATE ojon_table_2 set ojon=? where ojon_id=?',
+        [ojon, id],
+        (tx, results) => {
+          // console.log('Results UPDATE ojon_table_2 ', results.rowsAffected, ' id: ', id);
+          OjonLoadInTableChart();
+        }
+      );
+    });
 
+
+  }
+
+  //  ========================= TableDataInserted   =========================
+  const TableDataInserted = (id, ojon, date1, date2) => {
+    db.transaction(function (tx) {
+      console.log(' TableDataInserted : ', id, ojon, date1, date2);
+      tx.executeSql(
+        'INSERT INTO ojon_table (id, ojon, current_date, week_date) VALUES (?,?,?,?)',
+        [id, ojon, date1, date2],
+        (tx, results) => {
+          // console.log('Results  ojon_table ', results.rowsAffected);
+
+
+        }
+      );
+    });
+  }
   //  ======================    OjonLoadInTableChart function      ===============
 
   const OjonLoadInTableChart = () => {
     db.transaction(function (tx) {
       tx.executeSql(
-        'SELECT * FROM ojon_table',
+        'SELECT * FROM ojon_table_2',
         [],
         (tx, results) => {
           var temp = [];
@@ -137,7 +259,6 @@ const OjonScreen = () => {
             temp.push({ id: results.rows.item(i).id, week: results.rows.item(i).week, ojon: results.rows.item(i).ojon });
 
           }
-          CurrentOjon(temp);
           setWomenOjon(temp);
 
         }
@@ -152,25 +273,39 @@ const OjonScreen = () => {
   const TableShow = () => {
     // let bmi = 25;
     // SharedPreferences.setItem("bmi_value", bmi.toString());
-    db.transaction((tx) => {
-      tx.executeSql(
-        'SELECT * FROM ojon_table ',
-        [],
-        (tx, results) => {
-          console.log(' results.rows.length: ', results.rows.length);
-          var temp = [];
-          for (let i = 0; i < results.rows.length; ++i) {
-            temp.push(results.rows.item(i));
+    // db.transaction((tx) => {
+    //   tx.executeSql(
+    //     'SELECT * FROM ojon_table ',
+    //     [],
+    //     (tx, results) => {
+    //       console.log(' results.rows.length: ', results.rows.length);
+    //       var temp = [];
+    //       for (let i = 0; i < results.rows.length; ++i) {
+    //         temp.push(results.rows.item(i));
 
-          }
-          console.log(temp);
-
-
-        }
-      );
-    });
+    //       }
+    //       // console.log(temp);
 
 
+    //     }
+    //   );
+    // });
+
+    // db.transaction((tx) => {
+    //   tx.executeSql(
+    //     'SELECT * FROM ojon_table_2 ',
+    //     [],
+    //     (tx, results) => {
+    //       console.log(' results.rows.length: ', results.rows.length);
+    //       var temp2 = [];
+    //       for (let i = 0; i < results.rows.length; ++i) {
+    //         temp2.push(results.rows.item(i));
+
+    //       }
+    //       // console.log('ojon_table_2: ', temp2);
+    //     }
+    //   );
+    // });
   }
 
   const detailsGraphClicked = () => {
@@ -178,6 +313,8 @@ const OjonScreen = () => {
       // console.log(values)
     });
   }
+
+
 
   //==================================       data show in Graph chart    ====================================
 
@@ -262,15 +399,15 @@ const OjonScreen = () => {
     ForLoop(maxWeight);
     ForLoop(minWeight);
 
-    console.log(' maxWeight:  ', maxWeight, '   minWeight    ', minWeight);
+    // console.log(' maxWeight:  ', maxWeight, '   minWeight    ', minWeight);
     setWeightMax(maxWeight);
     setWeightMin(minWeight);
   }
 
   const ForLoop = weight => {
-    for (let i = 0; i < weight.length; i++) {
+    for (let i = 0; i < 40; i++) {
       if (weight[i] === weight[i + 1]) {
-        for (let j = weight.length; j > 0; j--) {
+        for (let j = 40; j > 0; j--) {
           if (weight[j] === weight[i]) {
             let subWeight = weight[j + 1] - weight[i];
             let divideWeight = subWeight / ((j + 1) - i);
@@ -278,6 +415,7 @@ const OjonScreen = () => {
 
               weight[k] = weight[k - 1] + divideWeight;
 
+              // console.log('k  ', k, '  i: ', i, '  weights:  ', weight[k]);
             }
             i = j;
             break;
@@ -287,44 +425,6 @@ const OjonScreen = () => {
         }
       }
     }
-  }
-
-  //==============  dialog View for Line Chart =================
-  const CurrentOjon = (WomenOjon) => {
-    let ojonArray = [];
-    WomenOjon.map(item => {
-      if (item.ojon === '--') {
-        ojonArray.push(0);
-      }
-      else {
-        ojonArray.push(parseFloat(item.ojon));
-      }
-    })
-    //==========    calculation  
-    for (let i = 0; i < ojonArray.length; i++) {
-      if (ojonArray[i] === 0) {
-        for (let j = i; j < ojonArray.length; j++) {
-          if (ojonArray[j] !== 0) {
-            let subWeight = ojonArray[j] - ojonArray[i - 1];
-            let divideWeight = subWeight / ((j + 1) - i);
-            for (let k = i; k < j; k++) {
-              ojonArray[k] = ojonArray[k - 1] + divideWeight;
-            }
-            i = j;
-            break;
-          }
-        }
-      }
-    }
-    //======   specific array
-    let ojonArray2 = []
-    for (let i = 0; i < ojonArray.length; i++) {
-      if (ojonArray[i] !== 0) {
-        ojonArray2.push(ojonArray[i]);
-      }
-    }
-
-    setLineOjon(ojonArray2);
   }
 
 
@@ -333,6 +433,7 @@ const OjonScreen = () => {
       <View style={styles.appbarView}>
         <Text style={styles.appbarText}> ওজন  </Text>
         <Button title="click" color="#ad1457" onPress={() => { setState(true); }} />
+
       </View>
 
       {/* Weekly Ojon List */}
@@ -351,6 +452,8 @@ const OjonScreen = () => {
             {
               womenOjon.map(data => <OjonSavedScreen value={data} key={data.id} />)
             }
+
+
           </ScrollView>
 
         </View>
@@ -363,16 +466,9 @@ const OjonScreen = () => {
         <Text style={styles.weekOjnoTextStyle} onPress={() => TableShow()}>ওজনের ছক</Text>
 
         <View style={{ backgroundColor: 'white', height: 280, }}>
-          {
-            ojonFirst ? <LineChartScreen WeightMax={weightMax} WeightMin={weightMin} LineOjon={lineOjon} /> :
-              <View style={{ flex: 1, textAlign: 'center', justifyContent: 'center' }}>
-                <Text style={{ textAlign: 'center', color: 'green' }}> No chart data available</Text>
-                <Text style={{ textAlign: 'center', color: 'green' }}> এখানে তথ্য দেখতে আপনার ওজন প্রদান করুন. </Text>
-              </View>
 
-          }
-
-          {/* <LineChartScreen WeightMax={weightMax} WeightMin={weightMin} LineOjon={lineOjon} /> */}
+          <LineChartScreen WeightMax={weightMax} WeightMin={weightMin} />
+          {/* <LineChartScreen2 WeightMax={weightMax} /> */}
 
         </View>
 
@@ -401,7 +497,7 @@ const OjonScreen = () => {
 
 
 
-    </View >
+    </View>
 
   );
 };

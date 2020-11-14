@@ -8,7 +8,7 @@ import {
 
 import { LineChart } from 'react-native-charts-wrapper';
 
-const LineChartScreen = ({ WeightMax, WeightMin }) => {
+const LineChartScreen = ({ WeightMax, WeightMin, LineOjon }) => {
 
 
 
@@ -60,11 +60,22 @@ const LineChartScreen = ({ WeightMax, WeightMin }) => {
 
   const ConfigValues = weight => {
     let temp = [];
-    for (let i = 0; i <= 40; i++) {
+    for (let i = 0; i < weight.length; i++) {
       temp.push({ x: i, y: weight[i] })
     }
     return temp;
   }
+
+
+  // console.log('   WomenOjon  ', WomenOjon,);
+  // let count = 0;
+  // WomenOjon.map(item => {
+
+  //   if (item.ojon === '--') {
+  //     count = count + 1;
+  //   }
+  // })
+  // console.log('Count:   ', count);
 
 
 
@@ -74,14 +85,7 @@ const LineChartScreen = ({ WeightMax, WeightMin }) => {
       label: 'ন্যূনত্বম ওজন ',
       config: ConfigA
     }, {
-      values: [
-        { x: 0, y: 100 },
-        { x: 1, y: 101 },
-        { x: 5, y: 102 },
-        { x: 10, y: 103 },
-        { x: 15, y: 105 },
-
-      ],
+      values: ConfigValues(LineOjon),
       label: 'বর্তমান ওজন ',
       config: ConfigB
     }, {

@@ -86,15 +86,15 @@ const DialogView = ({ SetState, AddWomenOjon, SetOjonFirst, SetBMIValue }) => {
 
   const SavedValue = (kilogram) => {
     if (clickPound || clickKg && cmState || feetState) {
-      AddWomenOjon(kilogram);
-      SetState(false);
-      SetOjonFirst(true);
-      // console.log('Inch :   ', cmValue);
+
       const bmi = CalculateBMI(kilogram, cmValue);
-      // console.log('bmi saved:  ', bmi);
       SetBMIValue(bmi);
       SharedPreferences.setItem("bmi_value", bmi.toString());
       SharedPreferences.setItem("initial_ojon", kilogram.toString());
+
+      AddWomenOjon(kilogram, 0, bmi);
+      SetState(false);
+      SetOjonFirst(true);
     }
     else {
       alert('please fill all field');
