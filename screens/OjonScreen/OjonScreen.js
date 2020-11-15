@@ -401,7 +401,7 @@ const OjonScreen = () => {
 
 
 
-    </View >
+    </View>
 
   );
 };
