@@ -1,29 +1,35 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-const ListItem = (props) => {
-  const { id, title, desc } = props.data;
+const ListItem = ({ data, ListArray, StateView }) => {
+  const { id, jigasha_no, title, desc } = data;
   const [position, setPosition] = useState();
   const [state, setState] = useState(false);
-  // console.log(props.data);
 
   const handleList = () => {
-    console.log('position: ', id);
+
     setPosition(id);
-    // for (let i = 0; i < 8; i++) {
-
-    // }
     setState(!state);
-    // id ? setState(true) : setState(false);
-    console.log(state);
 
+    if (StateView.length > 0) {
+      if (StateView[id - 1].state === true) {
+        ListArray(-1);
+      }
+      else {
+        ListArray(id);
+      }
+    }
+    else {
+      ListArray(id);
+    }
   }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.titleStyle} onPress={handleList}>{id}: {title}</Text>
+      <Text style={styles.titleStyle} onPress={() => { handleList(); }}>{jigasha_no}: {title}</Text>
       {
-        position && state && <Text style={styles.descStyle} > {desc} </Text>
+        StateView.length > 0 ? StateView[id - 1].state && <Text style={styles.descStyle}> {desc} </Text> :
+          position && state && <Text style={styles.descStyle}> {desc} </Text>
       }
 
     </View>
