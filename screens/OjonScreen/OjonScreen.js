@@ -26,7 +26,6 @@ const OjonScreen = () => {
 
 
 
-
   //============================    create database table ------------------------------------------
   useEffect(() => {
     db.transaction(function (txn) {
@@ -87,6 +86,7 @@ const OjonScreen = () => {
                 }
                 else {
                   setOjonFirst(false);
+                  setState(true);
                 }
 
 
@@ -192,9 +192,6 @@ const OjonScreen = () => {
     let maxWeight = [], minWeight = [];
     maxWeight[0] = minWeight[0] = ojonValue;
 
-    // console.log('bmi: ', BMI, '  ojonValue: ', ojonValue);
-
-    // console.log(' underWtMn: ', underWtMn.length, ' underWtMx: ', underWtMx.length, ' normalWtMn: ', normalWtMn.length, ' normalWtMx: ', normalWtMx.length, ' overWtMn: ', overWtMn.length, ' overWtMx: ', overWtMx.length, ' obeseWtMn: ', obeseWtMn.length, ' overWtMx: ', overWtMx.length)
 
     if (BMI < 18.5) {
       for (let i = 0; i < 40; i++) {
@@ -206,8 +203,6 @@ const OjonScreen = () => {
           maxWeight[i + 1] = parseFloat((maxWeight[0] + underWtMx[i] / 2.2).toFixed(2));
           minWeight[i + 1] = parseFloat((minWeight[0] + underWtMn[i] / 2.2).toFixed(2));
         }
-        // maxWeight[i + 1] = parseFloat((maxWeight[0] + underWtMx[i] / 2.2).toFixed(2));
-        // minWeight[i + 1] = parseFloat((minWeight[0] + underWtMn[i] / 2.2).toFixed(2));
 
       }
     }
@@ -222,8 +217,7 @@ const OjonScreen = () => {
           maxWeight[i + 1] = parseFloat((maxWeight[0] + normalWtMx[i] / 2.2).toFixed(2));
           minWeight[i + 1] = parseFloat((minWeight[0] + normalWtMn[i] / 2.2).toFixed(2));
         }
-        // maxWeight[i + 1] = parseFloat((maxWeight[0] + normalWtMx[i] / 2.2).toFixed(2));
-        // minWeight[i + 1] = parseFloat((minWeight[0] + normalWtMn[i] / 2.2).toFixed(2));
+
       }
     } else if (BMI >= 25.0 && BMI < 30.0) {
       //Over Weight
@@ -236,9 +230,6 @@ const OjonScreen = () => {
           maxWeight[i + 1] = parseFloat((maxWeight[0] + overWtMx[i] / 2.2).toFixed(2));
           minWeight[i + 1] = parseFloat((minWeight[0] + overWtMn[i] / 2.2).toFixed(2));
         }
-        // maxWeight[i + 1] = parseFloat((maxWeight[0] + overWtMx[i] / 2.2).toFixed(2));
-        // minWeight[i + 1] = parseFloat((minWeight[0] + overWtMn[i] / 2.2).toFixed(2));
-
       }
     } else if (BMI >= 30.0) {
       // OVISH
@@ -252,16 +243,12 @@ const OjonScreen = () => {
           minWeight[i + 1] = parseFloat((minWeight[0] + obeseWtMn[i] / 2.2).toFixed(2));
         }
 
-        // maxWeight[i + 1] = parseFloat((maxWeight[0] + obeseWtMx[i] / 2.2).toFixed(2));
-        // minWeight[i + 1] = parseFloat((minWeight[0] + obeseWtMn[i] / 2.2).toFixed(2));
       }
     }
-    // console.log(' maxWeight:  ', maxWeight, '   minWeight-----------    ', minWeight);
     //===== function
     ForLoop(maxWeight);
     ForLoop(minWeight);
 
-    console.log(' maxWeight:  ', maxWeight, '   minWeight    ', minWeight);
     setWeightMax(maxWeight);
     setWeightMin(minWeight);
   }
@@ -336,7 +323,7 @@ const OjonScreen = () => {
 
       {/* Weekly Ojon List */}
 
-      <View style={styles.layoutStyle}>
+      <View style={{ ...styles.layoutStyle, marginBottom: 5 }}>
         <Text style={styles.weekOjnoTextStyle}>সাপ্তাহিক ওজন </Text>
         <View style={{ backgroundColor: '#607d8b', marginBottom: 5, }}>
           <View style={{ flexDirection: 'row', padding: 5 }}>
@@ -358,27 +345,35 @@ const OjonScreen = () => {
 
       {/* graph chart  */}
 
-      <View style={styles.layoutStyle}>
-        <Text style={styles.weekOjnoTextStyle} onPress={() => TableShow()}>ওজনের ছক</Text>
+      <ScrollView style={{ height: 400 }}>
+        <View>
+          <View style={styles.layoutStyle}>
+            <Text style={styles.weekOjnoTextStyle} onPress={() => TableShow()}>ওজনের ছক</Text>
 
-        <View style={{ backgroundColor: 'white', height: 280, }}>
-          {
-            ojonFirst ? <LineChartScreen WeightMax={weightMax} WeightMin={weightMin} LineOjon={lineOjon} /> :
-              <View style={{ flex: 1, textAlign: 'center', justifyContent: 'center' }}>
-                <Text style={{ textAlign: 'center', color: 'green' }}> No chart data available</Text>
-                <Text style={{ textAlign: 'center', color: 'green' }}> এখানে তথ্য দেখতে আপনার ওজন প্রদান করুন. </Text>
-              </View>
+            <View style={{ backgroundColor: 'white', height: 350, }}>
+              {
+                ojonFirst ? <LineChartScreen WeightMax={weightMax} WeightMin={weightMin} LineOjon={lineOjon} /> :
+                  <View style={{ flex: 1, textAlign: 'center', justifyContent: 'center' }}>
+                    <Text style={{ textAlign: 'center', color: 'green' }}> No chart data available</Text>
+                    <Text style={{ textAlign: 'center', color: 'green' }}> এখানে তথ্য দেখতে আপনার ওজন প্রদান করুন. </Text>
+                  </View>
 
-          }
+              }
 
-          {/* <LineChartScreen WeightMax={weightMax} WeightMin={weightMin} LineOjon={lineOjon} /> */}
+              {/* <LineChartScreen WeightMax={weightMax} WeightMin={weightMin} LineOjon={lineOjon} /> */}
 
+            </View>
+
+            <Text style={styles.weekOjnoTextStyle} onPress={() => detailsGraphClicked()}> বিস্তারিত দেখতে গ্রাফ চাপুন </Text>
+
+
+          </View>
+          <View style={{ height: 35 }}></View>
         </View>
 
-        <Text style={styles.weekOjnoTextStyle} onPress={() => detailsGraphClicked()}> বিস্তারিত দেখতে গ্রাফ চাপুন </Text>
 
-      </View>
 
+      </ScrollView>
 
       <Dialog
         visible={state}
@@ -420,19 +415,23 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   layoutStyle: {
-    margin: 10,
+    marginTop: 5,
+    marginLeft: 10,
+    marginRight: 10,
     borderRadius: 5,
-    backgroundColor: '#ad1457'
+    backgroundColor: '#ad1457',
+
   },
   weekOjnoTextStyle: {
     backgroundColor: '#890e4f',
     color: 'white',
     textAlign: 'center',
     fontSize: 16,
-    paddingVertical: 5,
+    paddingVertical: 3,
     borderTopLeftRadius: 5,
-    borderTopRightRadius: 5
-
+    borderTopRightRadius: 5,
+    borderBottomLeftRadius: 5,
+    borderBottomRightRadius: 5
   },
   weekViewText: {
     color: 'white',

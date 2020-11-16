@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
   },
   chart: {
     // flex: 1,
-    height: 280,
+    height: 350,
     borderWidth: 2,
     borderColor: 'red',
     // color: 'red',

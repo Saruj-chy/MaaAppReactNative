@@ -13,7 +13,7 @@ const NoteLokkonDetails = ({ NoteLokkonData, NoteView, DialogPressable }) => {
     )
   }
   return (
-    <View style={{ flexDirection: 'row', marginLeft: 10, marginRight: 10, }}>
+    <View style={{ flexDirection: 'row', marginLeft: 10, marginRight: 10, marginBottom: 50 }}>
 
       <Pressable style={styles.itemStyle} onPress={() => DialogPressable(1)}>
         <View >
