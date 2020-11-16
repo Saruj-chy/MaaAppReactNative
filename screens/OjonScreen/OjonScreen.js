@@ -8,7 +8,6 @@ import moment from "moment";
 import { AllLokkonName, databaseName, ojonSavedValue } from '../Constant/Constant';
 import { openDatabase } from 'react-native-sqlite-storage';
 import LineChartScreen from '../LineChartScreen/LineChartScreen';
-import LineChartScreen2 from '../LineChartScreen/LineChartScreen2';
 
 var db = openDatabase({ name: databaseName });
 var SharedPreferences = require('react-native-shared-preferences');
