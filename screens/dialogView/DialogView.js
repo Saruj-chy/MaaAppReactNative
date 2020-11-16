@@ -89,6 +89,7 @@ const DialogView = ({ SetState, AddWomenOjon, SetOjonFirst, SetBMIValue }) => {
 
       const bmi = CalculateBMI(kilogram, cmValue);
       SetBMIValue(bmi);
+      console.log('bmi: ', bmi, ' kilogram: ', kilogram);
       SharedPreferences.setItem("bmi_value", bmi.toString());
       SharedPreferences.setItem("initial_ojon", kilogram.toString());
 

@@ -8,7 +8,7 @@ var db = openDatabase({ name: databaseName });
 var SharedPreferences = require('react-native-shared-preferences');
 
 
-const NoteDialog = ({ CurrentDate, SetState }) => {
+const NoteDialog = ({ CurrentDate, SetState, LokhonTableData }) => {
 
   useEffect(() => {
     db.transaction((tx) => {
@@ -22,6 +22,7 @@ const NoteDialog = ({ CurrentDate, SetState }) => {
           }
 
 
+
         }
       );
     });
@@ -33,7 +34,7 @@ const NoteDialog = ({ CurrentDate, SetState }) => {
       <Text style={{ fontSize: 16, color: 'white', marginHorizontal: 15 }}>{CurrentDate.month} {CurrentDate.day}, {CurrentDate.year} </Text>
       <View style={{ backgroundColor: 'white', height: 350 }}>
 
-        <NoteTabView CurrentDateNoteDialog={CurrentDate} SetState={SetState} />
+        <NoteTabView CurrentDateNoteDialog={CurrentDate} SetState={SetState} LokhonTableData={LokhonTableData} />
 
       </View>
 

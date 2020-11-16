@@ -1,36 +1,45 @@
+/* eslint-disable prettier/prettier */
 import React from 'react';
-import { Button, View, SafeAreaView } from 'react-native';
+import { Button, StyleSheet, Text, View } from 'react-native';
 
-const Home = ({ navigation }) => {
+
+const Separator = () => (
+  <View style={styles.separator} />
+);
+
+const Home = ({ history }) => {
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View style={{ flex: 1, backgroundColor: 'white' }}>
-        <View style={{ flex: 1, marginTop: 50 }}>
-          <Button
-            title="OjonScreen"
-            onPress={() => navigation.navigate('ojon')}
-          />
-          <View style={{ height: 20 }} />
-          <Button
-            title="NoteScreen"
-            onPress={() => navigation.navigate('note')}
-          />
-          <View style={{ height: 20 }} />
-          <Button
-            title="JigashaScreen"
-            onPress={() => navigation.navigate('jigasha')}
-          />
-          <View style={{ height: 20 }} />
-          <Button
-            title="Bottom View"
-            onPress={() => navigation.navigate('bottom')}
-          />
+    <View style={styles.container}>
 
-        </View>
+    <Text> </Text>
 
-      </View>
-    </SafeAreaView>
+      <Button title="Ojon Screen" onPress={() => history.push('/ojon')} />
+      <Separator />
+      <Button title="Note Screen" onPress={() => history.push('/note')} />
+      <Separator />
+      <Button title="Jigasha Screen" onPress={() => history.push('/jigasha')} />
+      <Separator />
+      <Button title="Bottom View" onPress={() => history.push('/bottom')} />
+
+
+
+    </View>
   );
 };
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#F0F8FF',
+    justifyContent: 'center',
+    textAlign: 'center',
+    margin: 20,
+  },
+  separator: {
+    marginVertical: 8,
+    borderBottomColor: '#737373',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+  },
+
+});
 export default Home;

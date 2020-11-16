@@ -112,8 +112,6 @@ const NoteScreen = () => {
   useEffect(() => {
     const todayDate = new Date();
     const dateOf = todayDate.getDate() + "-" + parseInt(todayDate.getMonth() + 1) + "-" + todayDate.getFullYear();
-    console.log('dateOf:   ', dateOf);
-
 
     db.transaction((tx) => {
       //==================    lokkon details
@@ -143,7 +141,6 @@ const NoteScreen = () => {
 
 
           }
-          console.log('object  length also    ', temp)
           setNoteLokkonData(temp);
 
         }
@@ -180,14 +177,15 @@ const NoteScreen = () => {
   //==============  data load from(note_lokkon_table, note_save) from (first, second, third, date, note)  ======================
 
   const lokhonTableData = date => {
-    db.transaction((tx) => {
 
+    console.log('lokhonTableData date: ', date);
+
+    db.transaction((tx) => {
       //==============  note  =================
       tx.executeSql(
         'SELECT * FROM note_save WHERE date = ? ',
         [date],
         (tx, results) => {
-          console.log('results:  ', results.rows.length);
           let resultCode = results.rows.length;
           if (resultCode > 0) {
             const resultNote = results.rows.item(0).note;
@@ -228,11 +226,9 @@ const NoteScreen = () => {
 
             }
             temp.push({ id: results.rows.item(i).id, first: uposorgo, name: AllLokkonName[results.rows.item(i).id].name });
-            // console.log('first :', results.rows.item(i).first, 'name :', AllLokkonName[results.rows.item(i).id].name)
 
 
           }
-          // console.log('object  length     ', temp)
           setNoteLokkonData(temp);
 
         }
@@ -257,9 +253,7 @@ const NoteScreen = () => {
           var temp = [];
           for (let i = 0; i < results.rows.length; ++i) {
             temp.push(results.rows.item(i));
-            // console.log(results.rows.item(i))
           }
-          // console.log('object      ', temp.length)
           setLokkonData(temp);
 
         }
@@ -291,13 +285,10 @@ const NoteScreen = () => {
       //=============================  data save in note lokkon from note_lokhon_table  ==================
       if (lokkonData > 0) {
         db.transaction((tx) => {
-          // console.log('yes delete done');
           tx.executeSql(
             'DELETE FROM  note_lokkon where date=?',
             [date],
             (tx, results) => {
-              // console.log('Results', results.rowsAffected);
-
             }
           );
         });
@@ -310,7 +301,6 @@ const NoteScreen = () => {
             [item.id, item.first, item.second, item.third, item.count, date],
             (tx, results) => {
               // console.log('Results  note_lokkon ', results.rowsAffected);
-
             }
           );
         });
@@ -342,9 +332,8 @@ const NoteScreen = () => {
         onTouchOutside={() => setState(false)}
 
       >
-        <NoteDialog CurrentDate={currentDate} SetState={setState} />
+        <NoteDialog CurrentDate={currentDate} SetState={setState} LokhonTableData={lokhonTableData} />
       </Dialog>
-
 
     </View>
   );

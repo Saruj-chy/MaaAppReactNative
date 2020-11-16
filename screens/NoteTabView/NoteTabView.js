@@ -11,7 +11,7 @@ var SharedPreferences = require('react-native-shared-preferences');
 var db = openDatabase({ name: databaseName });
 const Tab = createMaterialTopTabNavigator();
 
-const NoteTabView = ({ CurrentDateNoteDialog, SetState }) => {
+const NoteTabView = ({ CurrentDateNoteDialog, SetState, LokhonTableData }) => {
 
   let noteValue;
 
@@ -82,7 +82,7 @@ const NoteTabView = ({ CurrentDateNoteDialog, SetState }) => {
                 'UPDATE note_save set note=? where date=?',
                 [noteValue, CurrentDateNoteDialog.date],
                 (tx, results) => {
-                  // console.log('Results', results.rowsAffected);
+
                 }
               );
             });
@@ -92,7 +92,7 @@ const NoteTabView = ({ CurrentDateNoteDialog, SetState }) => {
                 'INSERT INTO note_save (date, note) VALUES (?,?)',
                 [CurrentDateNoteDialog.date, noteValue],
                 (tx, results) => {
-                  // console.log('Results', results.rowsAffected);
+
                 }
               );
             });
@@ -210,6 +210,7 @@ const NoteTabView = ({ CurrentDateNoteDialog, SetState }) => {
                 [item.id, item.first, item.second, item.third, item.count, CurrentDateNoteDialog.date],
                 (tx, results) => {
                   // console.log('Results  note_lokhon_table ', results.rowsAffected);
+                  LokhonTableData(CurrentDateNoteDialog.date);
                 }
               );
             });
