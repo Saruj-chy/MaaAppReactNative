@@ -7,6 +7,8 @@ import {
   Text,
   StatusBar,
 } from 'react-native';
+import { NativeRouter, Route } from 'react-router-native';
+
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -28,90 +30,15 @@ const Stack = createStackNavigator();
 
 const App = () => {
 
-
-
-
-
-
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="home">
-        <Stack.Screen
-          name="home"
-          component={Home}
-          options={{
-            title: 'Home', //Set Header Title
-            headerStyle: {
-              backgroundColor: 'green', //Set Header color
-            },
-            headerTintColor: '#fff', //Set Header text color
-            headerTitleStyle: {
-              fontWeight: 'bold', //Set Header text style
-            },
-          }}
-        />
-        <Stack.Screen
-          name="ojon"
-          component={OjonScreen}
-          options={{
-            title: 'Ojon Screen', //Set Header Title
-            headerStyle: {
-              backgroundColor: 'blue', //Set Header color
-            },
-            headerTintColor: '#fff', //Set Header text color
-            headerTitleStyle: {
-              fontWeight: 'bold', //Set Header text style
-            },
-          }}
-        />
-        <Stack.Screen
-          name="note"
-          component={NoteScreen}
-          options={{
-            title: 'Note Screen', //Set Header Title
-            headerStyle: {
-              backgroundColor: 'orange', //Set Header color
-            },
-            headerTintColor: '#fff', //Set Header text color
-            headerTitleStyle: {
-              fontWeight: 'bold', //Set Header text style
-            },
-          }}
-        />
-        <Stack.Screen
-          name="jigasha"
-          component={JigashaScreen}
-          options={{
-            title: 'Jigasha Screen', //Set Header Title
-            headerStyle: {
-              backgroundColor: 'green', //Set Header color
-            },
-            headerTintColor: '#fff', //Set Header text color
-            headerTitleStyle: {
-              fontWeight: 'bold', //Set Header text style
-            },
-          }}
-        />
+    <NativeRouter>
+      <Route exact path="/" component={Home} />
+      <Route exact path="/ojon" component={OjonScreen} />
+      <Route exact path="/note" component={NoteScreen} />
+      <Route exact path="/jigasha" component={JigashaScreen} />
+      <Route exact path="/bottom" component={BottomViewScreen} />
 
-<Stack.Screen
-          name="bottom"
-          component={BottomViewScreen}
-          options={{
-            title: 'Bottom View', //Set Header Title
-            headerStyle: {
-              backgroundColor: 'green', //Set Header color
-            },
-            headerTintColor: '#fff', //Set Header text color
-            headerTitleStyle: {
-              fontWeight: 'bold', //Set Header text style
-            },
-          }}
-        />
-
-        
-
-      </Stack.Navigator>
-    </NavigationContainer>
+    </NativeRouter>
   )
 }
 
