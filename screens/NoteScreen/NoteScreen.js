@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Button, ScrollView, StyleSheet, Text, View, BackHandler } from 'react-native';
 import Dialog from 'react-native-popup-dialog';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import CalenderPicker from '../DatePicker/CalenderPicker';
@@ -8,15 +8,13 @@ import NoteLokkonDetails from '../NoteLokkonDetails/NoteLokkonDetails';
 import NoteDialog from '../NoteDialog/NoteDialog';
 import { databaseName, ColorArray, AllLokkonName, ColorClickCount } from '../Constant/Constant';
 
-import { YellowBox } from 'react-native';
-import _ from 'lodash';
 
 import { openDatabase } from 'react-native-sqlite-storage';
 
 var db = openDatabase({ name: databaseName });
 
 
-const NoteScreen = () => {
+const NoteScreen = ({ history }) => {
   const [state, setState] = useState(false);
   const [currentDate, setCurrentDate] = useState({ date: '', month: '', day: '', year: '' });
   const [lokkonData, setLokkonData] = useState([]);
@@ -137,11 +135,15 @@ const NoteScreen = () => {
 
             }
             temp.push({ id: results.rows.item(i).id, first: uposorgo, name: AllLokkonName[results.rows.item(i).id].name });
-            // console.log('first :', results.rows.item(i).first, 'name :', AllLokkonName[results.rows.item(i).id].name)
 
 
           }
+          console.log('length: ', temp.length);
           setNoteLokkonData(temp);
+          if (temp.length === 0) {
+            setState(true);
+          }
+
 
         }
       );
@@ -311,6 +313,22 @@ const NoteScreen = () => {
     }
   }
 
+  //=======================     backhandler in note screen to main
+  useEffect(() => {
+    const backAction = () => {
+      setState(false);
+      history.push('/');
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, []);
+
 
   return (
     <View style={{ backgroundColor: 'white' }}>
@@ -319,8 +337,6 @@ const NoteScreen = () => {
         <Button title="click" color="#ad1457" onPress={() => dialogPressable(1)} />
 
       </View>
-      {/* <CalenderPicker /> */}
-
 
       <ScrollView>
         <NativeCalender LokhonTableData={lokhonTableData} />

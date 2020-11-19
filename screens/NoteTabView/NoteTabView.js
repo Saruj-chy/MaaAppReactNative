@@ -82,7 +82,7 @@ const NoteTabView = ({ CurrentDateNoteDialog, SetState, LokhonTableData }) => {
                 'UPDATE note_save set note=? where date=?',
                 [noteValue, CurrentDateNoteDialog.date],
                 (tx, results) => {
-
+                  LokhonTableData(CurrentDateNoteDialog.date);
                 }
               );
             });
@@ -92,7 +92,7 @@ const NoteTabView = ({ CurrentDateNoteDialog, SetState, LokhonTableData }) => {
                 'INSERT INTO note_save (date, note) VALUES (?,?)',
                 [CurrentDateNoteDialog.date, noteValue],
                 (tx, results) => {
-
+                  LokhonTableData(CurrentDateNoteDialog.date);
                 }
               );
             });
@@ -266,6 +266,7 @@ const NoteTabView = ({ CurrentDateNoteDialog, SetState, LokhonTableData }) => {
 
             // labelStyle: { fontSize: 15 },
             // pressColor: 'red',
+
 
           }}
         >

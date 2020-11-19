@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Modal, ScrollView, StyleSheet, Text, View, Alert } from 'react-native';
+import { Button, Modal, ScrollView, StyleSheet, Text, View, Alert, BackHandler } from 'react-native';
 import Dialog from 'react-native-popup-dialog';
 import OjonSavedScreen from './OjonSavedScreen';
 import DialogView from '../dialogView/DialogView';
@@ -12,7 +12,7 @@ import LineChartScreen from '../LineChartScreen/LineChartScreen';
 var db = openDatabase({ name: databaseName });
 var SharedPreferences = require('react-native-shared-preferences');
 
-const OjonScreen = () => {
+const OjonScreen = ({ history }) => {
 
   const [weightMax, setWeightMax] = useState([]);
   const [weightMin, setWeightMin] = useState([]);
@@ -23,6 +23,29 @@ const OjonScreen = () => {
   const [state, setState] = useState(false);
   const [ojonFirst, setOjonFirst] = useState(false);
   const [womenOjon, setWomenOjon] = useState(ojonSavedValue);
+
+  //=========================             backhandler in react native   ==============================
+  useEffect(() => {
+    const backAction = () => {
+      setState(false);
+      history.push('/');
+      // Alert.alert("Hold on!", "Are you sure you want to go back?", [
+      //   {
+      //     text: "Cancel",
+      //   },
+
+      //   { text: "YES", onPress: () => BackHandler.exitApp() }
+      // ]);
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, []);
 
 
 
